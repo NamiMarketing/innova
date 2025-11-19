@@ -1,32 +1,49 @@
 import { Property, PropertyFilters, PropertyResponse } from '@/types/property';
 import { env } from '@/lib/env';
+import { authService } from './auth';
+import { mapProperfyResponse } from './properfy-mapper';
 
 class ProperfyService {
   private baseUrl: string;
-  private apiKey: string;
-  private clientId: string;
 
   constructor() {
     this.baseUrl = env.PROPERFY_API_URL;
-    this.apiKey = env.PROPERFY_API_KEY;
-    this.clientId = env.PROPERFY_CLIENT_ID;
   }
 
   private async fetch<T>(endpoint: string, options?: RequestInit): Promise<T> {
+    const token = await authService.getToken();
+
     const headers = {
       'Content-Type': 'application/json',
-      'Authorization': `Bearer ${this.apiKey}`,
-      'X-Client-Id': this.clientId,
+      'Authorization': `Bearer ${token}`,
       ...options?.headers,
     };
 
-    const response = await fetch(`${this.baseUrl}${endpoint}`, {
+    const url = `${this.baseUrl}${endpoint}`;
+    console.log('Properfy API Request:', url);
+
+    const response = await fetch(url, {
       ...options,
       headers,
+      cache: 'no-store',
     });
 
     if (!response.ok) {
-      throw new Error(`Properfy API Error: ${response.statusText}`);
+      const errorText = await response.text();
+      let errorMessage = `Properfy API Error: ${response.statusText} (${response.status})`;
+
+      try {
+        const errorData = JSON.parse(errorText);
+        errorMessage = errorData.message || errorData.error || errorMessage;
+      } catch {
+        // If response is not JSON, use the text
+        if (errorText) {
+          errorMessage = `${errorMessage} - ${errorText}`;
+        }
+      }
+
+      console.error('Properfy API Error:', { url, status: response.status, errorMessage });
+      throw new Error(errorMessage);
     }
 
     return response.json();
@@ -35,55 +52,85 @@ class ProperfyService {
   async getProperties(filters: PropertyFilters = {}): Promise<PropertyResponse> {
     const params = new URLSearchParams();
 
-    if (filters.type) params.append('type', filters.type);
-    if (filters.category) params.append('category', filters.category);
-    if (filters.city) params.append('city', filters.city);
-    if (filters.neighborhood) params.append('neighborhood', filters.neighborhood);
-    if (filters.minPrice) params.append('minPrice', filters.minPrice.toString());
-    if (filters.maxPrice) params.append('maxPrice', filters.maxPrice.toString());
-    if (filters.minBedrooms) params.append('minBedrooms', filters.minBedrooms.toString());
-    if (filters.maxBedrooms) params.append('maxBedrooms', filters.maxBedrooms.toString());
-    if (filters.minBathrooms) params.append('minBathrooms', filters.minBathrooms.toString());
-    if (filters.minParkingSpaces) params.append('minParkingSpaces', filters.minParkingSpaces.toString());
-    if (filters.minArea) params.append('minArea', filters.minArea.toString());
-    if (filters.maxArea) params.append('maxArea', filters.maxArea.toString());
-    if (filters.search) params.append('search', filters.search);
+    // Pagination
     if (filters.page) params.append('page', filters.page.toString());
-    if (filters.limit) params.append('limit', filters.limit.toString());
+    if (filters.limit) params.append('size', filters.limit.toString());
 
-    if (filters.amenities && filters.amenities.length > 0) {
-      filters.amenities.forEach(amenity => params.append('amenities[]', amenity));
+    // Transaction type (sale/rent)
+    if (filters.type) {
+      const transactionType = filters.type === 'sale' ? 'SALE' : 'RENT';
+      params.append('chrTransactionType', transactionType);
     }
 
-    const queryString = params.toString();
-    const endpoint = `/properties${queryString ? `?${queryString}` : ''}`;
+    // Property type/category
+    if (filters.category) {
+      const categoryMap: Record<string, string> = {
+        'house': 'RESIDENTIAL_HOUSE',
+        'apartment': 'APARTMENT',
+        'commercial': 'COMMERCIAL',
+        'land': 'LAND',
+        'farm': 'FARM',
+      };
+      const properfyType = categoryMap[filters.category];
+      if (properfyType) {
+        params.append('chrType', properfyType);
+      }
+    }
 
-    return this.fetch<PropertyResponse>(endpoint);
+    // Price filters
+    if (filters.minPrice) params.append('dcmMinPrice', filters.minPrice.toString());
+    if (filters.maxPrice) params.append('dcmMaxPrice', filters.maxPrice.toString());
+
+    // Location filters
+    if (filters.city) params.append('chrAddressCity', filters.city);
+    if (filters.neighborhood) params.append('chrAddressDistrict', filters.neighborhood);
+
+    // Feature filters
+    if (filters.minBedrooms) params.append('intBedrooms', filters.minBedrooms.toString());
+    if (filters.minBathrooms) params.append('intBathrooms', filters.minBathrooms.toString());
+    if (filters.minParkingSpaces) params.append('intGarage', filters.minParkingSpaces.toString());
+    if (filters.minArea) params.append('dcmMinArea', filters.minArea.toString());
+    if (filters.maxArea) params.append('dcmMaxArea', filters.maxArea.toString());
+
+    // Only show listed properties (using comma-separated instead of array notation)
+    params.append('chrStatus', 'LISTED');
+
+    // Default sorting by price
+    params.append('chrOrder', 'lesser_value');
+
+    const queryString = params.toString();
+    const endpoint = `/api/property/shared${queryString ? `?${queryString}` : ''}`;
+
+    console.log('Fetching properties with filters:', filters);
+    console.log('Query string:', queryString);
+
+    const response = await this.fetch<unknown>(endpoint);
+    return mapProperfyResponse(response as never);
   }
 
   async getPropertyById(id: string): Promise<Property> {
-    return this.fetch<Property>(`/properties/${id}`);
+    return this.fetch<Property>(`/api/property/property/${id}`);
   }
 
   async getPropertyByCode(code: string): Promise<Property> {
-    return this.fetch<Property>(`/properties/code/${code}`);
+    return this.fetch<Property>(`/api/property/property?filter[chrReference]=${code}`);
   }
 
   async getHighlightedProperties(limit: number = 6): Promise<Property[]> {
     const response = await this.fetch<PropertyResponse>(
-      `/properties?highlighted=true&limit=${limit}`
+      `/api/property/property?highlighted=true&limit=${limit}`
     );
     return response.data;
   }
 
   async getCities(): Promise<string[]> {
-    const response = await this.fetch<{ cities: string[] }>('/properties/cities');
+    const response = await this.fetch<{ cities: string[] }>('/api/property/cities');
     return response.cities;
   }
 
   async getNeighborhoods(city: string): Promise<string[]> {
     const response = await this.fetch<{ neighborhoods: string[] }>(
-      `/properties/neighborhoods?city=${encodeURIComponent(city)}`
+      `/api/property/neighborhoods?city=${encodeURIComponent(city)}`
     );
     return response.neighborhoods;
   }
