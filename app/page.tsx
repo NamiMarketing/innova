@@ -1,4 +1,4 @@
-import PropertyListing from '@/components/PropertyListing';
+import { PropertyListing } from '@/components/PropertyListing';
 import { getProperties } from '@/services/properfy';
 import { safeFetch } from '@/lib/safe-fetch';
 import styles from './page.module.css';

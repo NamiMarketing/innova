@@ -1,8 +1,8 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
-import PropertyFilters from '@/components/PropertyFilters';
-import PropertyCard from '@/components/PropertyCard';
+import { PropertyFilters } from '@/components/PropertyFilters';
+import { PropertyCard } from '@/components/PropertyCard';
 import { PropertyFilters as PropertyFiltersType, Property } from '@/types/property';
 import { getProperties } from '@/services/properfy';
 import styles from './PropertyListing.module.css';
@@ -12,7 +12,7 @@ interface PropertyListingProps {
   initialTotal: number;
 }
 
-export default function PropertyListing({ initialProperties, initialTotal }: PropertyListingProps) {
+export function PropertyListing({ initialProperties, initialTotal }: PropertyListingProps) {
   const [filters, setFilters] = useState<PropertyFiltersType>({});
   const [properties, setProperties] = useState<Property[]>(initialProperties);
   const [loading, setLoading] = useState(false);

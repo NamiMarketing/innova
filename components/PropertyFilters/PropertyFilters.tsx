@@ -9,7 +9,7 @@ interface PropertyFiltersProps {
   initialFilters?: PropertyFiltersType;
 }
 
-export default function PropertyFilters({ onFilterChange, initialFilters = {} }: PropertyFiltersProps) {
+export function PropertyFilters({ onFilterChange, initialFilters = {} }: PropertyFiltersProps) {
   const [filters, setFilters] = useState<PropertyFiltersType>(initialFilters);
   const [showAdvanced, setShowAdvanced] = useState(false);
 

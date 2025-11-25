@@ -1,1 +1,1 @@
-export { default } from './PropertyListing';
+export { PropertyListing } from './PropertyListing';

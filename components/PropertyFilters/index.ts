@@ -1,1 +1,1 @@
-export { default } from './PropertyFilters';
+export { PropertyFilters } from './PropertyFilters';

@@ -1,21 +1,6 @@
 import { PropertyFilters, PropertyResponse } from '@/types/property';
-import { env } from '@/lib/env';
-import { getToken } from './auth';
 import { mapProperfyResponse } from './properfy-mapper';
-import ky from 'ky';
-
-const api = ky.create({
-  prefixUrl: env.PROPERFY_API_URL,
-  hooks: {
-    beforeRequest: [
-      async (request) => {
-        const token = await getToken();
-        request.headers.set('Authorization', `Bearer ${token}`);
-        console.log('Properfy API Request:', request.url);
-      },
-    ],
-  },
-});
+import { api } from './api';
 
 export async function getProperties(filters: PropertyFilters = {}): Promise<PropertyResponse> {
   const params = new URLSearchParams();
@@ -69,11 +54,6 @@ export async function getProperties(filters: PropertyFilters = {}): Promise<Prop
   const queryString = params.toString();
   const endpoint = `api/property/shared${queryString ? `?${queryString}` : ''}`;
 
-  console.log('Fetching properties with filters:', filters);
-  console.log('Query string:', queryString);
-
   const response = await api(endpoint, { cache: 'no-store' }).json<unknown>();
   return mapProperfyResponse(response as never);
 }
-
-export { api as properfyApi };
