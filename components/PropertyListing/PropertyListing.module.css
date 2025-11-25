@@ -1,0 +1,223 @@
+.section {
+  max-width: 80rem;
+  margin: 0 auto;
+  padding: 3rem 1rem;
+}
+
+.errorBox {
+  background: #fef2f2;
+  border-left: 4px solid #ef4444;
+  color: #b91c1c;
+  padding: 1rem 1.5rem;
+  border-radius: 0 0.5rem 0.5rem 0;
+  margin-bottom: 2rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.errorContent {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+}
+
+.errorIcon {
+  width: 1.5rem;
+  height: 1.5rem;
+  flex-shrink: 0;
+  margin-top: 0.125rem;
+}
+
+.errorTitle {
+  font-weight: 700;
+  font-size: 1.125rem;
+}
+
+.errorMessage {
+  font-size: 0.875rem;
+  margin-top: 0.25rem;
+}
+
+.resultsHeader {
+  margin-bottom: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.resultsTitle {
+  font-size: 1.875rem;
+  font-weight: 700;
+  color: var(--gray-dark);
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.resultsIcon {
+  width: 2rem;
+  height: 2rem;
+  color: var(--primary);
+}
+
+.resultsIconEmpty {
+  width: 2rem;
+  height: 2rem;
+  color: #9ca3af;
+}
+
+.resultsSubtitle {
+  color: var(--gray-medium);
+  margin-top: 0.5rem;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+}
+
+@media (min-width: 768px) {
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.skeletonCard {
+  background: white;
+  border-radius: 0.75rem;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+.skeletonImage {
+  height: 16rem;
+  background: #e5e7eb;
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+.skeletonContent {
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.skeletonLine {
+  height: 1rem;
+  background: #e5e7eb;
+  border-radius: 0.25rem;
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+.skeletonLineSmall {
+  composes: skeletonLine;
+  width: 25%;
+}
+
+.skeletonLineMedium {
+  composes: skeletonLine;
+  height: 1.5rem;
+  width: 75%;
+}
+
+.skeletonLineFull {
+  composes: skeletonLine;
+}
+
+.skeletonFeatures {
+  display: flex;
+  gap: 1rem;
+}
+
+.skeletonFeature {
+  composes: skeletonLine;
+  width: 3rem;
+}
+
+.skeletonPrice {
+  composes: skeletonLine;
+  height: 2rem;
+  width: 50%;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+.emptyState {
+  background: linear-gradient(to bottom right, #f9fafb, white);
+  border-radius: 1rem;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+  padding: 4rem;
+  text-align: center;
+  border: 1px solid #f3f4f6;
+}
+
+.emptyStateInner {
+  max-width: 28rem;
+  margin: 0 auto;
+}
+
+.emptyIconWrapper {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 5rem;
+  height: 5rem;
+  border-radius: 50%;
+  background: #f3f4f6;
+  margin-bottom: 1.5rem;
+}
+
+.emptyIcon {
+  width: 2.5rem;
+  height: 2.5rem;
+  color: #9ca3af;
+}
+
+.emptyTitle {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--gray-dark);
+  margin-bottom: 0.75rem;
+}
+
+.emptyMessage {
+  color: var(--gray-medium);
+  font-size: 1.125rem;
+  margin-bottom: 1.5rem;
+}
+
+.clearButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: var(--primary);
+  color: white;
+  font-weight: 600;
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.5rem;
+  border: none;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.clearButton:hover {
+  background: var(--primary-dark);
+}
+
+.clearButtonIcon {
+  width: 1.25rem;
+  height: 1.25rem;
+}

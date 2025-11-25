@@ -102,7 +102,7 @@ O serviço de integração com a API Properfy está em `/services/properfy.ts`. 
 - `getCities()` - Listar cidades disponíveis
 - `getNeighborhoods(city)` - Listar bairros de uma cidade
 
-Para ativar a integração real, configure as variáveis de ambiente e ajuste a página `app/page.tsx` para usar `properfyService` ao invés de `mockProperties`.
+Para ativar a integração real, configure as variáveis de ambiente e ajuste a página `app/page.tsx` para usar `getProperties` ao invés de `mockProperties`.
 
 ## 📝 Próximos Passos
 
