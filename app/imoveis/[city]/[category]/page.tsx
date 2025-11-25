@@ -1,7 +1,6 @@
 import { Metadata } from 'next';
 import Link from 'next/link';
-import { SearchFilters } from '@/components/SearchFilters';
-import { SearchResults } from '@/components/SearchResults';
+import { PropertySearch } from '@/components/PropertySearch';
 import { getProperties } from '@/services/properfy';
 import { safeFetch } from '@/lib/safe-fetch';
 import { PropertyCategory } from '@/types/property';
@@ -81,8 +80,7 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
       category: categoryValue,
     })
   );
-  const properties = response?.data ?? [];
-  const total = response?.total ?? 0;
+  const initialData = response ?? { data: [], total: 0, page: 1, limit: 20, totalPages: 0 };
 
   return (
     <div className={styles.container}>
@@ -101,8 +99,7 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
           <p className={styles.subtitle}>Encontre {categoryName.toLowerCase()} a venda e para alugar em {cityName}</p>
         </div>
 
-        <SearchFilters initialFilters={{ city: cityName, category: categoryValue }} />
-        <SearchResults properties={properties} total={total} />
+        <PropertySearch initialData={initialData} initialFilters={{ city: cityName, category: categoryValue }} />
       </div>
     </div>
   );

@@ -1,7 +1,6 @@
 import { Metadata } from 'next';
 import Link from 'next/link';
-import { SearchFilters } from '@/components/SearchFilters';
-import { SearchResults } from '@/components/SearchResults';
+import { PropertySearch } from '@/components/PropertySearch';
 import { getProperties } from '@/services/properfy';
 import { safeFetch } from '@/lib/safe-fetch';
 import styles from '../page.module.css';
@@ -52,8 +51,7 @@ export default async function CityPage({ params }: CityPageProps) {
 
   // Fetch properties for this city
   const { data: response } = await safeFetch(getProperties({ city: cityName }));
-  const properties = response?.data ?? [];
-  const total = response?.total ?? 0;
+  const initialData = response ?? { data: [], total: 0, page: 1, limit: 20, totalPages: 0 };
 
   return (
     <div className={styles.container}>
@@ -70,8 +68,7 @@ export default async function CityPage({ params }: CityPageProps) {
           <p className={styles.subtitle}>Encontre apartamentos, casas e terrenos em {cityName}</p>
         </div>
 
-        <SearchFilters initialFilters={{ city: cityName }} />
-        <SearchResults properties={properties} total={total} />
+        <PropertySearch initialData={initialData} initialFilters={{ city: cityName }} />
       </div>
     </div>
   );
