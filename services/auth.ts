@@ -23,7 +23,6 @@ export async function login(username: string, password: string): Promise<string>
       vrcEmail: username,
       vrcPass: password
     }),
-    cache: 'no-store',
   });
 
   if (!response.ok) {

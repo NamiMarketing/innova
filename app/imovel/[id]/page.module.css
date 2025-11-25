@@ -1,0 +1,333 @@
+.container {
+  min-height: 100vh;
+  background: #f9fafb;
+}
+
+.content {
+  max-width: 80rem;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+}
+
+.breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+  color: var(--gray-medium);
+  margin-bottom: 1.5rem;
+}
+
+.breadcrumbLink {
+  color: var(--gray-medium);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.breadcrumbLink:hover {
+  color: var(--primary);
+}
+
+.breadcrumbSeparator {
+  color: #d1d5db;
+}
+
+.breadcrumbCurrent {
+  color: var(--gray-dark);
+  font-weight: 500;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+}
+
+@media (min-width: 1024px) {
+  .grid {
+    grid-template-columns: 2fr 1fr;
+  }
+}
+
+.mainColumn {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.sideColumn {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* Gallery */
+.gallery {
+  background: white;
+  border-radius: 0.75rem;
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.mainImage {
+  position: relative;
+  height: 24rem;
+  background: #e5e7eb;
+}
+
+@media (min-width: 768px) {
+  .mainImage {
+    height: 32rem;
+  }
+}
+
+.image {
+  object-fit: cover;
+}
+
+.badges {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  display: flex;
+  gap: 0.5rem;
+}
+
+.badge {
+  padding: 0.5rem 1rem;
+  border-radius: 9999px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  backdrop-filter: blur(4px);
+}
+
+.badgeType {
+  composes: badge;
+  background: rgba(30, 64, 175, 0.9);
+  color: white;
+}
+
+.badgeHighlight {
+  composes: badge;
+  background: rgba(245, 158, 11, 0.9);
+  color: white;
+}
+
+.thumbnails {
+  display: flex;
+  gap: 0.5rem;
+  padding: 1rem;
+  overflow-x: auto;
+}
+
+.thumbnail {
+  position: relative;
+  width: 5rem;
+  height: 5rem;
+  border-radius: 0.5rem;
+  overflow: hidden;
+  flex-shrink: 0;
+  cursor: pointer;
+  border: 2px solid transparent;
+  transition: border-color 0.2s ease;
+}
+
+.thumbnail:hover {
+  border-color: var(--primary);
+}
+
+.thumbnailActive {
+  border-color: var(--primary);
+}
+
+/* Details Card */
+.card {
+  background: white;
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--gray-dark);
+  margin-bottom: 0.5rem;
+}
+
+@media (min-width: 768px) {
+  .title {
+    font-size: 1.875rem;
+  }
+}
+
+.location {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--gray-medium);
+  margin-bottom: 1rem;
+}
+
+.locationIcon {
+  width: 1.25rem;
+  height: 1.25rem;
+  color: var(--primary);
+}
+
+.code {
+  font-size: 0.875rem;
+  color: var(--gray-medium);
+  margin-bottom: 1.5rem;
+}
+
+.features {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+  padding: 1.5rem 0;
+  border-top: 1px solid #f3f4f6;
+  border-bottom: 1px solid #f3f4f6;
+  margin-bottom: 1.5rem;
+}
+
+@media (min-width: 640px) {
+  .features {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.feature {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 0.5rem;
+}
+
+.featureIcon {
+  width: 2rem;
+  height: 2rem;
+  color: var(--primary);
+}
+
+.featureValue {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--gray-dark);
+}
+
+.featureLabel {
+  font-size: 0.75rem;
+  color: var(--gray-medium);
+}
+
+.sectionTitle {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--gray-dark);
+  margin-bottom: 1rem;
+}
+
+.description {
+  color: var(--gray-medium);
+  line-height: 1.75;
+  white-space: pre-line;
+}
+
+/* Price Card */
+.priceCard {
+  composes: card;
+  position: sticky;
+  top: 6rem;
+}
+
+.priceLabel {
+  font-size: 0.875rem;
+  color: var(--gray-medium);
+  margin-bottom: 0.25rem;
+}
+
+.price {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--primary);
+  margin-bottom: 0.5rem;
+}
+
+.priceExtra {
+  font-size: 0.875rem;
+  color: var(--gray-medium);
+  margin-bottom: 1.5rem;
+}
+
+.ctaButton {
+  width: 100%;
+  background: var(--primary);
+  color: white;
+  font-weight: 600;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  transition: background 0.2s ease;
+  text-decoration: none;
+  margin-bottom: 0.75rem;
+}
+
+.ctaButton:hover {
+  background: var(--primary-dark);
+}
+
+.ctaButtonSecondary {
+  composes: ctaButton;
+  background: #22c55e;
+}
+
+.ctaButtonSecondary:hover {
+  background: #16a34a;
+}
+
+.ctaIcon {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+/* Not Found */
+.notFound {
+  text-align: center;
+  padding: 4rem 2rem;
+}
+
+.notFoundTitle {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--gray-dark);
+  margin-bottom: 0.5rem;
+}
+
+.notFoundMessage {
+  color: var(--gray-medium);
+  margin-bottom: 1.5rem;
+}
+
+.backButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: var(--primary);
+  color: white;
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.5rem;
+  text-decoration: none;
+  font-weight: 600;
+  transition: background 0.2s ease;
+}
+
+.backButton:hover {
+  background: var(--primary-dark);
+}

@@ -6,6 +6,9 @@ import { getProperties } from '@/services/properfy';
 import { safeFetch } from '@/lib/safe-fetch';
 import styles from '../page.module.css';
 
+// Revalidate every hour (ISR)
+export const revalidate = 3600;
+
 // Define the cities to pre-render at build time
 const STATIC_CITIES = [
   { slug: 'curitiba', name: 'Curitiba' },

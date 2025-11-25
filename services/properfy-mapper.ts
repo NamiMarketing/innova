@@ -2,6 +2,7 @@ import { Property, PropertyType, PropertyCategory, PropertyStatus } from '@/type
 
 interface ProperfyProperty {
   id: number;
+  hash: string;
   chrReference: string;
   chrTransactionType: string;
   chrType: string;
@@ -82,7 +83,7 @@ export function mapProperfyProperty(properfy: ProperfyProperty): Property {
   const price = type === 'sale' ? properfy.dcmSale : properfy.dcmRentRawValue;
 
   return {
-    id: properfy.id.toString(),
+    id: properfy.hash,
     title: properfy.vrcTitle || `${mapPropertyCategory(properfy.chrType)} - ${properfy.chrAddressDistrict}`,
     description: properfy.txtDescription || '',
     type,

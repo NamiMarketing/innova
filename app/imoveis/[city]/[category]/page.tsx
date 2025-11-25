@@ -7,6 +7,9 @@ import { safeFetch } from '@/lib/safe-fetch';
 import { PropertyCategory } from '@/types/property';
 import styles from '../../page.module.css';
 
+// Revalidate every hour (ISR)
+export const revalidate = 3600;
+
 const STATIC_CITIES = [
   { slug: 'curitiba', name: 'Curitiba' },
   { slug: 'sao-jose-dos-pinhais', name: 'Sao Jose dos Pinhais' },

@@ -1,5 +1,5 @@
-import { PropertyFilters, PropertyResponse } from '@/types/property';
-import { mapProperfyResponse } from './properfy-mapper';
+import { Property, PropertyFilters, PropertyResponse } from '@/types/property';
+import { mapProperfyResponse, mapProperfyProperty } from './properfy-mapper';
 import { api } from './api';
 
 export async function getProperties(filters: PropertyFilters = {}): Promise<PropertyResponse> {
@@ -54,6 +54,17 @@ export async function getProperties(filters: PropertyFilters = {}): Promise<Prop
   const queryString = params.toString();
   const endpoint = `api/property/shared${queryString ? `?${queryString}` : ''}`;
 
-  const response = await api(endpoint, { cache: 'no-store' }).json<unknown>();
+  const response = await api(endpoint).json<unknown>();
   return mapProperfyResponse(response as never);
+}
+
+export async function getPropertyById(id: string): Promise<Property | null> {
+  try {
+    const endpoint = `api/property/property/${id}`;
+    const response = await api(endpoint).json<unknown>();
+    return mapProperfyProperty(response as never);
+  } catch (error) {
+    console.error('Error fetching property:', error);
+    return null;
+  }
 }
