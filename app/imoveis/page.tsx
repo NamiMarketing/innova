@@ -1,5 +1,4 @@
 import { Metadata } from 'next';
-import Link from 'next/link';
 import { PropertySearch } from '@/components/PropertySearch';
 import { getProperties } from '@/services/properfy';
 import { safeFetch } from '@/lib/safe-fetch';
@@ -42,16 +41,6 @@ export default async function ImoveisPage({
   return (
     <div className={styles.container}>
       <div className={styles.content}>
-        <div className={styles.header}>
-          <nav className={styles.breadcrumb}>
-            <Link href="/" className={styles.breadcrumbLink}>Home</Link>
-            <span className={styles.breadcrumbSeparator}>/</span>
-            <span className={styles.breadcrumbCurrent}>Imoveis</span>
-          </nav>
-          <h1 className={styles.title}>Imoveis a Venda e Aluguel</h1>
-          <p className={styles.subtitle}>Encontre o imovel perfeito para voce</p>
-        </div>
-
         <PropertySearch initialData={initialData} initialFilters={filters} />
       </div>
     </div>
