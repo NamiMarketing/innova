@@ -1,13 +1,27 @@
 'use client';
 
 import Image from 'next/image';
-import { useState, useMemo, useEffect } from 'react';
+import { useState, useMemo, FormEvent } from 'react';
 import { useRouter } from 'next/navigation';
 import { PropertyType, PropertyCategory } from '@/types/property';
 import styles from './HomeSearch.module.css';
 import cityIcon from '@/img/city-icon.svg';
 import neighborhoodIcon from '@/img/bairro-icon.svg';
 import houseIcon from '@/img/casa-icon.svg';
+import { Selector, SelectorOption } from '../ui';
+
+const TYPE_LABELS: Record<string, string> = {
+  apartment: 'Apartamento',
+  house: 'Casa',
+  commercial: 'Comercial',
+  land: 'Terreno',
+  farm: 'Chácara/Fazenda',
+};
+
+const getTypeLabel = (type: string) => TYPE_LABELS[type] || type;
+
+const toOptions = (items: string[]): SelectorOption[] =>
+  items.map((item) => ({ value: item, label: item }));
 
 interface HomeSearchProps {
   cities: string[];
@@ -18,11 +32,11 @@ interface HomeSearchProps {
 export function HomeSearch({ cities = [], neighborhoodsByCity = {}, types = [] }: HomeSearchProps) {
   const router = useRouter();
   const [type, setType] = useState<PropertyType | ''>('rent');
-  const [category, setCategory] = useState<PropertyCategory | ''>('');
+  const [categories, setCategories] = useState<PropertyCategory[]>([]);
   const [city, setCity] = useState('');
-  const [neighborhood, setNeighborhood] = useState('');
+  const [neighborhoods, setNeighborhoods] = useState<string[]>([]);
   const [code, setCode] = useState('');
-
+  
   // Derive available neighborhoods based on selected city
   const availableNeighborhoods = useMemo(() => {
     if (city && neighborhoodsByCity[city]) {
@@ -36,37 +50,41 @@ export function HomeSearch({ cities = [], neighborhoodsByCity = {}, types = [] }
     return Array.from(allNeighborhoods).sort();
   }, [city, neighborhoodsByCity]);
 
-  // Reset neighborhood when city changes if the current neighborhood is not in the new city
-  useEffect(() => {
-    if (city && neighborhood && neighborhoodsByCity[city] && !neighborhoodsByCity[city].includes(neighborhood)) {
-      setNeighborhood('');
+  const handleCityChange = (newCity: string) => {
+    setCity(newCity);
+    // Reset neighborhoods that are not valid for the new city
+    if (newCity && neighborhoods.length > 0 && neighborhoodsByCity[newCity]) {
+      const validNeighborhoods = neighborhoods.filter(n => neighborhoodsByCity[newCity].includes(n));
+      if (validNeighborhoods.length !== neighborhoods.length) {
+        setNeighborhoods(validNeighborhoods);
+      }
     }
-  }, [city, neighborhood, neighborhoodsByCity]);
+  };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
     
     const params = new URLSearchParams();
     if (type) params.set('type', type);
-    if (category) params.set('category', category);
+    if (categories.length > 0) params.set('category', categories.join(','));
     if (city) params.set('city', city);
-    if (neighborhood) params.set('neighborhood', neighborhood);
+    if (neighborhoods.length > 0) params.set('neighborhood', neighborhoods.join(','));
     if (code) params.set('code', code);
 
     router.push(`/imoveis?${params.toString()}`);
   };
 
-  // Map property types to display names
-  const getTypeLabel = (type: string) => {
-    const labels: Record<string, string> = {
-      'apartment': 'Apartamento',
-      'house': 'Casa',
-      'commercial': 'Comercial',
-      'land': 'Terreno',
-      'farm': 'Chácara/Fazenda',
-    };
-    return labels[type] || type;
-  };
+  const categoryOptions = useMemo(
+    () => types.map((t) => ({ value: t, label: getTypeLabel(t) })),
+    [types]
+  );
+
+  const cityOptions = useMemo(() => toOptions(cities), [cities]);
+
+  const neighborhoodOptions = useMemo(
+    () => toOptions(availableNeighborhoods),
+    [availableNeighborhoods]
+  );
 
   return (
     <div className={styles.container}>
@@ -89,59 +107,39 @@ export function HomeSearch({ cities = [], neighborhoodsByCity = {}, types = [] }
       </div>
 
       <form onSubmit={handleSubmit} className={styles.form}>
-        <div className={styles.field}>
-          <label htmlFor="category" className={styles.label}>
-            <Image src={houseIcon} alt="ícone de casa" width={12} height={12} />
-            Tipo de Imóvel
-          </label>
-          <select
-            value={category}
-            onChange={(e) => setCategory(e.target.value as PropertyCategory)}
-            className={styles.select}
-            id="category"
-          >
-            <option value="">Todos</option>
-            {types.map((t) => (
-              <option key={t} value={t}>{getTypeLabel(t)}</option>
-            ))}
-          </select>
-        </div>
-        
-        <div className={styles.field}>
-          <label htmlFor="city" className={styles.label}>
-            <Image src={cityIcon} alt="ícone de cidade" width={12} height={12} />
-            Cidade
-          </label>
-          <select
-            value={city}
-            onChange={(e) => setCity(e.target.value)}
-            className={styles.select}
-            id="city"
-          >
-            <option value="">Busque por cidade</option>
-            {cities.map((c) => (
-              <option key={c} value={c}>{c}</option>
-            ))}
-          </select>
-        </div>
+        <Selector
+          multiple
+          options={categoryOptions}
+          value={categories}
+          onChange={(value) => setCategories(value as PropertyCategory[])}
+          label="Tipo de Imóvel"
+          icon={<Image src={houseIcon} alt="ícone de casa" width={12} height={12} />}
+          placeholder="Todos"
+          id="category"
+        />
 
-        <div className={styles.field}>
-          <label htmlFor="neighborhood" className={styles.label}>
-            <Image src={neighborhoodIcon} alt="ícone de bairro" width={12} height={12} />
-            Bairro
-          </label>
-          <select
-            value={neighborhood}
-            onChange={(e) => setNeighborhood(e.target.value)}
-            className={styles.select}
-            id="neighborhood"
-          >
-            <option value="">Busque por bairro</option>
-            {availableNeighborhoods.map((n) => (
-              <option key={n} value={n}>{n}</option>
-            ))}
-          </select>
-        </div>
+        <Selector
+          searchable
+          options={cityOptions}
+          value={city}
+          onChange={handleCityChange}
+          label="Cidade"
+          icon={<Image src={cityIcon} alt="ícone de cidade" width={12} height={12} />}
+          placeholder="Busque por cidade"
+          id="city"
+        />
+
+        <Selector
+          multiple
+          searchable
+          options={neighborhoodOptions}
+          value={neighborhoods}
+          onChange={setNeighborhoods}
+          label="Bairro"
+          icon={<Image src={neighborhoodIcon} alt="ícone de bairro" width={12} height={12} />}
+          placeholder="Busque por bairro"
+          id="neighborhood"
+        />
 
         <div className={styles.field}>
           <label htmlFor="code" className={styles.label}>Código do Imóvel</label>

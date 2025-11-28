@@ -1,0 +1,180 @@
+.container {
+  position: relative;
+  width: 100%;
+  outline: none;
+  border: 1px solid var(--gray-medium);
+  border-radius: 6px;
+  padding: 10px 16px;
+  transition: border-color 0.2s;
+}
+
+.container:focus-within,
+.container:focus-visible {
+  outline: none;
+  border-color: var(--orange);
+}
+
+.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.trigger {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  cursor: pointer;
+  gap: 8px;
+}
+
+.triggerOpen {
+  /* Can add styles for when dropdown is open */
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 0;
+}
+
+.labelRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.label {
+  font-size: 16px;
+  font-weight: 400;
+  color: var(--foreground);
+}
+
+.value {
+  font-size: 1rem;
+  color: var(--foreground);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding: 4px 0;
+}
+
+.placeholder {
+  color: var(--gray-medium);
+}
+
+.arrow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.dropdown {
+  background: white;
+  border: 1px solid var(--gray-medium);
+  border-radius: 6px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  z-index: 9999;
+  overflow: hidden;
+}
+
+.searchContainer {
+  padding: 8px;
+  border-bottom: 1px solid var(--gray-light);
+}
+
+.searchInput {
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid var(--gray-medium);
+  border-radius: 4px;
+  font-size: 0.875rem;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.searchInput:focus {
+  border-color: var(--orange);
+}
+
+.searchInput::placeholder {
+  color: var(--gray-medium);
+}
+
+.optionsList {
+  list-style: none;
+  margin: 0;
+  padding: 4px 0;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.option {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  cursor: pointer;
+  transition: background-color 0.15s;
+}
+
+.option:hover {
+  background: var(--gray-light);
+}
+
+.optionSelected {
+  background: rgba(239, 134, 52, 0.1);
+  color: var(--orange);
+}
+
+.optionSelected:hover {
+  background: rgba(239, 134, 52, 0.15);
+}
+
+.optionHighlighted {
+  background: var(--gray-light);
+}
+
+.optionLabel {
+  flex: 1;
+  font-size: 0.9375rem;
+}
+
+.checkbox {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  border: 2px solid var(--gray-medium);
+  border-radius: 4px;
+  transition: background-color 0.15s, border-color 0.15s;
+  flex-shrink: 0;
+}
+
+.checkboxChecked {
+  background: var(--orange);
+  border-color: var(--orange);
+}
+
+.checkboxChecked svg {
+  width: 12px;
+  height: 12px;
+  color: white;
+}
+
+.noOptions {
+  padding: 12px 16px;
+  color: var(--gray-medium);
+  font-size: 0.875rem;
+  text-align: center;
+}

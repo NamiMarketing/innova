@@ -9,6 +9,7 @@
   left: 100px;
   transform: translateY(-50%);
   z-index: 10;
+  overflow: visible;
   h2{
     font-size: 30px;
     line-height: 100%;
@@ -45,6 +46,7 @@
   display: flex;
   flex-direction: column;
   gap: 1rem;
+  overflow: visible;
 }
 
 .field {
