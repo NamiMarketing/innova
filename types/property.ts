@@ -85,6 +85,7 @@ export interface PropertyFilters {
   search?: string;
   page?: number;
   limit?: number;
+  code?: string;
 }
 
 export interface PropertyResponse {

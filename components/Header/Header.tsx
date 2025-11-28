@@ -1,8 +1,11 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
 import { useState } from 'react';
 import styles from './Header.module.css';
+import logoNav from '@/img/logo-nav.png';
+import login from '@/img/login.svg';
 
 export function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -13,17 +16,31 @@ export function Header() {
         <div className={styles.inner}>
           {/* Logo */}
           <Link href="/" className={styles.logo}>
-            <div className={styles.logoTitle}>INNOVA</div>
-            <div className={styles.logoSubtitle}>Imobiliaria</div>
+            <Image
+              src={logoNav}
+              alt="Logo do Innova Imobiliária Digital"
+              width={120}
+              height={50}
+            />
           </Link>
 
           {/* Menu Desktop */}
           <nav className={styles.desktopNav}>
-            <Link href="/" className={styles.navLink}>Home</Link>
-            <Link href="/imoveis" className={styles.navLink}>Imoveis</Link>
-            <Link href="/sobre" className={styles.navLink}>Sobre</Link>
-            <Link href="/contato" className={styles.navLink}>Contato</Link>
-            <Link href="/anunciar" className={styles.ctaButton}>Anunciar Imovel</Link>
+            <Link href="/" className={styles.navLink}>Início</Link>
+            <Link href="/alugar" className={styles.navLink}>Alugar</Link>
+            <Link href="/comprar" className={styles.navLink}>Comprar</Link>
+            <Link href="/anunciar" className={styles.navLink}>Anunciar</Link>
+            <Link href="/trabalhe-conosco" className={styles.navLink}>Trabalhe Conosco</Link>
+            {/* <Link href="/blog" className={styles.navLink}>Blog</Link> */}
+            <Link href="/area-do-cliente" className={styles.login}>
+              <Image
+                src={login}
+                alt="Login"
+                width={13}
+                height={14}
+              />
+              Entrar
+            </Link>
           </nav>
 
           {/* Botao Mobile Menu */}

@@ -2,7 +2,8 @@
 
 :root {
   --background: #ffffff;
-  --foreground: #1f2937;
+  --background-orange: #ef8634;
+  --foreground: #000000;
 
   /* Innova Colors */
   --primary: #1e40af;
@@ -11,27 +12,19 @@
   --secondary: #0891b2;
   --accent: #f59e0b;
   --gray-light: #f3f4f6;
-  --gray-medium: #6b7280;
+  --gray-medium: #00000080;
   --gray-dark: #374151;
+  --orange: #ef8634;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --color-primary: var(--primary);
-  --color-primary-dark: var(--primary-dark);
-  --color-primary-light: var(--primary-light);
-  --color-secondary: var(--secondary);
-  --color-accent: var(--accent);
-  --color-gray-light: var(--gray-light);
-  --color-gray-medium: var(--gray-medium);
-  --color-gray-dark: var(--gray-dark);
+@theme {
+  --font-sans: var(--font-ubuntu);
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  font-family: var(--font-ubuntu), sans-serif;
 }
 
 * {

@@ -68,3 +68,40 @@ export async function getPropertyById(id: string): Promise<Property | null> {
     return null;
   }
 }
+
+export async function getFilterOptions(): Promise<{ cities: string[]; neighborhoodsByCity: Record<string, string[]>; types: string[] }> {
+  try {
+    // Fetch a batch of properties to extract unique values
+    // Using a larger limit to get a good representation
+    const { data } = await getProperties({ limit: 100 });
+    
+    const cities = Array.from(new Set(data.map(p => p.address.city).filter(Boolean))).sort();
+    const types = Array.from(new Set(data.map(p => p.category).filter(Boolean))).sort();
+    
+    const neighborhoodsByCity: Record<string, string[]> = {};
+    
+    data.forEach(property => {
+      const city = property.address.city;
+      const neighborhood = property.address.neighborhood;
+      
+      if (city && neighborhood) {
+        if (!neighborhoodsByCity[city]) {
+          neighborhoodsByCity[city] = [];
+        }
+        if (!neighborhoodsByCity[city].includes(neighborhood)) {
+          neighborhoodsByCity[city].push(neighborhood);
+        }
+      }
+    });
+
+    // Sort neighborhoods for each city
+    Object.keys(neighborhoodsByCity).forEach(city => {
+      neighborhoodsByCity[city].sort();
+    });
+    
+    return { cities, neighborhoodsByCity, types };
+  } catch (error) {
+    console.error('Error fetching filter options:', error);
+    return { cities: [], neighborhoodsByCity: {}, types: [] };
+  }
+}

@@ -1,0 +1,113 @@
+.container {
+  background: white;
+  padding: 33px 30px;
+  border-radius: 20px;
+  max-width: 400px;
+  margin: 0 auto;
+  position: absolute;
+  top: 50%;
+  left: 100px;
+  transform: translateY(-50%);
+  z-index: 10;
+  h2{
+    font-size: 30px;
+    line-height: 100%;
+    font-weight: 500;
+    color: var(--orange);
+    text-align: left;
+    margin-bottom: 30px;
+  }
+}
+.tabs {
+  display: flex;
+  gap: 24px;
+  margin-bottom: 20px;
+  border-bottom: 1px solid var(--gray-medium);
+  padding-bottom: 10px;
+}
+
+.tab {
+  background: none;
+  border: none;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.tabActive {
+  color: var(--orange);
+  border-bottom: 3px solid var(--orange);
+  padding-bottom: 10px;
+  margin-bottom: -12px;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  border: 1px solid var(--gray-medium);
+  border-radius: 6px;
+  padding: 10px 16px;
+}
+
+.field:focus-within {
+  border-color: var(--orange);
+}
+
+.label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 16px;
+  font-weight: 400;
+}
+
+.select, .input {
+  width: 100%;
+  padding: 4px 0;
+  border: none;
+  font-size: 1rem;
+  color: var(--gray-medium);
+  background-color: transparent;
+  outline: none;
+  box-shadow: none;
+}
+
+.select:focus, .input:focus {
+  outline: none;
+  border-color: transparent;
+  box-shadow: none;
+}
+.submitButton {
+  background: var(--orange);
+  color: white;
+  border: none;
+  padding: 12px 1.5rem;
+  border-radius: 6px;
+  font-weight: 400;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  height: 40px;
+}
+
+.submitButton:hover {
+  background: var(--primary-dark);
+}
+
+.buttonIcon {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+.input::placeholder {
+  color: var(--gray-medium);
+}

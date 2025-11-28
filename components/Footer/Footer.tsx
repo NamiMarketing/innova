@@ -1,74 +1,98 @@
 import Link from 'next/link';
 import styles from './Footer.module.css';
+import Image from 'next/image';
+import instagram from '@/img/instagram.svg';
+import facebook from '@/img/facebook.svg';
+import linkedin from '@/img/linkedin.svg';
+import pequeno from '@/img/pequeno-principe.png';
+import alcance from '@/img/alcance.png';
+import logoFooter from '@/img/logo-footer.png';
 
 export function Footer() {
-  const currentYear = new Date().getFullYear();
 
   return (
     <footer className={styles.footer}>
       <div className={styles.container}>
         <div className={styles.grid}>
-          {/* Sobre */}
-          <div>
-            <h3 className={styles.title}>INNOVA</h3>
-            <p className={styles.description}>
-              Sua imobiliaria de confianca. Facilitamos a busca pelo seu imovel ideal com
-              tecnologia e atendimento personalizado.
-            </p>
-          </div>
+
+          <Image
+            src={logoFooter}
+            alt="Logo do Innova Imobiliária Digital"
+            width={184}
+            height={272}
+            className={styles.logoFooter}
+          />
 
           {/* Links Rapidos */}
           <div>
-            <h4 className={styles.sectionTitle}>Links Rapidos</h4>
             <ul className={styles.linkList}>
-              <li><Link href="/" className={styles.link}>Home</Link></li>
-              <li><Link href="/imoveis" className={styles.link}>Imoveis</Link></li>
-              <li><Link href="/sobre" className={styles.link}>Sobre Nos</Link></li>
-              <li><Link href="/contato" className={styles.link}>Contato</Link></li>
+              <li><Link href="/" className={styles.link}>Início</Link></li>
+              <li><Link href="/alugar" className={styles.link}>Alugar</Link></li>
+              <li><Link href="/comprar" className={styles.link}>Comprar</Link></li>
+              <li><Link href="/anunciar" className={styles.link}>Anunciar</Link></li>
+              <li><Link href="/trabalhe-conosco" className={styles.link}>Trabalhe Conosco</Link></li>
+              <li><Link href="/area-do-cliente" className={styles.link}>Área do cliente</Link></li>
             </ul>
           </div>
 
-          {/* Servicos */}
+          {/* Info */}
           <div>
-            <h4 className={styles.sectionTitle}>Servicos</h4>
-            <ul className={styles.linkList}>
-              <li><Link href="/imoveis?type=sale" className={styles.link}>Comprar Imovel</Link></li>
-              <li><Link href="/imoveis?type=rent" className={styles.link}>Alugar Imovel</Link></li>
-              <li><Link href="/anunciar" className={styles.link}>Anunciar Imovel</Link></li>
-              <li><Link href="/avaliar" className={styles.link}>Avaliar Imovel</Link></li>
-            </ul>
+            <div className={styles.linkList}>
+              <h5>Innova Imobiliária Digital <br/> Creci J06584</h5>
+              <p>R. Anne Frank, 2132 <br/>Hauer - Curitiba/PR</p>
+              <p>Locação <br/> (41) 98701-0407</p>
+              <p>Vendas <br/> (41) 98701-0407</p>
+            </div>
           </div>
 
           {/* Contato */}
-          <div>
-            <h4 className={styles.sectionTitle}>Contato</h4>
-            <ul className={styles.contactList}>
-              <li className={styles.contactItem}>
-                <svg className={styles.contactIcon} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                </svg>
-                <span>Curitiba, PR</span>
-              </li>
-              <li className={styles.contactItem}>
-                <svg className={styles.contactIcon} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                </svg>
-                <span>contato@innovaimobiliaria.com.br</span>
-              </li>
-              <li className={styles.contactItem}>
-                <svg className={styles.contactIcon} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
-                </svg>
-                <span>(41) 3333-3333</span>
-              </li>
-            </ul>
+          <div className={styles.right}>
+            <div className={styles.icons}>
+              <Link href="https://www.instagram.com/innovaimobiliaria/" target="_blank">
+                <Image
+                  src={instagram}
+                  alt="Instagram"
+                  width={30}
+                  height={30}
+                />
+              </Link>
+              <Link href="https://www.facebook.com/innovaimobiliariadigital/" target="_blank">
+                <Image
+                  src={facebook}
+                  alt="Facebook"
+                  width={30}
+                  height={30}
+                />
+              </Link>
+              <Link href="https://www.linkedin.com/company/innovaimobiliaria/" target="_blank">
+                <Image
+                  src={linkedin}
+                  alt="LinkedIn"
+                  width={30}
+                  height={30}
+                />
+              </Link>
+            </div>
+            <div className={styles.icons}>
+              <Image
+                src={pequeno}
+                alt="Logo do Pequeno Principe"
+                width={80}
+                height={80}
+              />
+              <Image
+                src={alcance}
+                alt="Logo do Alcance"
+                width={140}
+                height={50}
+              />
+            </div>
           </div>
         </div>
 
         {/* Copyright */}
         <div className={styles.copyright}>
-          <p>&copy; {currentYear} Innova Imobiliaria. Todos os direitos reservados.</p>
+          <Link href="https://namiconsultoria.com.br/" target="_blank">Desenvolvido por Nami Consultoria</Link>
         </div>
       </div>
     </footer>
