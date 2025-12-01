@@ -1,9 +1,14 @@
 import { HomeSearch } from '@/components/HomeSearch';
 import Image from 'next/image';
 import styles from './page.module.css';
-import headerImg from '@/img/header.png';
+import headerImg from '@/img/home/header.png';
 import { getFilterOptions } from '@/services/properfy';
 import { safeFetch } from '@/lib/safe-fetch';
+import Link from 'next/link';
+import cardImg from '@/img/home/card-image.png';
+import logoCard from '@/img/home/logo-card.png';
+import { HomeSwiper } from '@/components/HomeSwiper';
+import itemImg from '@/img/home/item.png';
 
 export default async function Home() {
   const { data: options } = await safeFetch(getFilterOptions());
@@ -28,45 +33,46 @@ export default async function Home() {
       </section>
 
       {/* CTA Section */}
-      <section className={styles.cta}>
-        {/* Background Pattern */}
-        <div className={styles.ctaPattern}>
+      <section className={styles.card}>
+        <div className={styles.cardContent}>
+          <div className={styles.leftCard}>
+            <h2>Tecnologia, praticidade e confiança — tudo no mesmo lugar para facilitar a sua jornada imobiliária.</h2>
+            <p>Simplificamos a experiência de alugar, vender e comprar imóveis, combinando atendimento humano com a agilidade do digital.</p>
+            <Link href="/contato" className={styles.cardButton}>Entre em contato</Link>
+          </div>
+          <Image src={cardImg} alt="Imagem de um casal segurando uma chave" />
+          <Image className={styles.logoCard} src={logoCard} alt="Logo da Innova" />
         </div>
+      </section>
 
-        <div className={styles.ctaContent}>
-          <div className={styles.ctaInner}>
-            <div className={styles.badge}>
-              <svg className={styles.badgeIcon} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
-              </svg>
-              Atendimento Especializado
-            </div>
-
-            <h2 className={styles.ctaTitle}>
-              Nao Encontrou o que Procura?
-            </h2>
-
-            <p className={styles.ctaSubtitle}>
-              Nossa equipe esta pronta para ajuda-lo a encontrar o imovel perfeito.
-              Entre em contato conosco e transforme seu sonho em realidade!
-            </p>
-
-            <div className={styles.ctaButtons}>
-              <a href="/contato" className={styles.ctaButtonPrimary}>
-                <svg className={styles.buttonIcon} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
-                </svg>
-                Falar com Corretor
-              </a>
-              <a href="/anunciar" className={styles.ctaButtonSecondary}>
-                <svg className={styles.buttonIcon} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-                </svg>
-                Anunciar Meu Imovel
-              </a>
-            </div>
+      <section className={styles.descubra}>
+        <h2>Descubra o imóvel ideal para o que você precisa</h2>
+        <div className={styles.descubraItens}>
+          <div className={styles.descubraItem}>
+            <Image src={itemImg} alt="ícone de casa" />
+            <p>Casas</p>
+          </div>
+          <div className={styles.descubraItem}>
+            <Image src={itemImg} alt="ícone de apartamentos" />
+            <p>Apartamentos</p>
+          </div>
+          <div className={styles.descubraItem}>
+            <Image src={itemImg} alt="ícone de comercial" />
+            <p>Comercial</p>
+          </div>
+          <div className={styles.descubraItem}>
+            <Image src={itemImg} alt="ícone de terrenos" />
+            <p>Terrenos</p>
+          </div>
+          <div className={styles.descubraItem}>
+            <Image src={itemImg} alt="ícone de planta de imóvel" />
+            <p>Na planta</p>
           </div>
         </div>
+      </section>
+
+      <section className={styles.destaque}>
+        <HomeSwiper />
       </section>
     </div>
   );

@@ -5,9 +5,9 @@ import { useState, useMemo, FormEvent } from 'react';
 import { useRouter } from 'next/navigation';
 import { PropertyType, PropertyCategory } from '@/types/property';
 import styles from './HomeSearch.module.css';
-import cityIcon from '@/img/city-icon.svg';
-import neighborhoodIcon from '@/img/bairro-icon.svg';
-import houseIcon from '@/img/casa-icon.svg';
+import cityIcon from '@/img/icons/city-icon.svg';
+import neighborhoodIcon from '@/img/icons/bairro-icon.svg';
+import houseIcon from '@/img/icons/casa-icon.svg';
 import { Selector, SelectorOption } from '../ui';
 
 const TYPE_LABELS: Record<string, string> = {

@@ -4,7 +4,7 @@ import { useState, useRef, useEffect, useCallback, KeyboardEvent, ReactNode, use
 import { createPortal } from 'react-dom';
 import Image from 'next/image';
 import styles from './Selector.module.css';
-import selectorIcon from '@/img/selector-icon.svg';
+import selectorIcon from '@/img/icons/selector-icon.svg';
 
 export interface SelectorOption {
   value: string;

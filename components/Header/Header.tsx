@@ -5,7 +5,7 @@ import Image from 'next/image';
 import { useState } from 'react';
 import styles from './Header.module.css';
 import logoNav from '@/img/logo-nav.png';
-import login from '@/img/login.svg';
+import login from '@/img/icons/login.svg';
 
 export function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -27,8 +27,8 @@ export function Header() {
           {/* Menu Desktop */}
           <nav className={styles.desktopNav}>
             <Link href="/" className={styles.navLink}>Início</Link>
-            <Link href="/alugar" className={styles.navLink}>Alugar</Link>
-            <Link href="/comprar" className={styles.navLink}>Comprar</Link>
+            <Link href="/imoveis?type=rent" className={styles.navLink}>Alugar</Link>
+            <Link href="/imoveis?type=sale" className={styles.navLink}>Comprar</Link>
             <Link href="/anunciar" className={styles.navLink}>Anunciar</Link>
             <Link href="/trabalhe-conosco" className={styles.navLink}>Trabalhe Conosco</Link>
             {/* <Link href="/blog" className={styles.navLink}>Blog</Link> */}

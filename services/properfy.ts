@@ -15,7 +15,7 @@ export async function getProperties(filters: PropertyFilters = {}): Promise<Prop
     params.append('chrTransactionType', transactionType);
   }
 
-  // Property type/category
+  // Property type/category - send multiple params for OR logic
   if (filters.category) {
     const categoryMap: Record<string, string> = {
       'house': 'RESIDENTIAL_HOUSE',
@@ -24,10 +24,14 @@ export async function getProperties(filters: PropertyFilters = {}): Promise<Prop
       'land': 'LAND',
       'farm': 'FARM',
     };
-    const properfyType = categoryMap[filters.category];
-    if (properfyType) {
-      params.append('chrType', properfyType);
-    }
+    
+    const categories = (filters.category as string).split(',');
+    categories.forEach(cat => {
+      const properfyType = categoryMap[cat.trim()];
+      if (properfyType) {
+        params.append('chrType[]', properfyType);
+      }
+    });
   }
 
   // Price filters
@@ -36,7 +40,15 @@ export async function getProperties(filters: PropertyFilters = {}): Promise<Prop
 
   // Location filters
   if (filters.city) params.append('chrAddressCity', filters.city);
-  if (filters.neighborhood) params.append('chrAddressDistrict', filters.neighborhood);
+  if (filters.neighborhood) {
+    const neighborhoods = filters.neighborhood.split(',');
+    neighborhoods.forEach(n => {
+      const cleanedNeighborhood = n.trim();
+      if (cleanedNeighborhood) {
+        params.append('chrAddressDistrict[]', cleanedNeighborhood);
+      }
+    });
+  }
 
   // Feature filters
   if (filters.minBedrooms) params.append('intBedrooms', filters.minBedrooms.toString());
