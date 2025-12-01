@@ -7,9 +7,9 @@ import { Property, PropertyFilters, PropertyResponse, PropertyType, PropertyCate
 import { PropertyCard } from '@/components/PropertyCard';
 import { Selector, SelectorOption } from '@/components/ui';
 import styles from './PropertySearch.module.css';
-import houseIcon from '@/img/casa-icon.svg';
-import cityIcon from '@/img/city-icon.svg';
-import neighborhoodIcon from '@/img/bairro-icon.svg';
+import houseIcon from '@/img/icons/casa-icon.svg';
+import cityIcon from '@/img/icons/city-icon.svg';
+import neighborhoodIcon from '@/img/icons/bairro-icon.svg';
 
 interface PropertySearchProps {
   initialData: PropertyResponse;
