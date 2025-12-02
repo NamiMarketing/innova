@@ -27,8 +27,8 @@ export function Footer() {
           <div>
             <ul className={styles.linkList}>
               <li><Link href="/" className={styles.link}>Início</Link></li>
-              <li><Link href="/alugar" className={styles.link}>Alugar</Link></li>
-              <li><Link href="/comprar" className={styles.link}>Comprar</Link></li>
+              <li><Link href="/imoveis?type=rent" className={styles.link}>Alugar</Link></li>
+              <li><Link href="/imoveis?type=sale" className={styles.link}>Comprar</Link></li>
               <li><Link href="/anunciar" className={styles.link}>Anunciar</Link></li>
               <li><Link href="/trabalhe-conosco" className={styles.link}>Trabalhe Conosco</Link></li>
               <li><Link href="/area-do-cliente" className={styles.link}>Área do cliente</Link></li>

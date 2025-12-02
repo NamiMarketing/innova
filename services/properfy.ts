@@ -117,3 +117,33 @@ export async function getFilterOptions(): Promise<{ cities: string[]; neighborho
     return { cities: [], neighborhoodsByCity: {}, types: [] };
   }
 }
+
+export async function getExclusiveProperties(limit: number = 10): Promise<Property[]> {
+  try {
+    const { data } = await getProperties({ limit: 50 }); // Fetch more to filter
+    return data.filter(p => p.isExclusive).slice(0, limit);
+  } catch (error) {
+    console.error('Error fetching exclusive properties:', error);
+    return [];
+  }
+}
+
+export async function getHighlightedProperties(limit: number = 10): Promise<Property[]> {
+  try {
+    // For highlighted/featured properties, get non-exclusive properties sorted by update date
+    const { data } = await getProperties({ limit: 100 });
+    
+    // Filter out exclusive properties and sort by most recent update
+    const highlighted = data
+      .filter(p => !p.isExclusive) // Only non-exclusive properties for highlights
+      .sort((a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime())
+      .slice(0, limit)
+      .map(p => ({ ...p, highlighted: true }));
+    
+    return highlighted;
+  } catch (error) {
+    console.error('Error fetching highlighted properties:', error);
+    return [];
+  }
+}
+

@@ -84,26 +84,20 @@
   }
   .descubraItens{
     display: flex;
-    flex-direction: row;
-    gap: 25px;
+    gap: 70px;
     .descubraItem{
       display: flex;
       flex-direction: column;
       gap: 25px;
-      width: 200px;
-      height: 200px;
-      border-radius: 20px;
-      display: flex;
-      flex-direction: column;
       justify-content: center;
       align-items: center;
-      .descubraItemImage{
-        width: 100px;
-        height: 100px;
+      img{
+        width: 160px;
+        height: 160px;
       }
       p{
-        font-size: 20px;
-        line-height: 26px;
+        font-size: 22px;
+        line-height: 100%;
         font-weight: 400;
         color: var(--black);
         text-align: center;

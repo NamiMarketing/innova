@@ -64,6 +64,7 @@ export interface Property {
   createdAt: string;
   updatedAt: string;
   highlighted?: boolean;
+  isExclusive?: boolean;
   videoUrl?: string;
   virtualTourUrl?: string;
 }

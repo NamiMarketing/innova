@@ -1,4 +1,13 @@
-import { Property, PropertyType, PropertyCategory, PropertyStatus } from '@/types/property';
+import { Property, PropertyType, PropertyCategory, PropertyStatus, PropertyImage } from '@/types/property';
+
+interface ProperfyPhoto {
+  thumb: string;
+  small: string;
+  medium: string;
+  large: string;
+  share: string;
+  cover: boolean;
+}
 
 interface ProperfyProperty {
   id: number;
@@ -35,6 +44,8 @@ interface ProperfyProperty {
   features: string[];
   facilities: string[];
   isExclusive: boolean;
+  coverPhoto?: ProperfyPhoto;
+  photos?: ProperfyPhoto[];
 }
 
 interface ProperfyResponse {
@@ -78,6 +89,43 @@ function mapPropertyStatus(chrStatus: string): PropertyStatus {
   return statusMap[chrStatus] || 'available';
 }
 
+function mapPropertyImages(properfy: ProperfyProperty): PropertyImage[] {
+  try {
+    // If photos array exists and has items, map them
+    if (properfy.photos && Array.isArray(properfy.photos) && properfy.photos.length > 0) {
+      const mappedPhotos = properfy.photos
+        .filter(photo => photo && (photo.large || photo.medium || photo.small))
+        .map((photo, index) => ({
+          id: `${properfy.hash}-${index}`,
+          url: photo.large || photo.medium || photo.small || '',
+          title: photo.cover ? 'Cover Photo' : undefined,
+          order: photo.cover ? 0 : index + 1,
+        }));
+      
+      if (mappedPhotos.length > 0) return mappedPhotos;
+    }
+    
+    // If coverPhoto exists, use it
+    if (properfy.coverPhoto && (properfy.coverPhoto.large || properfy.coverPhoto.medium || properfy.coverPhoto.small)) {
+      return [{
+        id: `${properfy.hash}-cover`,
+        url: properfy.coverPhoto.large || properfy.coverPhoto.medium || properfy.coverPhoto.small || '',
+        title: 'Cover Photo',
+        order: 1,
+      }];
+    }
+  } catch (error) {
+    console.error('Error mapping property images:', error);
+  }
+  
+  // Fallback to placeholder
+  return [{
+    id: `${properfy.hash}-placeholder`,
+    url: 'https://images.unsplash.com/photo-1568605114967-8130f3a36994?w=800',
+    order: 1,
+  }];
+}
+
 export function mapProperfyProperty(properfy: ProperfyProperty): Property {
   const type = mapPropertyType(properfy.chrTransactionType);
   const price = type === 'sale' ? properfy.dcmSale : properfy.dcmRentRawValue;
@@ -95,7 +143,8 @@ export function mapProperfyProperty(properfy: ProperfyProperty): Property {
     code: properfy.chrReference,
     createdAt: properfy.dttRegister,
     updatedAt: properfy.dttUpdated,
-    highlighted: properfy.isExclusive,
+    highlighted: false, // Will be set by service layer for featured properties
+    isExclusive: properfy.isExclusive,
     address: {
       street: properfy.chrAddressStreet,
       number: properfy.chrAddressNumber,
@@ -118,14 +167,7 @@ export function mapProperfyProperty(properfy: ProperfyProperty): Property {
     amenities: {
       // Map facilities array when available
     },
-    images: [
-      // Images will need to come from a separate endpoint or field
-      {
-        id: '1',
-        url: 'https://images.unsplash.com/photo-1568605114967-8130f3a36994?w=800',
-        order: 1,
-      },
-    ],
+    images: mapPropertyImages(properfy),
     virtualTourUrl: properfy.vrcVirtualTour || undefined,
   };
 }

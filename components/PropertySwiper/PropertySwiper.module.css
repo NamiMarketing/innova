@@ -1,0 +1,90 @@
+.container {
+  padding: 40px 40px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.titleContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 60px;
+  margin-bottom: 40px;
+}
+
+.title {
+  font-size: 30px;
+  font-weight: 500;
+}
+
+.link {
+  font-size: 20px;
+  font-weight: 500;
+  color: var(--orange);
+  text-decoration: none;
+}
+
+.swiperWrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+/* Custom Navigation Buttons */
+.navButton {
+  position: relative;
+  z-index: 10;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 6px;
+  background: var(--background-orange);
+  color: white;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.navButton:hover {
+  opacity: 0.8;
+  transform: scale(1.05);
+}
+
+.navButton:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.navButton svg {
+  width: 20px;
+}
+
+.swiper :global(.swiper-slide){
+  width: 400px !important;
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 40px 20px;
+  }
+
+  .title {
+    font-size: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .navButton {
+    width: 36px;
+    height: 36px;
+  }
+
+  .navButton svg {
+    width: 10px;
+    height: 14px;
+  }
+}
+

@@ -2,19 +2,29 @@ import { HomeSearch } from '@/components/HomeSearch';
 import Image from 'next/image';
 import styles from './page.module.css';
 import headerImg from '@/img/home/header.png';
-import { getFilterOptions } from '@/services/properfy';
+import { getFilterOptions, getHighlightedProperties, getExclusiveProperties } from '@/services/properfy';
 import { safeFetch } from '@/lib/safe-fetch';
 import Link from 'next/link';
 import cardImg from '@/img/home/card-image.png';
 import logoCard from '@/img/home/logo-card.png';
-import { HomeSwiper } from '@/components/HomeSwiper';
-import itemImg from '@/img/home/item.png';
+import { PropertySwiper } from '@/components/PropertySwiper';
+import itemCasa from '@/img/home/item-casa.png';
+import itemAp from '@/img/home/item-ap.png';
+import itemComercial from '@/img/home/item-comercial.png';
+import itemTerreno from '@/img/home/item-terreno.png';
+import itemPlanta from '@/img/home/item-planta.png';
+import escolherBack from '@/img/home/escolher-back.png';
+import fachada from '@/img/home/fachada.png';
 
 export default async function Home() {
   const { data: options } = await safeFetch(getFilterOptions());
   const cities = options?.cities ?? [];
   const neighborhoodsByCity = options?.neighborhoodsByCity ?? {};
   const types = options?.types ?? [];
+
+  // Fetch properties for swiper sections
+  const { data: highlightedProperties } = await safeFetch(getHighlightedProperties(10));
+  const { data: exclusiveProperties } = await safeFetch(getExclusiveProperties(10));
 
   return (
     <div className={styles.container}>
@@ -49,30 +59,47 @@ export default async function Home() {
         <h2>Descubra o imóvel ideal para o que você precisa</h2>
         <div className={styles.descubraItens}>
           <div className={styles.descubraItem}>
-            <Image src={itemImg} alt="ícone de casa" />
+            <Image src={itemCasa} alt="ícone de casa" />
             <p>Casas</p>
           </div>
           <div className={styles.descubraItem}>
-            <Image src={itemImg} alt="ícone de apartamentos" />
+            <Image src={itemAp} alt="ícone de apartamentos" />
             <p>Apartamentos</p>
           </div>
           <div className={styles.descubraItem}>
-            <Image src={itemImg} alt="ícone de comercial" />
+            <Image src={itemComercial} alt="ícone de comercial" />
             <p>Comercial</p>
           </div>
           <div className={styles.descubraItem}>
-            <Image src={itemImg} alt="ícone de terrenos" />
+            <Image src={itemTerreno} alt="ícone de terrenos" />
             <p>Terrenos</p>
           </div>
           <div className={styles.descubraItem}>
-            <Image src={itemImg} alt="ícone de planta de imóvel" />
+            <Image src={itemPlanta} alt="ícone de planta de imóvel" />
             <p>Na planta</p>
           </div>
         </div>
       </section>
 
-      <section className={styles.destaque}>
-        <HomeSwiper />
+      {/* imoveis em destaque swiper */}
+      <PropertySwiper 
+        title="Imóveis em destaque" 
+        properties={highlightedProperties ?? []} 
+      />
+
+      {/* imoveis exclusivos swiper */}
+      <PropertySwiper 
+        title="Exclusivos Innova" 
+        properties={exclusiveProperties ?? []} 
+      />
+
+      <section className={styles.escolher}>
+        <Image className={styles.escolherBack} src={escolherBack} alt="Logo da Innova" />
+        <Image className={styles.fachada} src={fachada} alt="Imagem da fachada da Innova imobiliária" />
+        <div className={styles.escolherContent}>
+          <h1>Por que escolher a Innova?</h1>
+          
+        </div>
       </section>
     </div>
   );

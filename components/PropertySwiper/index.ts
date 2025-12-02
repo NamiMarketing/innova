@@ -1,0 +1,1 @@
+export { PropertySwiper } from './PropertySwiper';
