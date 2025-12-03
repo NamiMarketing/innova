@@ -25,6 +25,7 @@ export interface PropertyImage {
 export interface PropertyFeatures {
   bedrooms: number;
   bathrooms: number;
+  totalBaths: number;
   suites: number;
   parkingSpaces: number;
   area: number;

@@ -8,6 +8,7 @@ import Link from 'next/link';
 import cardImg from '@/img/home/card-image.png';
 import logoCard from '@/img/home/logo-card.png';
 import { PropertySwiper } from '@/components/PropertySwiper';
+import { TestimonialSwiper } from '@/components/TestimonialSwiper/TestimonialSwiper';
 import itemCasa from '@/img/home/item-casa.png';
 import itemAp from '@/img/home/item-ap.png';
 import itemComercial from '@/img/home/item-comercial.png';
@@ -129,6 +130,8 @@ export default async function Home() {
           </div>
         </div>
       </section>
+
+      <TestimonialSwiper />
     </div>
   );
 }
