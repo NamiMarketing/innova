@@ -105,3 +105,49 @@
     }
   }
 }
+
+.escolher{
+  position: relative;
+  .escolherBack{
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+  .escolherContainer{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 84px;
+    width: 85%;
+    margin: auto;
+    padding: 75px 0 110px;
+    h1{
+      font-size: 42px;
+      line-height: 40px;
+      font-weight: 500;
+      color: var(--orange);
+      margin-bottom: 50px;
+    }
+    .escolherItens{
+      display: flex;
+      gap: 18px;
+      flex-direction: column;
+      .escolherItem{
+        display: flex;
+        gap: 14px;
+        align-items: center;
+        img{
+          width: 46px;
+          height: 46px;
+        }
+        p{
+          font-size: 22px;
+          line-height: 100%;
+          font-weight: 400;
+          color: var(--black);
+          text-align: center;
+        }
+      }
+    }
+  }
+}

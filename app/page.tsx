@@ -15,6 +15,11 @@ import itemTerreno from '@/img/home/item-terreno.png';
 import itemPlanta from '@/img/home/item-planta.png';
 import escolherBack from '@/img/home/escolher-back.png';
 import fachada from '@/img/home/fachada.png';
+import atendimento from '@/img/home/atendimento.png';
+import rapido from '@/img/home/rapido.png';
+import variedade from '@/img/home/variedade.png';
+import transparencia from '@/img/home/transparencia.png';
+import suporte from '@/img/home/suporte.png';
 
 export default async function Home() {
   const { data: options } = await safeFetch(getFilterOptions());
@@ -95,10 +100,33 @@ export default async function Home() {
 
       <section className={styles.escolher}>
         <Image className={styles.escolherBack} src={escolherBack} alt="Logo da Innova" />
-        <Image className={styles.fachada} src={fachada} alt="Imagem da fachada da Innova imobiliária" />
-        <div className={styles.escolherContent}>
-          <h1>Por que escolher a Innova?</h1>
-          
+        <div className={styles.escolherContainer}>
+          <Image className={styles.fachada} src={fachada} alt="Imagem da fachada da Innova imobiliária" />
+          <div className={styles.escolherContent}>
+            <h1>Por que escolher a Innova?</h1>
+            <div className={styles.escolherItens}>
+              <div className={styles.escolherItem}>
+                <Image src={atendimento} width={46} height={46} alt="ícone de atendimento" />
+                <p>Atendimento ágil e digital</p>
+              </div>
+              <div className={styles.escolherItem}>
+                <Image src={rapido} width={46} height={46} alt="ícone de rapido" />
+                <p>Processo menos burocrático e rápido</p>
+              </div>
+              <div className={styles.escolherItem}>
+                <Image src={variedade} width={46} height={46} alt="ícone de variedade" />
+                <p>Variedade de opções em compra e locação</p>
+              </div>
+              <div className={styles.escolherItem}>
+                <Image src={transparencia} width={46} height={46} alt="ícone de transparencia" />
+                <p>Transparência e clareza nas negociações</p>
+              </div>
+              <div className={styles.escolherItem}>
+                <Image src={suporte} width={46} height={46} alt="ícone de suporte" />
+                <p>Suporte completo para locadores e locatários</p>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
     </div>
