@@ -59,6 +59,7 @@ export interface Property {
   address: PropertyAddress;
   features: PropertyFeatures;
   amenities: PropertyAmenities;
+  characteristics: string[];
   images: PropertyImage[];
   code: string;
   createdAt: string;

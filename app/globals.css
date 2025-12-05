@@ -2,7 +2,7 @@
 
 :root {
   --background: #ffffff;
-  --background-orange: #ef8634;
+  --background-orange: #EF8634;
   --foreground: #000000;
 
   /* Innova Colors */
@@ -14,7 +14,7 @@
   --gray-light: #f3f4f6;
   --gray-medium: #7c7c7c;
   --gray-dark: #374151;
-  --orange: #ef8634;
+  --orange: #EF8634;
   --black: #000000;
   --white: #ffffff;
 }

@@ -167,6 +167,7 @@ export function mapProperfyProperty(properfy: ProperfyProperty): Property {
     amenities: {
       // Map facilities array when available
     },
+    characteristics: [...(properfy.features || []), ...(properfy.facilities || [])],
     images: mapPropertyImages(properfy),
     virtualTourUrl: properfy.vrcVirtualTour || undefined,
   };

@@ -1,5 +1,5 @@
 .container {
-  padding: 40px 40px;
+  padding: 40px 0;
   margin: 0 auto;
   width: 100%;
 }
@@ -8,7 +8,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0 60px;
+  padding: 0 40px;
   margin-bottom: 40px;
 }
 
@@ -26,16 +26,16 @@
 
 .swiperWrapper {
   position: relative;
-  display: flex;
-  align-items: center;
-  gap: 20px;
+  width: 100%;
+  overflow: visible;
 }
 
 /* Custom Navigation Buttons */
 .navButton {
-  position: relative;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
   z-index: 10;
-  flex-shrink: 0;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -49,9 +49,17 @@
   transition: all 0.3s ease;
 }
 
+.navButtonPrev {
+  left: 20px;
+}
+
+.navButtonNext {
+  right: 20px;
+}
+
 .navButton:hover {
   opacity: 0.8;
-  transform: scale(1.05);
+  transform: translateY(-50%) scale(1.05);
 }
 
 .navButton:disabled {
@@ -63,13 +71,37 @@
   width: 20px;
 }
 
+.swiper {
+  padding-left: 40px;
+}
+
 .swiper :global(.swiper-slide){
   width: 400px !important;
 }
 
 @media (max-width: 768px) {
   .container {
-    padding: 40px 20px;
+    padding: 40px 0;
+  }
+
+  .titleContainer {
+    padding: 0 20px;
+  }
+
+  .swiperWrapper {
+    overflow: visible;
+  }
+
+  .navButtonPrev {
+    left: 10px;
+  }
+
+  .navButtonNext {
+    right: 10px;
+  }
+
+  .swiper {
+    padding-left: 20px;
   }
 
   .title {
