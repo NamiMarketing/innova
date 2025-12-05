@@ -10,22 +10,30 @@
   display: none;
 }
 
+.separator {
+  height: 1px;
+  background-color: var(--gray-medium);
+  margin: 30px 0;
+  width: 100%;
+  display: block;
+}
+
 /* Sidebar */
 .sidebar {
   position: sticky;
   top: 0;
   float: left;
-  width: 300px;
+  width: 400px;
   background: white;
-  border-radius: 12px;
-  padding: 1.5rem;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  border-radius: 20px;
+  padding: 30px;
   overflow-y: auto;
-  max-height: calc(100vh - 120px);
+  max-height: calc(100vh - 140px);
   scrollbar-width: none;
   -ms-overflow-style: none;
   z-index: 10;
-  margin-right: 2rem;
+  margin-right: 60px;
+  border: 1px solid var(--gray-medium);
 }
 
 .sidebar::-webkit-scrollbar {
@@ -42,9 +50,9 @@
 }
 
 .sidebarTitle {
-  font-size: 1.125rem;
-  font-weight: 600;
-  color: var(--gray-dark);
+  font-size: 20px;
+  font-weight: 400;
+  color: var(--black);
   margin: 0;
 }
 
@@ -52,18 +60,14 @@
   background: none;
   border: none;
   color: var(--orange);
-  font-size: 0.875rem;
-  font-weight: 500;
+  font-size: 16px;
+  font-weight: 400;
   cursor: pointer;
   padding: 0;
 }
 
-.clearButton:hover {
-  text-decoration: underline;
-}
-
 .filterSection {
-  margin-bottom: 1.25rem;
+  margin-bottom: 6px;
 }
 
 .filterTitle {
@@ -73,39 +77,45 @@
   margin: 0 0 0.75rem 0;
 }
 
+.field {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  border: 1px solid var(--gray-medium);
+  border-radius: 6px;
+  padding: 10px 16px;
+}
+
 /* Type Buttons (Alugar/Comprar) */
 .typeButtons {
   display: flex;
-  gap: 0.5rem;
+  gap:30px;
+  border-bottom: 1px solid var(--gray-medium);
 }
 
 .typeButton {
-  flex: 1;
-  padding: 0.625rem 1rem;
-  border: 1px solid #e5e7eb;
-  border-radius: 6px;
-  background: white;
-  font-size: 0.875rem;
-  font-weight: 500;
-  color: var(--gray-dark);
+  border: none;
+  background: none;
+  font-size: 18px;
+  font-weight: 400;
+  color: var(--black);
   cursor: pointer;
   transition: all 0.2s ease;
+  padding-bottom: 10px;
 }
 
 .typeButton:hover {
-  border-color: var(--orange);
+  border-bottom: 2px solid var(--orange);
   color: var(--orange);
+  padding-bottom: 11px;
+  margin-bottom: -1px;
 }
 
 .typeButtonActive {
-  background: var(--orange);
-  border-color: var(--orange);
-  color: white;
-}
-
-.typeButtonActive:hover {
-  background: var(--orange);
-  color: white;
+  border-bottom: 2px solid var(--orange);
+  color: var(--orange);
+  padding-bottom: 11px;
+  margin-bottom: -1px;
 }
 
 /* Price Inputs */
@@ -180,6 +190,42 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+/* Amenities Grid */
+.amenitiesGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.5rem;
+}
+
+.amenityButton {
+  padding: 0.625rem 1rem;
+  border: 1px solid #e5e7eb;
+  border-radius: 6px;
+  background: white;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--gray-dark);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: center;
+}
+
+.amenityButton:hover {
+  border-color: var(--orange);
+  color: var(--orange);
+}
+
+.amenityButtonActive {
+  background: var(--orange);
+  border-color: var(--orange);
+  color: white;
+}
+
+.amenityButtonActive:hover {
+  background: #d97706;
+  color: white;
 }
 
 /* Results */

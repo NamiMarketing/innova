@@ -18,7 +18,10 @@ function parseFilters(searchParams: URLSearchParams): PropertyFilters {
     maxPrice: getNumber('maxPrice'),
     minBedrooms: getNumber('minBedrooms'),
     minBathrooms: getNumber('minBathrooms'),
+    minSuites: getNumber('minSuites'),
     minParkingSpaces: getNumber('minParkingSpaces'),
+    code: getString('code'),
+    amenities: searchParams.get('amenities')?.split(',').filter(Boolean),
     page: getNumber('page'),
     limit: getNumber('limit'),
   };

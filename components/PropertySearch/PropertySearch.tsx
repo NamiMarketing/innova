@@ -52,6 +52,9 @@ export function PropertySearch({ initialData, initialFilters = {} }: PropertySea
   const [selectedNeighborhoods, setSelectedNeighborhoods] = useState<string[]>(
     initialFilters.neighborhood ? [initialFilters.neighborhood] : []
   );
+  const [selectedAmenities, setSelectedAmenities] = useState<string[]>(
+    initialFilters.amenities || []
+  );
 
   const fetchProperties = useCallback(async (newFilters: PropertyFilters) => {
     setLoading(true);
@@ -65,7 +68,12 @@ export function PropertySearch({ initialData, initialFilters = {} }: PropertySea
       if (newFilters.maxPrice) params.set('maxPrice', newFilters.maxPrice.toString());
       if (newFilters.minBedrooms) params.set('minBedrooms', newFilters.minBedrooms.toString());
       if (newFilters.minBathrooms) params.set('minBathrooms', newFilters.minBathrooms.toString());
+      if (newFilters.minSuites) params.set('minSuites', newFilters.minSuites.toString());
       if (newFilters.minParkingSpaces) params.set('minParkingSpaces', newFilters.minParkingSpaces.toString());
+      if (newFilters.code) params.set('code', newFilters.code);
+      if (newFilters.amenities && newFilters.amenities.length > 0) {
+        params.set('amenities', newFilters.amenities.join(','));
+      }
       if (newFilters.page) params.set('page', newFilters.page.toString());
 
       const response = await fetch(`/api/properties?${params.toString()}`);
@@ -100,6 +108,7 @@ export function PropertySearch({ initialData, initialFilters = {} }: PropertySea
       ...filters,
       category: selectedCategories.length > 0 ? selectedCategories.join(',') as PropertyCategory : undefined,
       neighborhood: selectedNeighborhoods.length > 0 ? selectedNeighborhoods.join(',') : undefined,
+      amenities: selectedAmenities.length > 0 ? selectedAmenities : undefined,
     };
     fetchProperties(newFilters);
   };
@@ -109,6 +118,7 @@ export function PropertySearch({ initialData, initialFilters = {} }: PropertySea
     setFilters(resetFilters);
     setSelectedCategories([]);
     setSelectedNeighborhoods([]);
+    setSelectedAmenities([]);
     fetchProperties(resetFilters);
   };
 
@@ -137,22 +147,31 @@ export function PropertySearch({ initialData, initialFilters = {} }: PropertySea
   );
 
   const bedroomOptions: SelectorOption[] = [
-    { value: '1', label: '1+ quarto' },
-    { value: '2', label: '2+ quartos' },
-    { value: '3', label: '3+ quartos' },
-    { value: '4', label: '4+ quartos' },
+    { value: '1', label: '1+' },
+    { value: '2', label: '2+' },
+    { value: '3', label: '3+' },
+    { value: '4', label: '4+' },
   ];
 
   const bathroomOptions: SelectorOption[] = [
-    { value: '1', label: '1+ banheiro' },
-    { value: '2', label: '2+ banheiros' },
-    { value: '3', label: '3+ banheiros' },
+    { value: '1', label: '1+' },
+    { value: '2', label: '2+' },
+    { value: '3', label: '3+' },
+    { value: '4', label: '4+' },
+  ];
+
+  const suiteOptions: SelectorOption[] = [
+    { value: '1', label: '1+' },
+    { value: '2', label: '2+' },
+    { value: '3', label: '3+' },
+    { value: '4', label: '4+' },
   ];
 
   const parkingOptions: SelectorOption[] = [
-    { value: '1', label: '1+ vaga' },
-    { value: '2', label: '2+ vagas' },
-    { value: '3', label: '3+ vagas' },
+    { value: '1', label: '1+' },
+    { value: '2', label: '2+' },
+    { value: '3', label: '3+' },
+    { value: '4', label: '4+' },
   ];
 
   return (
@@ -160,14 +179,17 @@ export function PropertySearch({ initialData, initialFilters = {} }: PropertySea
       {/* Sidebar Filters */}
       <aside className={styles.sidebar}>
         <div className={styles.sidebarHeader}>
-          <h3 className={styles.sidebarTitle}>Filtros</h3>
-          <button type="button" onClick={handleReset} className={styles.clearButton}>
-            Limpar filtros
-          </button>
+          <div className={styles.leftSidebarHeader}>
+            <h3 className={styles.sidebarTitle}>Filtros</h3>
+          </div>
+          <div className={styles.rightSidebarHeader}>
+            <button type="button" onClick={handleReset} className={styles.clearButton}>
+              Limpar tudo
+            </button>
+          </div>
         </div>
 
         <div className={styles.filterSection}>
-          <h4 className={styles.filterTitle}>Finalidade</h4>
           <div className={styles.typeButtons}>
             <button
               type="button"
@@ -193,8 +215,8 @@ export function PropertySearch({ initialData, initialFilters = {} }: PropertySea
             value={selectedCategories}
             onChange={setSelectedCategories}
             label="Tipo de Imóvel"
-            icon={<Image src={houseIcon} alt="" width={14} height={14} />}
-            placeholder="Todos os tipos"
+            icon={<Image src={houseIcon} alt="ícone de casa" width={12} height={12} />}
+          placeholder="Todos"
           />
         </div>
 
@@ -205,8 +227,8 @@ export function PropertySearch({ initialData, initialFilters = {} }: PropertySea
             value={filters.city || ''}
             onChange={handleCityChange}
             label="Cidade"
-            icon={<Image src={cityIcon} alt="" width={14} height={14} />}
-            placeholder="Todas as cidades"
+            icon={<Image src={cityIcon} alt="ícone de cidade" width={12} height={12} />}
+          placeholder="Busque por cidade"
           />
         </div>
 
@@ -218,10 +240,24 @@ export function PropertySearch({ initialData, initialFilters = {} }: PropertySea
             value={selectedNeighborhoods}
             onChange={setSelectedNeighborhoods}
             label="Bairro"
-            icon={<Image src={neighborhoodIcon} alt="" width={14} height={14} />}
-            placeholder="Todos os bairros"
+            icon={<Image src={neighborhoodIcon} alt="ícone de bairro" width={12} height={12} />}
+          placeholder="Busque por bairro"
           />
         </div>
+
+        <div className={styles.field}>
+          <label htmlFor="code" className={styles.label}>Código do Imóvel</label>
+          <input
+            type="text"
+            value={filters.code || ''}
+            onChange={(e) => setFilters({ ...filters, code: e.target.value || undefined })}
+            placeholder="Busque por código"
+            className={styles.codeInput}
+            id="code"
+          />
+        </div>
+
+        <span className={styles.separator}></span>
 
         <div className={styles.filterSection}>
           <h4 className={styles.filterTitle}>Preço</h4>
@@ -239,6 +275,29 @@ export function PropertySearch({ initialData, initialFilters = {} }: PropertySea
               value={filters.maxPrice || ''}
               onChange={(e) => setFilters({ ...filters, maxPrice: e.target.value ? Number(e.target.value) : undefined })}
               placeholder="Máximo"
+              className={styles.priceInput}
+            />
+          </div>
+        </div>
+
+        <span className={styles.separator}></span>
+
+        <div className={styles.filterSection}>
+          <h4 className={styles.filterTitle}>Área útil (m²)</h4>
+          <div className={styles.priceInputs}>
+            <input
+              type="number"
+              value={filters.minArea || ''}
+              onChange={(e) => setFilters({ ...filters, minArea: e.target.value ? Number(e.target.value) : undefined })}
+              placeholder="De"
+              className={styles.priceInput}
+            />
+            <span className={styles.priceSeparator}>até</span>
+            <input
+              type="number"
+              value={filters.maxArea || ''}
+              onChange={(e) => setFilters({ ...filters, maxArea: e.target.value ? Number(e.target.value) : undefined })}
+              placeholder="Até"
               className={styles.priceInput}
             />
           </div>
@@ -266,12 +325,104 @@ export function PropertySearch({ initialData, initialFilters = {} }: PropertySea
 
         <div className={styles.filterSection}>
           <Selector
+            options={suiteOptions}
+            value={filters.minSuites?.toString() || ''}
+            onChange={(v) => setFilters({ ...filters, minSuites: v ? Number(v) : undefined })}
+            label="Suites"
+            placeholder="Qualquer"
+          />
+        </div>
+
+        <div className={styles.filterSection}>
+          <Selector
             options={parkingOptions}
             value={filters.minParkingSpaces?.toString() || ''}
             onChange={(v) => setFilters({ ...filters, minParkingSpaces: v ? Number(v) : undefined })}
             label="Vagas"
             placeholder="Qualquer"
           />
+        </div>
+
+        <div className={styles.filterSection}>
+          <h4 className={styles.filterTitle}>Conveniências</h4>
+          <div className={styles.amenitiesGrid}>
+            {[
+              { value: 'furnished', label: 'Mobiliado' },
+              { value: 'airConditioning', label: 'Ar-condicionado' },
+              { value: 'elevator', label: 'Elevador' },
+              { value: 'fireplace', label: 'Lareira' },
+              { value: 'laundry', label: 'Lavanderia' },
+            ].map(amenity => (
+              <button
+                key={amenity.value}
+                type="button"
+                className={`${styles.amenityButton} ${selectedAmenities.includes(amenity.value) ? styles.amenityButtonActive : ''}`}
+                onClick={() => {
+                  if (selectedAmenities.includes(amenity.value)) {
+                    setSelectedAmenities(selectedAmenities.filter(a => a !== amenity.value));
+                  } else {
+                    setSelectedAmenities([...selectedAmenities, amenity.value]);
+                  }
+                }}
+              >
+                {amenity.label}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        <div className={styles.filterSection}>
+          <h4 className={styles.filterTitle}>Lazer</h4>
+          <div className={styles.amenitiesGrid}>
+            {[
+              { value: 'barbecue', label: 'Churrasqueira' },
+              { value: 'pool', label: 'Piscina' },
+              { value: 'gym', label: 'Academia' },
+              { value: 'partyHall', label: 'Salão de festas' },
+              { value: 'playground', label: 'Playground' },
+              { value: 'gourmetSpace', label: 'Espaço gourmet' },
+            ].map(amenity => (
+              <button
+                key={amenity.value}
+                type="button"
+                className={`${styles.amenityButton} ${selectedAmenities.includes(amenity.value) ? styles.amenityButtonActive : ''}`}
+                onClick={() => {
+                  if (selectedAmenities.includes(amenity.value)) {
+                    setSelectedAmenities(selectedAmenities.filter(a => a !== amenity.value));
+                  } else {
+                    setSelectedAmenities([...selectedAmenities, amenity.value]);
+                  }
+                }}
+              >
+                {amenity.label}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        <div className={styles.filterSection}>
+          <h4 className={styles.filterTitle}>Segurança</h4>
+          <div className={styles.amenitiesGrid}>
+            {[
+              { value: 'gatekeeper', label: 'Portaria' },
+              { value: 'securitySystem', label: 'Circuito de segurança' },
+            ].map(amenity => (
+              <button
+                key={amenity.value}
+                type="button"
+                className={`${styles.amenityButton} ${selectedAmenities.includes(amenity.value) ? styles.amenityButtonActive : ''}`}
+                onClick={() => {
+                  if (selectedAmenities.includes(amenity.value)) {
+                    setSelectedAmenities(selectedAmenities.filter(a => a !== amenity.value));
+                  } else {
+                    setSelectedAmenities([...selectedAmenities, amenity.value]);
+                  }
+                }}
+              >
+                {amenity.label}
+              </button>
+            ))}
+          </div>
         </div>
 
         <button type="button" onClick={handleSubmit} className={styles.searchButton} disabled={loading}>

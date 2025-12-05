@@ -53,9 +53,16 @@ export async function getProperties(filters: PropertyFilters = {}): Promise<Prop
   // Feature filters
   if (filters.minBedrooms) params.append('intBedrooms', filters.minBedrooms.toString());
   if (filters.minBathrooms) params.append('intBathrooms', filters.minBathrooms.toString());
+  if (filters.minSuites) params.append('intSuites', filters.minSuites.toString());
   if (filters.minParkingSpaces) params.append('intGarage', filters.minParkingSpaces.toString());
   if (filters.minArea) params.append('dcmMinArea', filters.minArea.toString());
   if (filters.maxArea) params.append('dcmMaxArea', filters.maxArea.toString());
+
+  // Code/Reference filter
+  if (filters.code) params.append('chrReference', filters.code);
+
+  // Note: Amenities filtering is done client-side after fetching results
+  // because Properfy API doesn't support filtering by jsonFeatures/jsonFacilities
 
   // Only show listed properties (using comma-separated instead of array notation)
   params.append('chrStatus', 'LISTED');
@@ -64,10 +71,24 @@ export async function getProperties(filters: PropertyFilters = {}): Promise<Prop
   params.append('chrOrder', 'lesser_value');
 
   const queryString = params.toString();
-  const endpoint = `api/property/shared${queryString ? `?${queryString}` : ''}`;
+  const endpoint = `api/property/shared${queryString ? `?${queryString}` : ''}`
 
   const response = await api(endpoint).json<unknown>();
-  return mapProperfyResponse(response as never);
+  let result = mapProperfyResponse(response as never);
+  
+  // Client-side amenity filtering
+  if (filters.amenities && filters.amenities.length > 0) {
+    result.data = result.data.filter(property => {
+      // Check if property has all selected amenities
+      return filters.amenities!.every(amenity => {
+        const amenityValue = property.amenities[amenity as keyof typeof property.amenities];
+        return amenityValue === true;
+      });
+    });
+    result.total = result.data.length;
+  }
+  
+  return result;
 }
 
 export async function getPropertyById(id: string): Promise<Property | null> {
