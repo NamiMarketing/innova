@@ -26,6 +26,7 @@ export const mockProperties: Property[] = [
     features: {
       bedrooms: 3,
       bathrooms: 2,
+      totalBaths: 1,
       suites: 1,
       parkingSpaces: 2,
       area: 120,
@@ -39,6 +40,12 @@ export const mockProperties: Property[] = [
       balcony: true,
       security24h: true,
     },
+    characteristics: [
+      'Acabamento de primeira',
+      'Localização privilegiada',
+      'Próximo a shopping centers',
+      'Vista panorâmica',
+    ],
     images: [
       {
         id: '1',
@@ -71,6 +78,7 @@ export const mockProperties: Property[] = [
     features: {
       bedrooms: 4,
       bathrooms: 3,
+      totalBaths: 1,
       suites: 2,
       parkingSpaces: 3,
       area: 250,
@@ -82,6 +90,12 @@ export const mockProperties: Property[] = [
       airConditioning: true,
       security24h: false,
     },
+    characteristics: [
+      'Casa espaçosa',
+      'Jardim amplo',
+      'Área gourmet completa',
+      'Bairro nobre',
+    ],
     images: [
       {
         id: '1',
@@ -114,6 +128,7 @@ export const mockProperties: Property[] = [
     features: {
       bedrooms: 2,
       bathrooms: 1,
+      totalBaths: 1,
       suites: 0,
       parkingSpaces: 1,
       area: 75,
@@ -125,6 +140,12 @@ export const mockProperties: Property[] = [
       elevator: true,
       balcony: true,
     },
+    characteristics: [
+      'Localização privilegiada',
+      'Próximo ao comércio',
+      'Transporte público acessível',
+      'Ideal para casal',
+    ],
     images: [
       {
         id: '1',
@@ -157,6 +178,7 @@ export const mockProperties: Property[] = [
     features: {
       bedrooms: 0,
       bathrooms: 2,
+      totalBaths: 2,
       suites: 0,
       parkingSpaces: 2,
       area: 80,
@@ -167,6 +189,12 @@ export const mockProperties: Property[] = [
       airConditioning: true,
       security24h: true,
     },
+    characteristics: [
+      'Edifício moderno',
+      'Fácil acesso',
+      'Localização estratégica',
+      'Pronto para uso',
+    ],
     images: [
       {
         id: '1',
@@ -198,11 +226,18 @@ export const mockProperties: Property[] = [
     features: {
       bedrooms: 0,
       bathrooms: 0,
+      totalBaths: 0,
       suites: 0,
       parkingSpaces: 0,
       area: 360,
     },
     amenities: {},
+    characteristics: [
+      'Terreno plano',
+      'Escriturado',
+      'Região em expansão',
+      'Ótima infraestrutura',
+    ],
     images: [
       {
         id: '1',
@@ -236,6 +271,7 @@ export const mockProperties: Property[] = [
     features: {
       bedrooms: 4,
       bathrooms: 4,
+      totalBaths: 1,
       suites: 3,
       parkingSpaces: 4,
       area: 300,
@@ -253,6 +289,13 @@ export const mockProperties: Property[] = [
       airConditioning: true,
       security24h: true,
     },
+    characteristics: [
+      'Cobertura duplex',
+      'Vista panorâmica deslumbrante',
+      'Alto padrão de acabamento',
+      'Lazer completo',
+      'Pé-direito alto',
+    ],
     images: [
       {
         id: '1',
