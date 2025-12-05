@@ -120,8 +120,34 @@ export async function getFilterOptions(): Promise<{ cities: string[]; neighborho
 
 export async function getExclusiveProperties(limit: number = 10): Promise<Property[]> {
   try {
-    const { data } = await getProperties({ limit: 50 }); // Fetch more to filter
-    return data.filter(p => p.isExclusive).slice(0, limit);
+    const allExclusive: Property[] = [];
+    let page = 1;
+    const batchSize = 50;
+    const maxPages = 5; // Limite de segurança para evitar loop infinito (250 imóveis no máximo)
+    
+    // Busca em batches até ter exclusivos suficientes
+    while (allExclusive.length < limit && page <= maxPages) {
+      const { data, totalPages } = await getProperties({ 
+        limit: batchSize, 
+        page 
+      });
+      
+      // Filtra os exclusivos da página atual
+      const exclusiveInPage = data.filter(p => p.isExclusive);
+      allExclusive.push(...exclusiveInPage);
+      
+      // Para se:
+      // 1. Já temos exclusivos suficientes
+      // 2. Não encontrou nenhum exclusivo nessa página
+      // 3. Chegou na última página disponível
+      if (allExclusive.length >= limit || exclusiveInPage.length === 0 || page >= totalPages) {
+        break;
+      }
+      
+      page++;
+    }
+    
+    return allExclusive.slice(0, limit);
   } catch (error) {
     console.error('Error fetching exclusive properties:', error);
     return [];
