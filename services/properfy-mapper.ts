@@ -1,4 +1,4 @@
-import { Property, PropertyType, PropertyCategory, PropertyStatus, PropertyImage } from '@/types/property';
+import { Property, PropertyType, PropertyCategory, PropertyStatus, PropertyImage, PropertyAmenities } from '@/types/property';
 
 interface ProperfyPhoto {
   thumb: string;
@@ -44,6 +44,12 @@ interface ProperfyProperty {
   dttUpdated: string;
   features: string[];
   facilities: string[];
+  jsonFeatures?: string;
+  jsonFacilities?: string;
+  // Portuguese translations from API
+  rewritedFeatures?: string[];
+  rewritedFacilities?: string[];
+  mergedFeaturesFacilities?: string[];
   isExclusive: boolean;
   coverPhoto?: ProperfyPhoto;
   photos?: ProperfyPhoto[];
@@ -166,13 +172,116 @@ export function mapProperfyProperty(properfy: ProperfyProperty): Property {
       area: properfy.dcmAreaTotal || 0,
       builtArea: properfy.dcmAreaBuilt || properfy.dcmAreaUsable || undefined,
     },
-    amenities: {
-      // Map facilities array when available
-    },
-    characteristics: [...(properfy.features || []), ...(properfy.facilities || [])],
+    amenities: mapAmenities(properfy),
+    // Use Portuguese translations if available, fallback to English
+    characteristics: properfy.mergedFeaturesFacilities?.length 
+      ? properfy.mergedFeaturesFacilities 
+      : [...(properfy.features || []), ...(properfy.facilities || [])],
     images: mapPropertyImages(properfy),
     virtualTourUrl: properfy.vrcVirtualTour || undefined,
   };
+}
+
+function mapAmenities(properfy: ProperfyProperty): PropertyAmenities {
+  const amenities: PropertyAmenities = {};
+  
+  try {
+    // Combine features and facilities arrays
+    const allFeatures: string[] = [
+      ...properfy.features || [],
+      ...properfy.facilities || [],
+    ];
+    
+    // Parse jsonFeatures and jsonFacilities if they exist
+    if (properfy.jsonFeatures) {
+      try {
+        const parsed = JSON.parse(properfy.jsonFeatures);
+        if (Array.isArray(parsed)) {
+          allFeatures.push(...parsed);
+        }
+      } catch (e) {
+        console.warn('Failed to parse jsonFeatures:', e);
+      }
+    }
+    
+    if (properfy.jsonFacilities) {
+      try {
+        const parsed = JSON.parse(properfy.jsonFacilities);
+        if (Array.isArray(parsed)) {
+          allFeatures.push(...parsed);
+        }
+      } catch (e) {
+        console.warn('Failed to parse jsonFacilities:', e);
+      }
+    }
+    
+    // Map each feature to the corresponding amenity field
+    allFeatures.forEach(feature => {
+      const featureUpper = feature.toUpperCase();
+      
+      // Conveniences
+      if (featureUpper.includes('FURNISHED') || featureUpper.includes('MOBILIADO')) {
+        amenities.furnished = true;
+      }
+      if (featureUpper.includes('AIR_CONDITIONING') || featureUpper.includes('AR_CONDICIONADO')) {
+        amenities.airConditioning = true;
+      }
+      if (featureUpper.includes('ELEVATOR') || featureUpper.includes('ELEVADOR')) {
+        amenities.elevator = true;
+      }
+      if (featureUpper.includes('FIREPLACE') || featureUpper.includes('LAREIRA')) {
+        amenities.fireplace = true;
+      }
+      if (featureUpper.includes('LAUNDRY') || featureUpper.includes('LAVANDERIA')) {
+        amenities.laundry = true;
+      }
+      
+      // Leisure
+      if (featureUpper.includes('BARBECUE') || featureUpper.includes('CHURRASQUEIRA') || featureUpper.includes('GRILL')) {
+        amenities.barbecue = true;
+      }
+      if (featureUpper.includes('SWIMMING_POOL') || featureUpper.includes('POOL') || featureUpper.includes('PISCINA')) {
+        amenities.pool = true;
+      }
+      if (featureUpper.includes('GYM') || featureUpper.includes('ACADEMIA') || featureUpper.includes('FITNESS')) {
+        amenities.gym = true;
+      }
+      if (featureUpper.includes('PARTY_ROOM') || featureUpper.includes('PARTY_HALL') || featureUpper.includes('SALAO')) {
+        amenities.partyHall = true;
+      }
+      if (featureUpper.includes('PLAYGROUND') || featureUpper.includes('PARQUINHO')) {
+        amenities.playground = true;
+      }
+      if (featureUpper.includes('GOURMET_SPACE') || featureUpper.includes('GOURMET') || featureUpper.includes('ESPACO_GOURMET')) {
+        amenities.gourmetSpace = true;
+        amenities.gourmetArea = true; // Legacy compatibility
+      }
+      
+      // Security
+      if (featureUpper.includes('GATEKEEPER') || featureUpper.includes('PORTARIA') || featureUpper.includes('24H_GATEKEEPER')) {
+        amenities.gatekeeper = true;
+        amenities.security24h = true; // Legacy compatibility
+      }
+      if (featureUpper.includes('SECURITY_SYSTEM') || featureUpper.includes('SECURITY') || featureUpper.includes('CIRCUITO')) {
+        amenities.securitySystem = true;
+      }
+      
+      // Legacy fields
+      if (featureUpper.includes('GARDEN') || featureUpper.includes('JARDIM')) {
+        amenities.garden = true;
+      }
+      if (featureUpper.includes('BALCONY') || featureUpper.includes('VARANDA') || featureUpper.includes('SACADA')) {
+        amenities.balcony = true;
+      }
+      if (featureUpper.includes('SPORTS_FIELD') || featureUpper.includes('QUADRA')) {
+        amenities.sportsField = true;
+      }
+    });
+  } catch (error) {
+    console.error('Error mapping amenities:', error);
+  }
+  
+  return amenities;
 }
 
 export function mapProperfyResponse(response: ProperfyResponse) {

@@ -30,6 +30,7 @@ export default async function ImoveisPage({
     maxPrice: resolvedSearchParams.maxPrice ? Number(resolvedSearchParams.maxPrice) : undefined,
     minBedrooms: resolvedSearchParams.minBedrooms ? Number(resolvedSearchParams.minBedrooms) : undefined,
     minBathrooms: resolvedSearchParams.minBathrooms ? Number(resolvedSearchParams.minBathrooms) : undefined,
+    minSuites: resolvedSearchParams.minSuites ? Number(resolvedSearchParams.minSuites) : undefined,
     minParkingSpaces: resolvedSearchParams.minParkingSpaces ? Number(resolvedSearchParams.minParkingSpaces) : undefined,
     minArea: resolvedSearchParams.minArea ? Number(resolvedSearchParams.minArea) : undefined,
     maxArea: resolvedSearchParams.maxArea ? Number(resolvedSearchParams.maxArea) : undefined,

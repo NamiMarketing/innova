@@ -59,12 +59,12 @@
 }
 
 .value {
-  font-size: 1rem;
-  color: var(--foreground);
+  font-size: 16px;
+  color: var(--orange);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  padding: 4px 0;
+  padding: 2px 0;
 }
 
 .placeholder {

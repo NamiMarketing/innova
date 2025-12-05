@@ -33,17 +33,30 @@ export interface PropertyFeatures {
 }
 
 export interface PropertyAmenities {
-  pool?: boolean;
-  gym?: boolean;
-  gourmetArea?: boolean;
-  playground?: boolean;
-  partyHall?: boolean;
-  sportsField?: boolean;
-  garden?: boolean;
-  elevator?: boolean;
-  balcony?: boolean;
+  // Conveniences
   furnished?: boolean;
   airConditioning?: boolean;
+  elevator?: boolean;
+  fireplace?: boolean;
+  laundry?: boolean;
+  
+  // Leisure
+  barbecue?: boolean;
+  pool?: boolean;
+  gym?: boolean;
+  partyHall?: boolean;
+  playground?: boolean;
+  gourmetSpace?: boolean;
+  
+  // Security
+  gatekeeper?: boolean;
+  securitySystem?: boolean;
+  
+  // Legacy fields (keeping for compatibility)
+  gourmetArea?: boolean;
+  sportsField?: boolean;
+  garden?: boolean;
+  balcony?: boolean;
   security24h?: boolean;
 }
 
@@ -81,14 +94,15 @@ export interface PropertyFilters {
   minBedrooms?: number;
   maxBedrooms?: number;
   minBathrooms?: number;
+  minSuites?: number;
   minParkingSpaces?: number;
   minArea?: number;
   maxArea?: number;
   amenities?: string[];
   search?: string;
+  code?: string;
   page?: number;
   limit?: number;
-  code?: string;
 }
 
 export interface PropertyResponse {

@@ -1,12 +1,13 @@
 .container {
   height: calc(100vh - 80px);
-  background: #f9fafb;
+  background: var(--background);
   overflow: hidden;
 }
 
 .content {
   height: 100%;
-  max-width: 90rem;
+  width: 90%;
+  max-width: 1500px;
   margin: 0 auto;
-  padding: 1rem 1.5rem;
+  padding: 60px 0 0;
 }
