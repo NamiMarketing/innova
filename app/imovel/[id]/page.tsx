@@ -42,6 +42,8 @@ export default async function PropertyPage({ params }: PropertyPageProps) {
   const { id } = await params;
   const property = await getPropertyById(id);
 
+  console.log(property)
+
   if (!property) {
     notFound();
   }
@@ -220,7 +222,7 @@ export default async function PropertyPage({ params }: PropertyPageProps) {
               {/* Characteristics */}
               {property.characteristics.length > 0 && (
                 <div className={styles.characteristicsSection}>
-                  <h2 className={styles.sectionTitle}>Caracteristicas</h2>
+                  <h2 className={styles.sectionTitle}>Características</h2>
                   <div className={styles.characteristicsGrid}>
                     {property.characteristics.map((char, index) => (
                       <div key={index} className={styles.characteristicItem}>
