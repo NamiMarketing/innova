@@ -206,6 +206,7 @@
   background-color: var(--orange);
   padding: 12px 24px;
   border-radius: 6px;
+  cursor: pointer;
 }
 
 /* Mobile Responsive */

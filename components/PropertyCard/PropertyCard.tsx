@@ -157,7 +157,7 @@ export function PropertyCard({ property }: PropertyCardProps) {
                 </div>
               )}
             </div>
-            <Link className={styles.rightPrice} href={`/imovel/${property.id}`}>Ver imóvel</Link>
+            <button className={styles.rightPrice}>Ver imóvel</button>
           </div>
         </div>
       </div>
