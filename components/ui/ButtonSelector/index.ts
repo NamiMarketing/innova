@@ -1,4 +1,2 @@
-export { Selector } from './Selector';
-export type { SelectorOption } from './Selector';
 export { ButtonSelector } from './ButtonSelector';
 export type { ButtonSelectorOption } from './ButtonSelector';

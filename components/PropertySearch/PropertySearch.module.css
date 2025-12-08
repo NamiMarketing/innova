@@ -4,10 +4,79 @@
   overflow-y: auto;
   scrollbar-width: none;
   -ms-overflow-style: none;
+  padding-bottom: 120px;
 }
 
 .container::-webkit-scrollbar {
   display: none;
+}
+
+/* Filter Column Wrapper */
+.filterColumn {
+  position: sticky;
+  top: 0;
+  float: left;
+  width: 400px;
+  margin-right: 60px;
+  max-height: calc(100vh - 140px);
+  overflow-y: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.filterColumn::-webkit-scrollbar {
+  display: none;
+}
+
+/* Filter Header - Outside Aside */
+.filterHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.filterHeaderLeft {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.filterHeaderRight {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* Selected Filters Button */
+.selectedFiltersButton {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--orange);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  padding: 20px 30px;
+  font-size: 18px;
+  font-weight: 400;
+  cursor: pointer;
+  margin-bottom: 22px;
+  width: 100%;
+}
+
+.selectedCount {
+  background: #ffffff33;
+  color: var(--white);
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  font-weight: 400;
+  border: 1px solid var(--white);
 }
 
 .separator {
@@ -20,33 +89,14 @@
 
 /* Sidebar */
 .sidebar {
-  position: sticky;
-  top: 0;
-  float: left;
-  width: 400px;
   background: white;
   border-radius: 20px;
   padding: 30px;
-  overflow-y: auto;
-  max-height: calc(100vh - 140px);
-  scrollbar-width: none;
-  -ms-overflow-style: none;
-  z-index: 10;
-  margin-right: 60px;
   border: 1px solid var(--gray-medium);
 }
 
 .sidebar::-webkit-scrollbar {
   display: none;
-}
-
-.sidebarHeader {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 1.5rem;
-  padding-bottom: 1rem;
-  border-bottom: 1px solid #f3f4f6;
 }
 
 .sidebarTitle {
@@ -70,11 +120,18 @@
   margin-bottom: 6px;
 }
 
+.wrapTitle {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
 .filterTitle {
-  font-size: 0.875rem;
-  font-weight: 600;
-  color: var(--gray-dark);
-  margin: 0 0 0.75rem 0;
+  flex: 1;
+  font-size: 17px;
+  font-weight: 400;
+  color: var(--black);
+  margin: 0 0 12px 0;
 }
 
 .field {
@@ -91,6 +148,7 @@
   display: flex;
   gap:30px;
   border-bottom: 1px solid var(--gray-medium);
+  margin-bottom: 30px;
 }
 
 .typeButton {
@@ -122,7 +180,7 @@
 .priceInputs {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 6px;
 }
 
 .priceInput {
@@ -130,13 +188,15 @@
   padding: 0.625rem 0.75rem;
   border: 1px solid var(--gray-medium);
   border-radius: 6px;
-  font-size: 0.875rem;
+  font-size: 17px;
   width: 100%;
+  background-color: #d9d9d933;
 }
 
 .priceInput:focus {
   outline: none;
   border-color: var(--orange);
+  background-color: var(--white);
 }
 
 .priceInput::placeholder {
@@ -152,19 +212,19 @@
 /* Search Button */
 .searchButton {
   width: 100%;
-  padding: 0.875rem 1.5rem;
-  background: var(--orange);
+  padding: 12px 1.5rem;
+  background: var(--black);
   color: white;
   border: none;
   border-radius: 6px;
-  font-size: 1rem;
-  font-weight: 600;
+  font-size: 18px;
+  font-weight: 400;
   cursor: pointer;
   transition: background 0.2s ease;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 0.5rem;
+  gap: 15px;
   margin-top: 1rem;
 }
 
@@ -177,35 +237,20 @@
   cursor: not-allowed;
 }
 
-.spinner {
-  width: 1.25rem;
-  height: 1.25rem;
-  border: 2px solid rgba(255, 255, 255, 0.3);
-  border-top-color: white;
-  border-radius: 50%;
-  animation: spin 0.8s linear infinite;
-}
-
-@keyframes spin {
-  to {
-    transform: rotate(360deg);
-  }
-}
-
 /* Amenities Grid */
 .amenitiesGrid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 0.5rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
 }
 
 .amenityButton {
-  padding: 0.625rem 1rem;
-  border: 1px solid #e5e7eb;
+  padding: 16px 20px;
+  border: 1px solid var(--gray-medium);
   border-radius: 6px;
-  background: white;
-  font-size: 0.875rem;
-  font-weight: 500;
+  background: #d9d9d933;
+  font-size: 16px;
+  font-weight: 400;
   color: var(--gray-dark);
   cursor: pointer;
   transition: all 0.2s ease;
@@ -215,6 +260,7 @@
 .amenityButton:hover {
   border-color: var(--orange);
   color: var(--orange);
+  background-color: var(--white);
 }
 
 .amenityButtonActive {
@@ -235,7 +281,7 @@
 
 /* Header */
 .header {
-  margin-bottom: 1.5rem;
+  margin-bottom: 30px;
 }
 
 .breadcrumb {
@@ -266,35 +312,92 @@
   font-weight: 500;
 }
 
+
+/* Header Top with Sort */
+.headerTop {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 20px;
+}
+
+.headerTitle {
+  display: flex;
+  flex-direction: column;
+  margin-top: 50px;
+}
+
 .pageTitle {
-  font-size: 1.75rem;
-  font-weight: 700;
+  font-size: 24px;
+  font-weight: 500;
   color: var(--gray-dark);
-  margin: 0 0 0.25rem 0;
+  margin: 0 0 16px 0;
+  line-height: 18px;
 }
 
 .pageSubtitle {
   color: var(--gray-medium);
-  font-size: 1rem;
+  font-size: 20px;
   margin: 0;
+  line-height: 18px;
 }
 
-.resultsHeader {
+/* Sort Button */
+.sortContainer {
+  position: relative;
+}
+
+.sortButton {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  margin-bottom: 1.5rem;
+  gap: 8px;
+  padding: 15px 20px 15px 17px;
+  background: white;
+  border: 1px solid var(--gray-medium);
+  border-radius: 6px;
+  font-size: 18px;
+  line-height: 18px;
+  font-weight: 400;
+  color: var(--black);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
 }
 
-.resultsTitle {
-  font-size: 1.125rem;
-  font-weight: 600;
-  color: var(--gray-dark);
-  margin: 0;
+.sortDropdown {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  margin-top: 4px;
+  background: white;
+  border: 1px solid var(--gray-medium);
+  border-radius: 6px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  z-index: 100;
+  min-width: 180px;
+  overflow: hidden;
 }
 
-.count {
+.sortOption {
+  display: block;
+  width: 100%;
+  padding: 12px 16px;
+  background: none;
+  border: none;
+  font-size: 14px;
+  color: var(--black);
+  cursor: pointer;
+  text-align: left;
+  transition: background 0.2s ease;
+}
+
+.sortOption:hover {
+  background: #f5f5f5;
+}
+
+.sortOptionActive {
   color: var(--orange);
+  font-weight: 500;
 }
 
 .grid {

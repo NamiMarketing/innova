@@ -10,10 +10,10 @@ export const revalidate = 3600;
 // Define the cities to pre-render at build time
 const STATIC_CITIES = [
   { slug: 'curitiba', name: 'Curitiba' },
-  { slug: 'sao-jose-dos-pinhais', name: 'Sao Jose dos Pinhais' },
+  { slug: 'sao-jose-dos-pinhais', name: 'São José dos Pinhais' },
   { slug: 'colombo', name: 'Colombo' },
   { slug: 'pinhais', name: 'Pinhais' },
-  { slug: 'araucaria', name: 'Araucaria' },
+  { slug: 'araucaria', name: 'Araucária' },
 ];
 
 // Generate static params for SEO - these pages will be pre-rendered at build time

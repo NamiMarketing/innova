@@ -5,18 +5,93 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { Property, PropertyFilters, PropertyResponse, PropertyType, PropertyCategory } from '@/types/property';
 import { PropertyCard } from '@/components/PropertyCard';
-import { Selector, SelectorOption } from '@/components/ui';
+import { Selector, SelectorOption, ButtonSelector } from '@/components/ui';
 import styles from './PropertySearch.module.css';
 import houseIcon from '@/img/icons/casa-icon.svg';
 import cityIcon from '@/img/icons/city-icon.svg';
 import neighborhoodIcon from '@/img/icons/bairro-icon.svg';
+import filterIcon from '@/img/icons/filter.svg';
+import trashIcon from '@/img/icons/trash.svg';
+import whiteFilterIcon from '@/img/icons/white-filter.svg';
+import ordenarIcon from '@/img/icons/ordenar-icon.svg';
+
+// Formata número para moeda brasileira (R$ X.XXX,XX)
+const formatCurrency = (value: number | undefined): string => {
+  if (value === undefined || value === 0) return '';
+  return value.toLocaleString('pt-BR', {
+    style: 'currency',
+    currency: 'BRL',
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  });
+};
+
+// Remove formatação e retorna o número
+const parseCurrency = (value: string): number | undefined => {
+  if (!value) return undefined;
+  // Remove R$, pontos e espaços, substitui vírgula por ponto
+  const cleaned = value
+    .replace(/R\$\s?/g, '')
+    .replace(/\./g, '')
+    .replace(',', '.')
+    .trim();
+  const num = parseFloat(cleaned);
+  return isNaN(num) ? undefined : num;
+};
+
+// Formata enquanto digita
+const formatCurrencyInput = (value: string): string => {
+  // Remove tudo exceto números
+  const numbers = value.replace(/\D/g, '');
+  if (!numbers) return '';
+  
+  // Converte para centavos e depois para reais
+  const cents = parseInt(numbers, 10);
+  const reais = cents / 100;
+  
+  return reais.toLocaleString('pt-BR', {
+    style: 'currency',
+    currency: 'BRL',
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  });
+};
+
+// Formata área para exibição (X m²)
+const formatArea = (value: number | undefined): string => {
+  if (value === undefined || value === 0) return '';
+  return `${value.toLocaleString('pt-BR')} m²`;
+};
+
+// Remove formatação de área e retorna o número
+const parseArea = (value: string): number | undefined => {
+  if (!value) return undefined;
+  // Remove "m²", espaços e pontos de milhar
+  const cleaned = value
+    .replace(/m²/gi, '')
+    .replace(/\./g, '')
+    .replace(',', '.')
+    .trim();
+  const num = parseFloat(cleaned);
+  return isNaN(num) ? undefined : Math.round(num);
+};
+
+// Formata área enquanto digita
+const formatAreaInput = (value: string): string => {
+  // Remove tudo exceto números
+  const numbers = value.replace(/\D/g, '');
+  if (!numbers) return '';
+  
+  const num = parseInt(numbers, 10);
+  return `${num.toLocaleString('pt-BR')} m²`;
+};
 
 interface PropertySearchProps {
   initialData: PropertyResponse;
   initialFilters?: PropertyFilters;
 }
 
-const CITIES = ['Curitiba', 'Sao Jose dos Pinhais', 'Colombo', 'Pinhais', 'Araucaria'];
+const CITIES = ['Curitiba', 'São José dos Pinhais', 'Colombo', 'Pinhais', 'Araucária'];
 
 const TYPE_LABELS: Record<string, string> = {
   apartment: 'Apartamento',
@@ -28,10 +103,10 @@ const TYPE_LABELS: Record<string, string> = {
 
 const NEIGHBORHOODS_BY_CITY: Record<string, string[]> = {
   'Curitiba': ['Centro', 'Batel', 'Água Verde', 'Bigorrilho', 'Cabral', 'Juvevê', 'Alto da XV', 'Cristo Rei', 'Rebouças', 'Santa Felicidade'],
-  'Sao Jose dos Pinhais': ['Centro', 'Afonso Pena', 'Cidade Jardim', 'São Pedro'],
+  'São José dos Pinhais': ['Centro', 'Afonso Pena', 'Cidade Jardim', 'São Pedro'],
   'Colombo': ['Centro', 'Maracanã', 'Atuba'],
   'Pinhais': ['Centro', 'Emiliano Perneta', 'Weissópolis'],
-  'Araucaria': ['Centro', 'Costeira', 'Capela Velha'],
+  'Araucária': ['Centro', 'Costeira', 'Capela Velha'],
 };
 
 const toOptions = (items: string[]): SelectorOption[] =>
@@ -41,9 +116,14 @@ const getCategoryLabel = (cat: string) => TYPE_LABELS[cat] || cat;
 
 export function PropertySearch({ initialData, initialFilters = {} }: PropertySearchProps) {
   const [filters, setFilters] = useState<PropertyFilters>(initialFilters);
-  const [properties, setProperties] = useState<Property[]>(initialData.data);
-  const [total, setTotal] = useState(initialData.total);
+  const [appliedFilters, setAppliedFilters] = useState<PropertyFilters>(initialFilters); // Filtros aplicados após busca
+  const [properties, setProperties] = useState<Property[]>(initialData.data || []);
+  const [total, setTotal] = useState(initialData.total ?? 0);
   const [loading, setLoading] = useState(false);
+  
+  // Sorting state
+  const [sortOrder, setSortOrder] = useState<'asc' | 'desc' | ''>('');
+  const [showSortDropdown, setShowSortDropdown] = useState(false);
 
   // Multi-select states
   const [selectedCategories, setSelectedCategories] = useState<string[]>(
@@ -55,6 +135,48 @@ export function PropertySearch({ initialData, initialFilters = {} }: PropertySea
   const [selectedAmenities, setSelectedAmenities] = useState<string[]>(
     initialFilters.amenities || []
   );
+
+  // States for formatted price display
+  const [minPriceDisplay, setMinPriceDisplay] = useState(
+    formatCurrency(initialFilters.minPrice)
+  );
+  const [maxPriceDisplay, setMaxPriceDisplay] = useState(
+    formatCurrency(initialFilters.maxPrice)
+  );
+
+  // Handlers for price input
+  const handleMinPriceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const formatted = formatCurrencyInput(e.target.value);
+    setMinPriceDisplay(formatted);
+    setFilters({ ...filters, minPrice: parseCurrency(formatted) });
+  };
+
+  const handleMaxPriceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const formatted = formatCurrencyInput(e.target.value);
+    setMaxPriceDisplay(formatted);
+    setFilters({ ...filters, maxPrice: parseCurrency(formatted) });
+  };
+
+  // States for formatted area display
+  const [minAreaDisplay, setMinAreaDisplay] = useState(
+    formatArea(initialFilters.minArea)
+  );
+  const [maxAreaDisplay, setMaxAreaDisplay] = useState(
+    formatArea(initialFilters.maxArea)
+  );
+
+  // Handlers for area input
+  const handleMinAreaChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const formatted = formatAreaInput(e.target.value);
+    setMinAreaDisplay(formatted);
+    setFilters({ ...filters, minArea: parseArea(formatted) });
+  };
+
+  const handleMaxAreaChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const formatted = formatAreaInput(e.target.value);
+    setMaxAreaDisplay(formatted);
+    setFilters({ ...filters, maxArea: parseArea(formatted) });
+  };
 
   const fetchProperties = useCallback(async (newFilters: PropertyFilters) => {
     setLoading(true);
@@ -79,8 +201,8 @@ export function PropertySearch({ initialData, initialFilters = {} }: PropertySea
       const response = await fetch(`/api/properties?${params.toString()}`);
       const data: PropertyResponse = await response.json();
 
-      setProperties(data.data);
-      setTotal(data.total);
+      setProperties(data.data || []);
+      setTotal(data.total ?? 0);
     } catch (error) {
       console.error('Error fetching properties:', error);
     } finally {
@@ -110,15 +232,21 @@ export function PropertySearch({ initialData, initialFilters = {} }: PropertySea
       neighborhood: selectedNeighborhoods.length > 0 ? selectedNeighborhoods.join(',') : undefined,
       amenities: selectedAmenities.length > 0 ? selectedAmenities : undefined,
     };
+    setAppliedFilters(newFilters); // Salva os filtros aplicados
     fetchProperties(newFilters);
   };
 
   const handleReset = () => {
     const resetFilters: PropertyFilters = {};
     setFilters(resetFilters);
+    setAppliedFilters(resetFilters); // Limpa também os filtros aplicados
     setSelectedCategories([]);
     setSelectedNeighborhoods([]);
     setSelectedAmenities([]);
+    setMinPriceDisplay('');
+    setMaxPriceDisplay('');
+    setMinAreaDisplay('');
+    setMaxAreaDisplay('');
     fetchProperties(resetFilters);
   };
 
@@ -146,49 +274,72 @@ export function PropertySearch({ initialData, initialFilters = {} }: PropertySea
     [availableNeighborhoods]
   );
 
-  const bedroomOptions: SelectorOption[] = [
-    { value: '1', label: '1+' },
-    { value: '2', label: '2+' },
-    { value: '3', label: '3+' },
-    { value: '4', label: '4+' },
+  const quantityOptions = [
+    { value: '1', label: '+1' },
+    { value: '2', label: '+2' },
+    { value: '3', label: '+3' },
+    { value: '4', label: '+4' },
   ];
 
-  const bathroomOptions: SelectorOption[] = [
-    { value: '1', label: '1+' },
-    { value: '2', label: '2+' },
-    { value: '3', label: '3+' },
-    { value: '4', label: '4+' },
-  ];
+  // Sort properties by price
+  const sortedProperties = useMemo(() => {
+    if (!sortOrder) return properties;
+    return [...properties].sort((a, b) => {
+      if (sortOrder === 'asc') return a.price - b.price;
+      return b.price - a.price;
+    });
+  }, [properties, sortOrder]);
 
-  const suiteOptions: SelectorOption[] = [
-    { value: '1', label: '1+' },
-    { value: '2', label: '2+' },
-    { value: '3', label: '3+' },
-    { value: '4', label: '4+' },
-  ];
+  const getSortLabel = () => {
+    if (sortOrder === 'asc') return 'Menor preço';
+    if (sortOrder === 'desc') return 'Maior preço';
+    return 'Ordenar';
+  };
 
-  const parkingOptions: SelectorOption[] = [
-    { value: '1', label: '1+' },
-    { value: '2', label: '2+' },
-    { value: '3', label: '3+' },
-    { value: '4', label: '4+' },
-  ];
+  // Count active filters
+  const activeFiltersCount = useMemo(() => {
+    let count = 0;
+    if (filters.type) count++;
+    if (filters.city) count++;
+    if (filters.minPrice || filters.maxPrice) count++;
+    if (filters.minArea || filters.maxArea) count++;
+    if (filters.minBedrooms) count++;
+    if (filters.minBathrooms) count++;
+    if (filters.minSuites) count++;
+    if (filters.minParkingSpaces) count++;
+    if (filters.code) count++;
+    count += selectedCategories.length;
+    count += selectedNeighborhoods.length;
+    count += selectedAmenities.length;
+    return count;
+  }, [filters, selectedCategories, selectedNeighborhoods, selectedAmenities]);
 
   return (
     <div className={styles.container}>
-      {/* Sidebar Filters */}
-      <aside className={styles.sidebar}>
-        <div className={styles.sidebarHeader}>
-          <div className={styles.leftSidebarHeader}>
+      {/* Filter Column Wrapper */}
+      <div className={styles.filterColumn}>
+        {/* Filter Header - Outside Aside */}
+        <div className={styles.filterHeader}>
+          <div className={styles.filterHeaderLeft}>
+            <Image src={filterIcon} alt="icone para filtros" />
             <h3 className={styles.sidebarTitle}>Filtros</h3>
           </div>
-          <div className={styles.rightSidebarHeader}>
+          <div className={styles.filterHeaderRight}>
+            <Image src={trashIcon} alt="icone para limpar filtros" />
             <button type="button" onClick={handleReset} className={styles.clearButton}>
               Limpar tudo
             </button>
           </div>
         </div>
 
+        {activeFiltersCount > 0 && (
+          <button type="button" className={styles.selectedFiltersButton}>
+            Selecionados <span className={styles.selectedCount}>{activeFiltersCount}</span>
+          </button>
+        )}
+
+        {/* Sidebar Filters */}
+        <aside className={styles.sidebar}>
         <div className={styles.filterSection}>
           <div className={styles.typeButtons}>
             <button
@@ -260,21 +411,23 @@ export function PropertySearch({ initialData, initialFilters = {} }: PropertySea
         <span className={styles.separator}></span>
 
         <div className={styles.filterSection}>
-          <h4 className={styles.filterTitle}>Preço</h4>
+          <div className={styles.wrapTitle}>
+          <h4 className={styles.filterTitle}>Preço a partir de</h4>
+          <h4 className={styles.filterTitle}>Até</h4>
+          </div>
           <div className={styles.priceInputs}>
             <input
-              type="number"
-              value={filters.minPrice || ''}
-              onChange={(e) => setFilters({ ...filters, minPrice: e.target.value ? Number(e.target.value) : undefined })}
-              placeholder="Mínimo"
+              type="text"
+              value={minPriceDisplay}
+              onChange={handleMinPriceChange}
+              placeholder="R$ 0,00"
               className={styles.priceInput}
             />
-            <span className={styles.priceSeparator}>até</span>
             <input
-              type="number"
-              value={filters.maxPrice || ''}
-              onChange={(e) => setFilters({ ...filters, maxPrice: e.target.value ? Number(e.target.value) : undefined })}
-              placeholder="Máximo"
+              type="text"
+              value={maxPriceDisplay}
+              onChange={handleMaxPriceChange}
+              placeholder="R$ 0,00"
               className={styles.priceInput}
             />
           </div>
@@ -283,65 +436,67 @@ export function PropertySearch({ initialData, initialFilters = {} }: PropertySea
         <span className={styles.separator}></span>
 
         <div className={styles.filterSection}>
-          <h4 className={styles.filterTitle}>Área útil (m²)</h4>
+          <ButtonSelector
+            options={quantityOptions}
+            value={filters.minBedrooms?.toString() || ''}
+            onChange={(v: string) => setFilters({ ...filters, minBedrooms: v ? Number(v) : undefined })}
+            label="Quartos"
+          />
+        </div>
+
+        <div className={styles.filterSection}>
+          <ButtonSelector
+            options={quantityOptions}
+            value={filters.minSuites?.toString() || ''}
+            onChange={(v: string) => setFilters({ ...filters, minSuites: v ? Number(v) : undefined })}
+            label="Suítes"
+          />
+        </div>
+
+        <div className={styles.filterSection}>
+          <ButtonSelector
+            options={quantityOptions}
+            value={filters.minBathrooms?.toString() || ''}
+            onChange={(v: string) => setFilters({ ...filters, minBathrooms: v ? Number(v) : undefined })}
+            label="Banheiros"
+          />
+        </div>
+
+        <div className={styles.filterSection}>
+          <ButtonSelector
+            options={quantityOptions}
+            value={filters.minParkingSpaces?.toString() || ''}
+            onChange={(v: string) => setFilters({ ...filters, minParkingSpaces: v ? Number(v) : undefined })}
+            label="Garagem"
+          />
+        </div>
+
+        <span className={styles.separator}></span>
+
+        <div className={styles.filterSection}>
+          <div className={styles.wrapTitle}>
+          <h4 className={styles.filterTitle}>Área útil (m²) de</h4>
+          <h4 className={styles.filterTitle}>Até</h4>
+          </div>
           <div className={styles.priceInputs}>
             <input
-              type="number"
-              value={filters.minArea || ''}
-              onChange={(e) => setFilters({ ...filters, minArea: e.target.value ? Number(e.target.value) : undefined })}
-              placeholder="De"
+              type="text"
+              value={minAreaDisplay}
+              onChange={handleMinAreaChange}
+              placeholder="0 m²"
               className={styles.priceInput}
             />
-            <span className={styles.priceSeparator}>até</span>
             <input
-              type="number"
-              value={filters.maxArea || ''}
-              onChange={(e) => setFilters({ ...filters, maxArea: e.target.value ? Number(e.target.value) : undefined })}
-              placeholder="Até"
+              type="text"
+              value={maxAreaDisplay}
+              onChange={handleMaxAreaChange}
+              placeholder="0 m²"
               className={styles.priceInput}
             />
           </div>
         </div>
 
-        <div className={styles.filterSection}>
-          <Selector
-            options={bedroomOptions}
-            value={filters.minBedrooms?.toString() || ''}
-            onChange={(v) => setFilters({ ...filters, minBedrooms: v ? Number(v) : undefined })}
-            label="Quartos"
-            placeholder="Qualquer"
-          />
-        </div>
-
-        <div className={styles.filterSection}>
-          <Selector
-            options={bathroomOptions}
-            value={filters.minBathrooms?.toString() || ''}
-            onChange={(v) => setFilters({ ...filters, minBathrooms: v ? Number(v) : undefined })}
-            label="Banheiros"
-            placeholder="Qualquer"
-          />
-        </div>
-
-        <div className={styles.filterSection}>
-          <Selector
-            options={suiteOptions}
-            value={filters.minSuites?.toString() || ''}
-            onChange={(v) => setFilters({ ...filters, minSuites: v ? Number(v) : undefined })}
-            label="Suites"
-            placeholder="Qualquer"
-          />
-        </div>
-
-        <div className={styles.filterSection}>
-          <Selector
-            options={parkingOptions}
-            value={filters.minParkingSpaces?.toString() || ''}
-            onChange={(v) => setFilters({ ...filters, minParkingSpaces: v ? Number(v) : undefined })}
-            label="Vagas"
-            placeholder="Qualquer"
-          />
-        </div>
+        <span className={styles.separator}></span>
 
         <div className={styles.filterSection}>
           <h4 className={styles.filterTitle}>Conveniências</h4>
@@ -370,6 +525,8 @@ export function PropertySearch({ initialData, initialFilters = {} }: PropertySea
             ))}
           </div>
         </div>
+
+        <span className={styles.separator}></span>
 
         <div className={styles.filterSection}>
           <h4 className={styles.filterTitle}>Lazer</h4>
@@ -400,6 +557,8 @@ export function PropertySearch({ initialData, initialFilters = {} }: PropertySea
           </div>
         </div>
 
+        <span className={styles.separator}></span>
+
         <div className={styles.filterSection}>
           <h4 className={styles.filterTitle}>Segurança</h4>
           <div className={styles.amenitiesGrid}>
@@ -426,33 +585,65 @@ export function PropertySearch({ initialData, initialFilters = {} }: PropertySea
         </div>
 
         <button type="button" onClick={handleSubmit} className={styles.searchButton} disabled={loading}>
-          {loading ? <span className={styles.spinner} /> : 'Buscar imóveis'}
+          <Image src={whiteFilterIcon} alt="icone para filtros" />
+          Selecionar filtros
         </button>
       </aside>
+      </div>
 
       {/* Results */}
       <main className={styles.results}>
         {/* Header */}
         <header className={styles.header}>
-          <nav className={styles.breadcrumb}>
-            <Link href="/" className={styles.breadcrumbLink}>Home</Link>
-            <span className={styles.breadcrumbSeparator}>/</span>
-            <Link href="/imoveis" className={styles.breadcrumbLink}>Imóveis</Link>
-            {filters.city && (
-              <>
-                <span className={styles.breadcrumbSeparator}>/</span>
-                <span className={styles.breadcrumbCurrent}>{filters.city}</span>
-              </>
-            )}
-          </nav>
-          <h1 className={styles.pageTitle}>
-            {filters.city ? `Imóveis em ${filters.city}` : 'Imóveis à Venda e Aluguel'}
-          </h1>
-          <p className={styles.pageSubtitle}>
-            {filters.city
-              ? `Encontre apartamentos, casas e terrenos em ${filters.city}`
-              : 'Encontre o imóvel perfeito para você'}
-          </p>
+          <div className={styles.headerTop}>
+            <div className={styles.headerTitle}>
+              <h1 className={styles.pageTitle}>
+                {appliedFilters.city ? `Imóveis em ${appliedFilters.city} - PR` : 'Imóveis à Venda e Aluguel'}
+              </h1>
+              <p className={styles.pageSubtitle}>
+                {properties.length === 0 ? 'Encontre seu imóvel perfeito' : `Encontramos ${properties.length} imóveis com seus critérios de busca`}
+              </p>
+            </div>
+            
+            {/* Sort Dropdown */}
+            <div className={styles.sortContainer}>
+              <button 
+                type="button" 
+                className={styles.sortButton}
+                onClick={() => setShowSortDropdown(!showSortDropdown)}
+              >
+                <Image src={ordenarIcon} alt="ícone para ordenar" />
+                {getSortLabel()}
+              </button>
+              {showSortDropdown && (
+                <div className={styles.sortDropdown}>
+                  <button 
+                    type="button"
+                    className={`${styles.sortOption} ${sortOrder === 'asc' ? styles.sortOptionActive : ''}`}
+                    onClick={() => { setSortOrder('asc'); setShowSortDropdown(false); }}
+                  >
+                    Menor preço
+                  </button>
+                  <button 
+                    type="button"
+                    className={`${styles.sortOption} ${sortOrder === 'desc' ? styles.sortOptionActive : ''}`}
+                    onClick={() => { setSortOrder('desc'); setShowSortDropdown(false); }}
+                  >
+                    Maior preço
+                  </button>
+                  {sortOrder && (
+                    <button 
+                      type="button"
+                      className={styles.sortOption}
+                      onClick={() => { setSortOrder(''); setShowSortDropdown(false); }}
+                    >
+                      Limpar ordenação
+                    </button>
+                  )}
+                </div>
+              )}
+            </div>
+          </div>
         </header>
 
         {loading ? (
@@ -477,13 +668,8 @@ export function PropertySearch({ initialData, initialFilters = {} }: PropertySea
           </div>
         ) : (
           <>
-            <div className={styles.resultsHeader}>
-              <h2 className={styles.resultsTitle}>
-                <span className={styles.count}>{total}</span> {total === 1 ? 'imóvel encontrado' : 'imóveis encontrados'}
-              </h2>
-            </div>
             <div className={styles.grid}>
-              {properties.map((property) => (
+              {sortedProperties.map((property) => (
                 <PropertyCard key={property.id} property={property} />
               ))}
             </div>

@@ -11,7 +11,7 @@ interface SearchFiltersProps {
   showAdvancedToggle?: boolean;
 }
 
-const CITIES = ['Curitiba', 'Sao Jose dos Pinhais', 'Colombo', 'Pinhais', 'Araucaria'];
+const CITIES = ['Curitiba', 'São José dos Pinhais', 'Colombo', 'Pinhais', 'Araucária'];
 const CATEGORIES: { value: PropertyCategory; label: string }[] = [
   { value: 'apartment', label: 'Apartamento' },
   { value: 'house', label: 'Casa' },

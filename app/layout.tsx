@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
+import { FavoritesProvider } from "@/contexts/FavoritesContext";
 import styles from "./layout.module.css";
 
 import { Ubuntu } from "next/font/google";
@@ -25,12 +26,15 @@ export default function RootLayout({
   return (
     <html lang="pt-BR">
       <body className={`${styles.body} ${ubuntu.variable} antialiased`}>
-        <Header />
-        <main className={styles.main}>
-          {children}
-        </main>
-        <Footer />
+        <FavoritesProvider>
+          <Header />
+          <main className={styles.main}>
+            {children}
+          </main>
+          <Footer />
+        </FavoritesProvider>
       </body>
     </html>
   );
 }
+

@@ -3,12 +3,15 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { useState } from 'react';
+import { useFavorites } from '@/contexts/FavoritesContext';
 import styles from './Header.module.css';
 import logoNav from '@/img/logo-nav.png';
 import login from '@/img/icons/login.svg';
+import favorito from '@/img/icons/favorito.svg';
 
 export function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const { favorites } = useFavorites();
 
   return (
     <header className={styles.header}>
@@ -32,6 +35,18 @@ export function Header() {
             <Link href="/anunciar" className={styles.navLink}>Anunciar</Link>
             <Link href="/trabalhe-conosco" className={styles.navLink}>Trabalhe Conosco</Link>
             {/* <Link href="/blog" className={styles.navLink}>Blog</Link> */}
+            <Link href="/favoritos" className={styles.favoritesLink}>
+              <Image
+                src={favorito}
+                width={16}
+                height={14}
+                alt='ícone de coração para favoritos'
+              />
+              Favoritos
+              {favorites.length > 0 && (
+                <span className={styles.favoritesBadge}>{favorites.length}</span>
+              )}
+            </Link>
             <Link href="/area-do-cliente" className={styles.login}>
               <Image
                 src={login}
