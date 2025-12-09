@@ -25,10 +25,13 @@ export function PropertySwiper({ title, properties }: PropertySwiperProps) {
   useEffect(() => {
     if (swiperRef.current && prevEl && nextEl) {
       const swiper = swiperRef.current;
-      if (typeof swiper.params.navigation !== 'boolean' && swiper.params.navigation) {
+      if (
+        typeof swiper.params.navigation !== 'boolean' &&
+        swiper.params.navigation
+      ) {
         swiper.params.navigation.prevEl = prevEl;
         swiper.params.navigation.nextEl = nextEl;
-        
+
         // Reinitialize navigation
         swiper.navigation.destroy();
         swiper.navigation.init();
@@ -49,16 +52,26 @@ export function PropertySwiper({ title, properties }: PropertySwiperProps) {
           Ver todos
         </Link>
       </div>
-      
+
       <div className={styles.swiperWrapper}>
         {/* Botão Anterior - Fora do Swiper */}
-        <button 
+        <button
           ref={(node) => setPrevEl(node)}
-          className={`${styles.navButton} ${styles.navButtonPrev}`} 
+          className={`${styles.navButton} ${styles.navButtonPrev}`}
           aria-label="Anterior"
         >
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth={2}
+            stroke="currentColor"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M15.75 19.5L8.25 12l7.5-7.5"
+            />
           </svg>
         </button>
 
@@ -69,20 +82,27 @@ export function PropertySwiper({ title, properties }: PropertySwiperProps) {
           }}
           spaceBetween={20}
           slidesPerView={1}
+          centeredSlides={true}
           draggable={true}
           navigation={{
             prevEl,
             nextEl,
           }}
           breakpoints={{
-            640: {
+            768: {
               slidesPerView: 2,
+              centeredSlides: false,
+              spaceBetween: 20,
             },
             1024: {
               slidesPerView: 3,
+              centeredSlides: false,
+              spaceBetween: 20,
             },
             1280: {
               slidesPerView: 3,
+              centeredSlides: false,
+              spaceBetween: 20,
             },
           }}
           className={styles.swiper}
@@ -95,13 +115,23 @@ export function PropertySwiper({ title, properties }: PropertySwiperProps) {
         </Swiper>
 
         {/* Botão Próximo - Fora do Swiper */}
-        <button 
+        <button
           ref={(node) => setNextEl(node)}
-          className={`${styles.navButton} ${styles.navButtonNext}`} 
+          className={`${styles.navButton} ${styles.navButtonNext}`}
           aria-label="Próximo"
         >
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth={2}
+            stroke="currentColor"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M8.25 4.5l7.5 7.5-7.5 7.5"
+            />
           </svg>
         </button>
       </div>

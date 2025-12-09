@@ -153,23 +153,82 @@
 }
 
 /* Mobile Responsive */
-@media (max-width: 640px) {
+@media (max-width: 767px) {
   .card {
     flex-direction: column;
+    width: 280px !important;
+    height: 390px !important;
   }
 
   .imageContainer {
     width: 100%;
-    height: 200px;
-    min-height: auto;
+    height: 180px !important;
+    aspect-ratio: unset !important;
+    flex-shrink: 0;
+  }
+
+  .slideContent {
+    height: 180px;
+    aspect-ratio: unset;
+  }
+
+  .content {
+    padding: 15px;
+    flex: 1;
+    overflow: hidden;
+  }
+
+  .typeContainer {
+    font-size: 14px;
+    gap: 5px;
   }
 
   .priceContainer {
     flex-direction: column;
     align-items: flex-start;
+    margin-bottom: 10px;
+    gap: 0.5rem;
+  }
+
+  .price {
+    font-size: 18px;
+    line-height: 18px;
+  }
+
+  .address {
+    font-size: 15px;
+    margin-bottom: 15px;
+    line-height: 18px;
+  }
+
+  .features {
+    gap: 15px;
+    font-size: 0.8125rem;
+  }
+
+  .feature {
+    gap: 5px;
   }
 
   .extraCosts {
     text-align: left;
+    font-size: 0.6875rem;
+  }
+
+  .codeBadge {
+    bottom: 12px;
+    left: 15px;
+    padding: 5px 10px;
+    font-size: 14px;
+  }
+
+  .navigation {
+    bottom: 12px;
+    right: 15px;
+  }
+
+  .navButton {
+    width: 26px;
+    height: 26px;
   }
 }

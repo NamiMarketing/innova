@@ -48,6 +48,20 @@
   border: none;
   cursor: pointer;
   transition: all 0.3s ease;
+
+  &:hover {
+    opacity: 0.8;
+    transform: translateY(-50%) scale(1.05);
+  }
+
+  &:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+  }
+
+  svg {
+    width: 20px;
+  }
 }
 
 .navButtonPrev {
@@ -58,66 +72,54 @@
   right: 20px;
 }
 
-.navButton:hover {
-  opacity: 0.8;
-  transform: translateY(-50%) scale(1.05);
-}
-
-.navButton:disabled {
-  opacity: 0.3;
-  cursor: not-allowed;
-}
-
-.navButton svg {
-  width: 20px;
-}
-
 .swiper {
   padding-left: 100px;
+
+  :global(.swiper-slide) {
+    width: 400px !important;
+  }
 }
 
-.swiper :global(.swiper-slide){
-  width: 400px !important;
-}
-
-@media (max-width: 768px) {
+/* Media Queries */
+@media (max-width: 767px) {
   .container {
     padding: 40px 0;
   }
 
   .titleContainer {
     padding: 0 20px;
-  }
-
-  .swiperWrapper {
-    overflow: visible;
-  }
-
-  .navButtonPrev {
-    left: 10px;
-  }
-
-  .navButtonNext {
-    right: 10px;
-  }
-
-  .swiper {
-    padding-left: 20px;
+    margin-bottom: 30px;
   }
 
   .title {
     font-size: 1.5rem;
-    margin-bottom: 1.5rem;
   }
 
+  /* Hide "Ver todos" link on mobile */
+  .link {
+    display: none;
+  }
+
+  .swiperWrapper {
+    overflow: hidden;
+    width: 100%;
+  }
+
+  /* Hide navigation arrows on mobile */
   .navButton {
-    width: 36px;
-    height: 36px;
+    display: none;
   }
 
-  .navButton svg {
-    width: 10px;
-    height: 14px;
+  .swiper {
+    padding-left: 0;
+    padding-right: 0;
+    width: 100%;
+
+    :global(.swiper-slide) {
+      width: 280px !important;
+      height: 390px !important;
+      display: flex;
+      justify-content: center;
+    }
   }
 }
-

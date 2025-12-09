@@ -18,7 +18,11 @@ interface GalleryProps {
   virtualTourUrl?: string;
 }
 
-export default function Gallery({ images, title, virtualTourUrl }: GalleryProps) {
+export default function Gallery({
+  images,
+  title,
+  virtualTourUrl,
+}: GalleryProps) {
   const [activeIndex, setActiveIndex] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [expandedIndex, setExpandedIndex] = useState<number | null>(null);
@@ -64,13 +68,17 @@ export default function Gallery({ images, title, virtualTourUrl }: GalleryProps)
 
   const handleExpandedPrev = () => {
     if (expandedIndex !== null) {
-      setExpandedIndex(expandedIndex > 0 ? expandedIndex - 1 : images.length - 1);
+      setExpandedIndex(
+        expandedIndex > 0 ? expandedIndex - 1 : images.length - 1
+      );
     }
   };
 
   const handleExpandedNext = () => {
     if (expandedIndex !== null) {
-      setExpandedIndex(expandedIndex < images.length - 1 ? expandedIndex + 1 : 0);
+      setExpandedIndex(
+        expandedIndex < images.length - 1 ? expandedIndex + 1 : 0
+      );
     }
   };
 
@@ -138,13 +146,71 @@ export default function Gallery({ images, title, virtualTourUrl }: GalleryProps)
         <div className={styles.galleryOverlay}>
           <div className={styles.galleryActions}>
             <button className={styles.favoriteButton}>
-              <svg className={styles.favoriteIcon} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+              <svg
+                className={styles.favoriteIcon}
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
+                />
               </svg>
               Favoritar
             </button>
           </div>
         </div>
+
+        {/* Mobile Navigation Arrows */}
+        {images.length > 1 && (
+          <div className={styles.mobileImageNavigation}>
+            <button
+              type="button"
+              onClick={handlePrev}
+              className={`${styles.mobileNavArrow} ${styles.mobileNavArrowLeft}`}
+              aria-label="Foto anterior"
+            >
+              <svg
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                width="20"
+                height="20"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2.5}
+                  d="M15 19l-7-7 7-7"
+                />
+              </svg>
+            </button>
+            <button
+              type="button"
+              onClick={handleNext}
+              className={`${styles.mobileNavArrow} ${styles.mobileNavArrowRight}`}
+              aria-label="Próxima foto"
+            >
+              <svg
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                width="20"
+                height="20"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2.5}
+                  d="M9 5l7 7-7 7"
+                />
+              </svg>
+            </button>
+          </div>
+        )}
 
         <div className={styles.galleryButtons}>
           {virtualTourUrl && (
@@ -154,16 +220,41 @@ export default function Gallery({ images, title, virtualTourUrl }: GalleryProps)
               rel="noopener noreferrer"
               className={styles.tourButton}
             >
-              <svg className={styles.tourIcon} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9" />
+              <svg
+                className={styles.tourIcon}
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"
+                />
               </svg>
               360°
             </a>
           )}
           <button className={styles.viewAllPhotos} onClick={openModal}>
-            <svg className={styles.cameraIcon} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
+            <svg
+              className={styles.cameraIcon}
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"
+              />
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"
+              />
             </svg>
             Ver todas as fotos
           </button>
@@ -179,8 +270,19 @@ export default function Gallery({ images, title, virtualTourUrl }: GalleryProps)
             className={`${styles.carouselArrow} ${styles.carouselArrowLeft}`}
             aria-label="Foto anterior"
           >
-            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" width="16" height="16">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+            <svg
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              width="16"
+              height="16"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M15 19l-7-7 7-7"
+              />
             </svg>
           </button>
           <div className={styles.thumbnailTrack} ref={trackRef}>
@@ -188,7 +290,9 @@ export default function Gallery({ images, title, virtualTourUrl }: GalleryProps)
               <button
                 key={img.id || index}
                 type="button"
-                ref={(el) => { thumbnailRefs.current[index] = el; }}
+                ref={(el) => {
+                  thumbnailRefs.current[index] = el;
+                }}
                 onClick={() => handleSelectImage(index)}
                 className={`${styles.thumbnailItem} ${index === activeIndex ? styles.thumbnailActive : ''}`}
               >
@@ -207,8 +311,19 @@ export default function Gallery({ images, title, virtualTourUrl }: GalleryProps)
             className={`${styles.carouselArrow} ${styles.carouselArrowRight}`}
             aria-label="Proxima foto"
           >
-            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" width="16" height="16">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+            <svg
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              width="16"
+              height="16"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M9 5l7 7-7 7"
+              />
             </svg>
           </button>
         </div>
@@ -229,28 +344,58 @@ export default function Gallery({ images, title, virtualTourUrl }: GalleryProps)
                 closeModal();
               }
             }}
-            aria-label={expandedIndex !== null ? "Voltar" : "Fechar"}
+            aria-label={expandedIndex !== null ? 'Voltar' : 'Fechar'}
           >
             {expandedIndex !== null ? (
-              <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" width="24" height="24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+              <svg
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                width="24"
+                height="24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M15 19l-7-7 7-7"
+                />
               </svg>
             ) : (
-              <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" width="24" height="24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              <svg
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                width="24"
+                height="24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M6 18L18 6M6 6l12 12"
+                />
               </svg>
             )}
           </button>
 
           {/* Expanded Image View */}
           {expandedIndex !== null && (
-            <div className={styles.expandedView} onClick={(e) => {
-              e.stopPropagation();
-              collapseImage();
-            }}>
-              <div className={styles.expandedImageWrapper} onClick={(e) => e.stopPropagation()}>
+            <div
+              className={styles.expandedView}
+              onClick={(e) => {
+                e.stopPropagation();
+                collapseImage();
+              }}
+            >
+              <div
+                className={styles.expandedImageWrapper}
+                onClick={(e) => e.stopPropagation()}
+              >
                 <Image
-                  src={images[expandedIndex]?.url || '/placeholder-property.jpg'}
+                  src={
+                    images[expandedIndex]?.url || '/placeholder-property.jpg'
+                  }
                   alt={`${title} - Foto ${expandedIndex + 1}`}
                   fill
                   className={styles.expandedImage}
@@ -274,8 +419,19 @@ export default function Gallery({ images, title, virtualTourUrl }: GalleryProps)
                     className={`${styles.expandedArrow} ${styles.expandedArrowLeft}`}
                     aria-label="Foto anterior"
                   >
-                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" width="24" height="24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                    <svg
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                      width="24"
+                      height="24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M15 19l-7-7 7-7"
+                      />
                     </svg>
                   </button>
                   <button
@@ -287,8 +443,19 @@ export default function Gallery({ images, title, virtualTourUrl }: GalleryProps)
                     className={`${styles.expandedArrow} ${styles.expandedArrowRight}`}
                     aria-label="Proxima foto"
                   >
-                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" width="24" height="24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                    <svg
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                      width="24"
+                      height="24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M9 5l7 7-7 7"
+                      />
                     </svg>
                   </button>
                 </>
@@ -298,7 +465,10 @@ export default function Gallery({ images, title, virtualTourUrl }: GalleryProps)
 
           {/* Pinterest Grid */}
           {expandedIndex === null && (
-            <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
+            <div
+              className={styles.modalContent}
+              onClick={(e) => e.stopPropagation()}
+            >
               <div className={styles.modalGrid}>
                 {images.map((img, index) => (
                   <div
