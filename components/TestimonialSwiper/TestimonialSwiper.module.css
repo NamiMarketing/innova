@@ -100,11 +100,109 @@
 }
 
 @media (max-width: 768px) {
-  .swiperWrapper {
+  .container {
+    width: 100%;
+    padding: 0;
+    margin-bottom: 60px;
     position: relative;
   }
-  
+
+  .titleContainer {
+    margin: 0 auto 42px;
+    text-align: center;
+  }
+
+  .title {
+    font-size: 19px;
+    line-height: 23px;
+    text-align: center;
+    width: 315px;
+    margin: auto;
+  }
+
+  .swiperWrapper {
+    width: 85%;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+  }
+
+  .swiper {
+    width: 100%;
+    padding-bottom: 55px !important;
+    cursor: grab;
+  }
+
+  .card {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 13px;
+    width: 316px;
+    margin: auto;
+  }
+
+  .name {
+    font-weight: 500;
+    color: var(--black);
+    font-size: 15px;
+  }
+
+  .avatar {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    position: relative;
+  }
+
+  .avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .text {
+    font-size: 15px;
+    line-height: 21px;
+    text-align: center;
+    margin-top: 15px;
+  }
+
   .navButton {
-    display: none; /* Hide custom nav on mobile if preferred, or adjust positioning */
+    cursor: pointer;
+    transition: all 0.2s;
+    position: absolute;
+    top: 50%;
+    width: 8px;
+  }
+
+  .navButtonPrev {
+    left: 5%;
+  }
+
+  .navButtonNext {
+    right: 5%;
+  }
+
+  .navButton:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  .swiper :global(.swiper-pagination) {
+    position: absolute;
+    bottom: 10px;
+    cursor: pointer;
+    display: flex;
+    gap: 0px;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .swiper :global(.swiper-pagination-bullet) {
+    width: 6px;
+    height: 6px;
+    margin: 0;
   }
 }

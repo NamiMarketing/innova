@@ -6,10 +6,11 @@
 .hero {
   position: relative;
   overflow: hidden;
-  aspect-ratio: 1440/640;
+  aspect-ratio: 1440/ 640;
   width: 100%;
   height: auto;
 }
+
 
 .card{
   .cardContent{
@@ -55,16 +56,21 @@
       }
     }
   }
-  .cardImage{
-    width: 50%;
-    margin: 0 auto;
-  }
   .logoCard{
     width: 135px;
     height: 198px;
     position: absolute;
     right: 0;
     bottom: 0;
+  }
+  @media (max-width: 767px) {
+    .logoCard{
+      width: 105px;
+      height: 148px;
+      position: absolute;
+      right: 0;
+      bottom: 0;
+    }
   }
 }
 
@@ -144,7 +150,151 @@
           line-height: 100%;
           font-weight: 400;
           color: var(--black);
+        }
+      }
+    }
+  }
+}
+
+
+ @media (max-width: 767px) {
+  .hero{
+    aspect-ratio: 360/460;
+    img{
+      width: 100%;
+      height: auto;
+      object-fit: cover;
+    }
+  }
+  .card{
+    .cardContent{
+      width: 85%;
+      margin: 50px auto;
+      padding: 20px;
+      border-radius: 16px;
+      flex-direction: column;
+      gap: 30px;
+      .leftCard{
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+        width: 100%;
+        h2{
+          font-size: 18px;
+          line-height: 22px;
+        }
+        p{
+          font-size: 15px;
+          line-height: 20px;
+        }
+        .cardButton{
+          padding: 12px 17px 13px;
+          font-size: 15px;
+          line-height: 15px;
           text-align: center;
+          width: fit-content;
+        }
+      }
+    }
+    .cardImg{
+      width: 100%;
+      height: auto;
+      aspect-ratio: 276/240;
+      object-fit: cover;
+      margin: 0 auto;
+      border-radius: 14px;
+    }
+    .logoCard{
+      width: 80px;
+      height: 118px;
+      position: absolute;
+      right: 0;
+      bottom: 0;
+    }
+  }
+
+  .descubra{
+    display: flex;
+    flex-direction: column;
+    width: 85%;
+    margin: 50px auto 30px;
+    gap: 43px;
+    align-items: center;
+    h2{
+      font-size: 18px;
+      line-height: 22px;
+      font-weight: 500;
+      color: var(--black);
+      text-align: center;
+    }
+    .descubraItens{
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 28px;
+      .descubraItem{
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+        justify-content: center;
+        align-items: center;
+        img{
+          width: 80px;
+          height: 80px;
+        }
+        p{
+          font-size: 15px;
+          line-height: 14px;
+          font-weight: 400;
+          color: var(--black);
+          text-align: center;
+        }
+      }
+    }
+  }
+
+  .escolher{
+    position: relative;
+    .escolherBack{
+      position: absolute;
+      top: 51%;
+      left: 0;
+      width: 80px;
+      height: 118px;
+    }
+    .escolherContainer{
+      display: flex;
+      flex-direction: column-reverse;
+      align-items: center;
+      justify-content: center;
+      gap: 67px;
+      width: 85%;
+      margin: auto;
+      padding: 46px 0 60px;
+      h1{
+        font-size: 19px;
+        line-height: 19px;
+        margin-bottom: 30px;
+        text-align: center;
+      }
+      .escolherItens{
+        display: flex;
+        gap: 12px;
+        flex-direction: column;
+        .escolherItem{
+          display: flex;
+          gap: 12px;
+          align-items: center;
+          img{
+            width: 36px;
+            height: 36px;
+          }
+          p{
+            font-size: 16px;
+            line-height: 16px;
+            font-weight: 400;
+            color: var(--black);
+          }
         }
       }
     }

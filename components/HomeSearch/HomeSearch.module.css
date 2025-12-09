@@ -29,8 +29,8 @@
 .tab {
   background: none;
   border: none;
-  font-size: 1rem;
-  font-weight: 500;
+  font-size: 16px;
+  font-weight: 400;
   cursor: pointer;
 }
 
@@ -73,7 +73,7 @@
   padding: 4px 0;
   border: none;
   font-size: 1rem;
-  color: var(--gray-medium);
+  color: var(--black);
   background-color: transparent;
   outline: none;
   box-shadow: none;
@@ -98,6 +98,7 @@
   justify-content: center;
   gap: 8px;
   height: 40px;
+  font-size: 16px;
 }
 
 .submitButton:hover {
@@ -111,4 +112,72 @@
 }
 .input::placeholder {
   color: var(--gray-medium);
+}
+
+@media (max-width: 767px) {
+  .container {
+    padding: 20px 16px;
+    border-radius: 16px;
+    max-width: 90%;
+    width: 80%;
+    margin: 0 auto;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 10;
+    h2{
+      font-size: 18px;
+      text-align: center;
+      margin-bottom: 24px;
+    }
+  }
+  .tabs {
+    gap: 24px;
+    margin-bottom: 20px;
+    padding-bottom: 7px;
+  }
+  .tab {
+    font-size: 14px;
+  }
+
+  .tabActive {
+    padding-bottom: 7px;
+    margin-bottom: -8px;
+  }
+
+  .form {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .label {
+    font-size: 14px;
+    line-height: 14px;
+  }
+
+  .input {
+    width: 100%;
+    padding: 0px 0;
+    font-size: 13px;
+  }
+  .submitButton {
+    padding: 15px 1.5rem;
+    border-radius: 6px;
+    font-size: 15px;
+  }
+  .submitButton:hover {
+    background: var(--black);
+    color: var(--orange);
+  }
+  .buttonIcon {
+    width: 10px;
+    height: 10px;
+  }
+  .input::placeholder {
+    color: var(--gray-medium);
+    font-size: 13px;
+    line-height: 13px;
+  }
 }

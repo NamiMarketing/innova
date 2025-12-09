@@ -94,7 +94,7 @@
 /* Media Queries */
 @media (max-width: 767px) {
   .container {
-    padding: 40px 0;
+    padding: 40px 0 0;
   }
 
   .titleContainer {
@@ -125,6 +125,7 @@
     padding-left: 20px;
     padding-right: 20px; /* Optional: symmetry */
     width: 100%;
+    padding-bottom: 0;
     
     > :global(.swiper-wrapper) {
       > :global(.swiper-slide) {

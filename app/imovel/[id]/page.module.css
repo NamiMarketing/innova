@@ -203,6 +203,7 @@
   }
 
   @media (max-width: 767px) {
+    padding-bottom: 40px;
     .content {
       .grid {
         .mainColumn {
