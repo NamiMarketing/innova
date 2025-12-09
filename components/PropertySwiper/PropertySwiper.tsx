@@ -82,7 +82,7 @@ export function PropertySwiper({ title, properties }: PropertySwiperProps) {
           }}
           spaceBetween={20}
           slidesPerView={'auto'}
-          centeredSlides={true}
+          centeredSlides={false}
           centerInsufficientSlides={true}
           draggable={true}
           navigation={{
