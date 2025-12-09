@@ -2,65 +2,54 @@
   background: var(--background-orange);
   margin-top: auto;
   color: white;
+  width: 100%;
+  overflow-x: hidden; /* Safety wrapper */
 }
 
 .container {
   margin: 0 auto;
-  padding: 72px 5% 10px 0;
+  padding: 40px 20px;
+  width: 100%;
+  max-width: 1280px;
 }
 
 .grid {
   display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 2rem;
-}
-.logoFooter{
-  align-self: flex-end;
+  flex-direction: column; /* Mobile first: Column */
+  align-items: stretch; /* Allow children to take full width for alignment control */
+  gap: 40px;
 }
 
-.right{
+.partners,
+.socials {
+  align-self: flex-end; /* Align to right on mobile */
+}
+
+.logoFooter {
+  align-self: flex-start; /* Ensure logo is left aligned on mobile */
+  order: 10; /* Move logo to the bottom on mobile */
+}
+
+.right {
   display: flex;
   flex-direction: column;
-  gap: 50px;
+  gap: 30px;
 }
 
-.icons{
+.icons {
   display: flex;
   gap: 15px;
   align-items: center;
 }
 
-@media (min-width: 768px) {
-  .grid {
-    grid-template-columns: repeat(4, 1fr);
-  }
-}
-
-.title {
-  font-size: 1.25rem;
-  font-weight: 700;
-  margin-bottom: 1rem;
-}
-
-.sectionTitle {
-  font-weight: 600;
-  margin-bottom: 1rem;
-}
-
-.description {
-  font-size: 0.875rem;
-  line-height: 1.75;
-}
-
 .linkList {
   list-style: none;
   padding: 0;
-  margin: 0 auto 100px;
+  margin: 0;
   display: flex;
   flex-direction: column;
-  gap: 20px;
-  font-size: 20px;
+  gap: 15px;
+  font-size: 16px;
 }
 
 .link {
@@ -73,10 +62,43 @@
 }
 
 .copyright {
-  border-top: 1px solid #fff;
-  width: 100vw;
-  margin: 0 auto;
-  padding-top: 10px;
+  border-top: 1px solid #ffffff40;
+  width: 100%; /* Fix overflow */
+  margin-top: 40px;
+  padding-top: 20px;
   text-align: center;
   font-size: 14px;
+}
+
+/* Desktop */
+@media (min-width: 768px) {
+  .container {
+    padding: 72px 5% 10px 0; /* Original desktop padding preference? Or standardized? */
+    padding: 70px 40px;
+  }
+
+  .grid {
+    flex-direction: row;
+    justify-content: space-between;
+    gap: 2rem;
+  }
+
+  .logoFooter {
+    align-self: flex-end; /* Original desktop behavior */
+    order: 0;
+  }
+
+  .right {
+    gap: 50px;
+  }
+
+  .partners,
+  .socials {
+    align-self: flex-start; /* Reset to left/start on desktop */
+  }
+
+  .linkList {
+    font-size: 20px;
+    margin-bottom: 0;
+  }
 }
