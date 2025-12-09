@@ -81,8 +81,9 @@ export function PropertySwiper({ title, properties }: PropertySwiperProps) {
             swiperRef.current = swiper;
           }}
           spaceBetween={20}
-          slidesPerView={1}
+          slidesPerView={'auto'}
           centeredSlides={true}
+          centerInsufficientSlides={true}
           draggable={true}
           navigation={{
             prevEl,
@@ -90,17 +91,17 @@ export function PropertySwiper({ title, properties }: PropertySwiperProps) {
           }}
           breakpoints={{
             768: {
-              slidesPerView: 2,
-              centeredSlides: false,
+              slidesPerView: 'auto',
+              centeredSlides: true,
               spaceBetween: 20,
             },
             1024: {
-              slidesPerView: 3,
+              slidesPerView: 'auto',
               centeredSlides: false,
               spaceBetween: 20,
             },
             1280: {
-              slidesPerView: 3,
+              slidesPerView: 'auto',
               centeredSlides: false,
               spaceBetween: 20,
             },
