@@ -121,6 +121,9 @@ export function PropertySearch({ initialData, initialFilters = {} }: PropertySea
   const [total, setTotal] = useState(initialData.total ?? 0);
   const [loading, setLoading] = useState(false);
   
+  // Mobile filters drawer state
+  const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
+  
   // Sorting state
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc' | ''>('');
   const [showSortDropdown, setShowSortDropdown] = useState(false);
@@ -314,11 +317,103 @@ export function PropertySearch({ initialData, initialFilters = {} }: PropertySea
     return count;
   }, [filters, selectedCategories, selectedNeighborhoods, selectedAmenities]);
 
+  // Handle apply filters and close mobile drawer
+  const handleMobileApply = () => {
+    handleSubmit();
+    setMobileFiltersOpen(false);
+  };
+
   return (
     <div className={styles.container}>
+      {/* Mobile Action Bar */}
+      <div className={styles.mobileActionBar}>
+        <button 
+          type="button" 
+          className={`${styles.mobileActionButton} ${styles.mobileFilterButton}`}
+          onClick={() => setMobileFiltersOpen(true)}
+        >
+          <Image src={whiteFilterIcon} alt="icone para filtros" width={16} height={16} />
+          Filtros
+          {activeFiltersCount > 0 && (
+            <span className={styles.mobileFilterBadge}>+{activeFiltersCount}</span>
+          )}
+        </button>
+        
+        <button 
+          type="button" 
+          className={`${styles.mobileActionButton} ${styles.mobileSortButton}`}
+          onClick={() => setShowSortDropdown(!showSortDropdown)}
+        >
+          <Image src={ordenarIcon} alt="icone para ordenar" width={16} height={16} />
+          Ordenar
+        </button>
+        
+        <button 
+          type="button" 
+          className={`${styles.mobileActionButton} ${styles.mobileResetButton}`}
+          onClick={handleReset}
+        >
+          <Image src={trashIcon} alt="icone para limpar" width={16} height={16} />
+          Limpar
+        </button>
+        
+        {/* Mobile Sort Dropdown */}
+        {showSortDropdown && (
+          <div className={styles.mobileSortDropdown}>
+            <button 
+              type="button"
+              className={`${styles.sortOption} ${sortOrder === 'asc' ? styles.sortOptionActive : ''}`}
+              onClick={() => { setSortOrder('asc'); setShowSortDropdown(false); }}
+            >
+              Menor preço
+            </button>
+            <button 
+              type="button"
+              className={`${styles.sortOption} ${sortOrder === 'desc' ? styles.sortOptionActive : ''}`}
+              onClick={() => { setSortOrder('desc'); setShowSortDropdown(false); }}
+            >
+              Maior preço
+            </button>
+            {sortOrder && (
+              <button 
+                type="button"
+                className={styles.sortOption}
+                onClick={() => { setSortOrder(''); setShowSortDropdown(false); }}
+              >
+                Limpar ordenação
+              </button>
+            )}
+          </div>
+        )}
+      </div>
+
+      {/* Mobile Overlay */}
+      {mobileFiltersOpen && (
+        <div 
+          className={styles.mobileOverlay} 
+          onClick={() => setMobileFiltersOpen(false)}
+        />
+      )}
+
       {/* Filter Column Wrapper */}
-      <div className={styles.filterColumn}>
-        {/* Filter Header - Outside Aside */}
+      <div className={`${styles.filterColumn} ${mobileFiltersOpen ? styles.filterColumnOpen : ''}`}>
+        {/* Mobile Drawer Header */}
+        <div className={styles.mobileDrawerHeader}>
+          <button 
+            type="button" 
+            className={styles.mobileCloseButton}
+            onClick={() => setMobileFiltersOpen(false)}
+          >
+            ✕
+          </button>
+          <h3 className={styles.mobileDrawerTitle}>Filtros</h3>
+          <button type="button" onClick={handleReset} className={styles.mobileClearButton}>
+            <Image src={trashIcon} alt="icone para limpar filtros" width={16} height={16} />
+            Limpar
+          </button>
+        </div>
+
+        {/* Filter Header - Desktop Only */}
         <div className={styles.filterHeader}>
           <div className={styles.filterHeaderLeft}>
             <Image src={filterIcon} alt="icone para filtros" />
@@ -584,7 +679,7 @@ export function PropertySearch({ initialData, initialFilters = {} }: PropertySea
           </div>
         </div>
 
-        <button type="button" onClick={handleSubmit} className={styles.searchButton} disabled={loading}>
+        <button type="button" onClick={handleMobileApply} className={styles.searchButton} disabled={loading}>
           <Image src={whiteFilterIcon} alt="icone para filtros" />
           Selecionar filtros
         </button>

@@ -11,3 +11,14 @@
   margin: 0 auto;
   padding: 60px 0 0;
 }
+
+@media (max-width: 768px) {
+  .container {
+    height: auto;
+    overflow: visible;
+  }
+
+  .content {
+    padding: 20px 0 40px;
+  }
+}

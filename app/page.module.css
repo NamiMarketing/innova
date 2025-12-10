@@ -63,15 +63,6 @@
     right: 0;
     bottom: 0;
   }
-  @media (max-width: 767px) {
-    .logoCard{
-      width: 105px;
-      height: 148px;
-      position: absolute;
-      right: 0;
-      bottom: 0;
-    }
-  }
 }
 
 .descubra{

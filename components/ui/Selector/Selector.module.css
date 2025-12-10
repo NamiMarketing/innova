@@ -6,6 +6,7 @@
   border-radius: 6px;
   padding: 10px 16px;
   transition: border-color 0.2s;
+  background: var(--white);
 }
 
 .container:focus-within,
