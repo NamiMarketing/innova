@@ -27,6 +27,7 @@ export const mockProperties: Property[] = [
     features: {
       bedrooms: 3,
       bathrooms: 2,
+      restrooms: 0,
       totalBaths: 1,
       suites: 1,
       parkingSpaces: 2,
@@ -80,6 +81,7 @@ export const mockProperties: Property[] = [
     features: {
       bedrooms: 4,
       bathrooms: 3,
+      restrooms: 0,
       totalBaths: 1,
       suites: 2,
       parkingSpaces: 3,
@@ -131,6 +133,7 @@ export const mockProperties: Property[] = [
     features: {
       bedrooms: 2,
       bathrooms: 1,
+      restrooms: 0,
       totalBaths: 1,
       suites: 0,
       parkingSpaces: 1,
@@ -182,6 +185,7 @@ export const mockProperties: Property[] = [
     features: {
       bedrooms: 0,
       bathrooms: 2,
+      restrooms: 0,
       totalBaths: 2,
       suites: 0,
       parkingSpaces: 2,
@@ -231,6 +235,7 @@ export const mockProperties: Property[] = [
     features: {
       bedrooms: 0,
       bathrooms: 0,
+      restrooms: 0,
       totalBaths: 0,
       suites: 0,
       parkingSpaces: 0,
@@ -277,6 +282,7 @@ export const mockProperties: Property[] = [
     features: {
       bedrooms: 4,
       bathrooms: 4,
+      restrooms: 0,
       totalBaths: 1,
       suites: 3,
       parkingSpaces: 4,

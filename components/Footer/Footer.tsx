@@ -22,7 +22,7 @@ export function Footer() {
           />
 
           {/* Links Rapidos */}
-          <div>
+          <div className={styles.left}>
             <ul className={styles.linkList}>
               <li>
                 <Link href="/" className={styles.link}>
@@ -50,15 +50,15 @@ export function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="/area-do-cliente" className={styles.link}>
-                  Área do cliente
+                <Link href="/favoritos" className={styles.link}>
+                  Favoritos
                 </Link>
               </li>
             </ul>
           </div>
 
           {/* Info */}
-          <div>
+          <div className={styles.left}>
             <div className={styles.linkList}>
               <h5>
                 Innova Imobiliária Digital <br /> Creci J06584
@@ -104,12 +104,14 @@ export function Footer() {
                 alt="Logo do Pequeno Principe"
                 width={80}
                 height={80}
+                className={styles.pequeno}
               />
               <Image
                 src={alcance}
                 alt="Logo do Alcance"
                 width={140}
                 height={50}
+                className={styles.alcance}
               />
             </div>
           </div>

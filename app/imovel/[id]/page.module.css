@@ -36,14 +36,10 @@
             flex-wrap: wrap;
             align-items: flex-start;
             justify-content: space-between;
-            gap: 1rem;
-            margin-bottom: 1rem;
 
             .priceInfo {
               display: flex;
               flex-direction: column;
-              min-width: 0;
-              flex: 1;
             }
           }
 
@@ -51,28 +47,29 @@
             display: flex;
             flex-wrap: wrap;
             gap: 46px;
-            padding-top: 1rem;
+            padding-top: 40px;
 
             .featureItem {
               display: flex;
               flex-direction: column;
-              align-items: center;
-              gap: 0.5rem;
-              background: #f9fafb;
-              border-radius: 0.375rem;
-              font-size: 0.875rem;
+              gap: 8px;
               min-width: 0;
               flex-shrink: 1;
-
-              p:first-child {
-                color: #7c7c7c;
-                text-align: center;
+              >p{
+                font-size: 17px;
+                line-height: 17px;
+                color: var(--gray-medium);
               }
 
               > div {
                 display: flex;
                 align-items: center;
                 gap: 10px;
+                >p{
+                  font-size: 17px;
+                  line-height: 17px;
+                  color: var(--black);
+                }
               }
             }
           }
@@ -80,9 +77,8 @@
           .locationRow {
             display: flex;
             align-items: center;
-            gap: 0.5rem;
-            margin-top: 1rem;
-            padding-top: 1rem;
+            gap: 14px;
+            margin-top: 55px;
             width: 100%;
             max-width: 100%;
             min-width: 0;
@@ -100,8 +96,6 @@
 
         /* Property Details Card */
         .detailsCard {
-          border-radius: 0.5rem;
-          padding: 1.5rem;
           width: 100%;
           max-width: 100%;
           box-sizing: border-box;
@@ -110,52 +104,52 @@
           .propertyTitle {
             font-size: 26px;
             font-weight: 500;
-            color: #1f2937;
+            color: var(--black);
             word-break: break-word;
           }
 
           .propertyCode {
-            font-size: 0.875rem;
-            color: #9ca3af;
-            margin-bottom: 1.5rem;
+            font-size: 18px;
+            color: var(--gray-medium);
+            margin-bottom: 50px;
           }
 
           .sectionTitle {
-            font-size: 1rem;
-            font-weight: 600;
-            color: #1f2937;
-            margin-bottom: 1rem;
-            padding-bottom: 0.5rem;
-            border-bottom: 2px solid #EF8634;
+            font-size: 22px;
+            font-weight: 500;
+            color: var(--black);
+            margin-bottom: 30px;
             display: inline-block;
             max-width: 100%;
           }
 
           .description {
-            color: #6b7280;
-            line-height: 1.75;
+            color: var(--black);
+            font-size: 20px;
+            line-height: 26px;
             white-space: pre-line;
-            font-size: 0.9375rem;
             word-break: break-word;
             overflow-wrap: break-word;
+            font-weight: 300;
           }
 
           .characteristicsSection {
-            margin-top: 2rem;
+            margin-top: 50px;
 
             .characteristicsGrid {
               display: grid;
               grid-template-columns: repeat(2, 1fr);
-              gap: 0.75rem;
+              gap: 15px;
               width: 100%;
               max-width: 100%;
 
               .characteristicItem {
                 display: flex;
                 align-items: center;
-                gap: 0.5rem;
-                font-size: 0.875rem;
-                color: #374151;
+                gap: 15px;
+                font-size: 20px;
+                font-weight: 400;
+                color: var(--black);
                 word-break: break-word;
                 overflow-wrap: break-word;
                 min-width: 0;
@@ -224,6 +218,7 @@
   @media (max-width: 639px) {
     .content {
       padding-top: 0;
+      padding-bottom: 0;
 
       .grid {
         .mainColumn {
@@ -257,26 +252,37 @@
             .propertyTitle {
               font-size: 20px;
             }
+            .propertyCode {
+              font-size: 15px;
+              margin-bottom: 24px;
+            }
 
             .sectionTitle {
-              font-size: 0.875rem;
+              font-size: 16px;
+              margin-bottom: 20px;
             }
 
             .description {
-              font-size: 0.8125rem;
+              font-size: 15px;
+              line-height: 21px;
             }
 
             .characteristicsSection {
+              margin-top: 34px;
               .characteristicsGrid {
-                gap: 0.5rem;
+                gap: 12px;
 
                 .characteristicItem {
-                  font-size: 0.75rem;
+                  gap: 11px;
+                  font-size: 15px;
                 }
               }
             }
           }
         }
+      }
+      .separator {
+        margin-top: 30px;
       }
     }
   }
@@ -284,20 +290,22 @@
 
 /* Individual element styles that are used across sections */
 .typeLabel {
-  font-size: 16px;
-  color: #EF8634;
+  font-size: 24px;
+  color: var(--orange);
+
 }
 
 .price {
   font-size: 40px;
   font-weight: 500;
   word-break: break-word;
+  line-height: 40px;
 }
 
 .priceExtra {
   font-size: 24px;
-  color: #7c7c7c;
-  margin-top: 0.25rem;
+  color: var(--gray-medium);
+  margin-top: 15px;
 }
 
 .featureIcon {
@@ -338,11 +346,11 @@
 /* Media Queries for individual elements */
 @media (max-width: 767px) {
   .typeLabel {
-    font-size: 14px;
+    font-size: 15px;
   }
 
   .price {
-    font-size: 32px;
+    font-size: 20px;
   }
 
   .priceExtra {
@@ -352,11 +360,14 @@
 
 @media (max-width: 639px) {
   .price {
-    font-size: 28px;
+    font-size: 20px;
+    line-height: 20px;
   }
 
   .priceExtra {
-    font-size: 16px;
+    font-size: 15px;
+    line-height: 15px;
+    margin-top: 10px;
   }
 
   .featureIcon {
@@ -387,44 +398,23 @@
 .gallerySection {
   position: relative;
   width: 100%;
-  height: 500px;
-  overflow: visible;
+  aspect-ratio: 144/60;
+  height: auto;
 
   .mainImage {
     position: relative;
     width: 100%;
     height: 100%;
     overflow: hidden;
-    background: #e5e7eb;
-  }
-
-  .galleryOverlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    padding: 1rem;
-    pointer-events: none;
-
-    .galleryActions {
-      display: flex;
-      gap: 0.5rem;
-      margin-left: auto;
-      pointer-events: auto;
-    }
   }
 
   .galleryButtons {
     position: absolute;
-    bottom: 1rem;
-    right: 1rem;
+    bottom: 20px;
+    right: 30px;
     display: flex;
     align-items: center;
-    gap: 0.5rem;
+    gap: 10px;
     z-index: 5;
   }
 
@@ -567,6 +557,7 @@
 
   @media (max-width: 767px) {
     height: 400px;
+    aspect-ratio: 36/33;
 
     .mobileImageNavigation {
       display: flex;
@@ -583,55 +574,64 @@
 }
 
 .favoriteButton {
+  position: absolute;
+  top: 30px;
+  right: 30px;
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  justify-content: center;
   background: white;
-  border: none;
-  padding: 0.5rem 1rem;
-  border-radius: 0.25rem;
-  font-size: 0.875rem;
+  border: 1px solid var(--gray-medium);
+  width: 52px;
+  height: 52px;
+  border-radius: 5px;
   cursor: pointer;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  transition: background 0.2s ease;
-
-  &:hover {
-    background: #f3f4f6;
+  svg{
+    width: 30px;
+    height: 26px;
   }
-}
-
-.favoriteIcon {
-  width: 1rem;
-  height: 1rem;
-  color: #6b7280;
+  @media (max-width: 767px) {
+    top: 10px;
+    right: 10px;
+    width: 40px;
+    height: 40px;
+    svg{
+      width: 20px;
+      height: 20px;
+    }
+  }
 }
 
 .viewAllPhotos {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 12px;
   background: white;
-  color: #374151;
+  color: var(--black);
   border: none;
-  padding: 0.5rem 1rem;
-  border-radius: 0.25rem;
-  font-size: 0.875rem;
-  font-weight: 500;
+  padding: 17px 16px;
+  border-radius: 6px;
+  font-size: 17px;
+  line-height: 17px;
+  font-weight: 400;
   cursor: pointer;
   transition: all 0.2s ease;
   pointer-events: auto;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 
   &:hover {
     background: #f9fafb;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
   }
-}
-
-.cameraIcon {
-  width: 1rem;
-  height: 1rem;
-  color: #6b7280;
+  @media (max-width: 767px) {
+    padding: 9px 13px;
+    font-size: 14px;
+    line-height: 14px;
+    gap: 6px;
+    svg{
+      width: 12px;
+      height: 12px;
+    }
+  }
 }
 
 .tourButton {

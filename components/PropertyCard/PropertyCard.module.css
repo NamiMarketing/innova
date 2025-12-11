@@ -82,17 +82,14 @@
   border-radius: 6px;
   cursor: pointer;
   transition: all 0.2s ease;
-  color: var(--gray-medium);
 }
 
-.favoriteButton:hover {
-  border-color: var(--orange);
-  color: var(--orange);
-}
 
 .favoriteButtonActive {
   border-color: #ef4444;
-  background-color: #ef4444;
+  path{
+    fill: #ef4444;
+  };
 }
 
 .favoriteButtonActive:hover {
@@ -214,6 +211,7 @@
   .card {
     border-radius: 10px;
     flex-direction: column;
+    position: relative;
   }
 
   .imageContainer {
@@ -223,8 +221,8 @@
 
   .typeBadge {
     position: absolute;
-    top: 12px;
-    left: 12px;
+    top: 16px;
+    left: 16px;
     padding: 0.25rem 0.75rem;
     border-radius: 4px;
     font-size: 10px;
@@ -243,13 +241,15 @@
   }
 
   .favoriteButton {
+    position: absolute;
+    top: 16px;
+    right: 16px;
     display: flex;
     align-items: center;
     justify-content: center;
     width: 25px;
     height: 25px;
-    border: 1px solid var(--gray-medium);
-    img{
+    svg{
       width: 15px;
     }
   }

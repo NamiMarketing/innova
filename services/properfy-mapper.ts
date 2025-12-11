@@ -38,6 +38,7 @@ interface ProperfyProperty {
   dcmAddressLongitude: number;
   intBedrooms: number;
   intBathrooms: number;
+  intRestrooms: number;
   intTotalBaths: number;
   intSuites: number;
   intGarage: number;
@@ -194,6 +195,7 @@ export function mapProperfyProperty(properfy: ProperfyProperty): Property {
     features: {
       bedrooms: properfy.intBedrooms || 0,
       bathrooms: properfy.intBathrooms || 0,
+      restrooms: properfy.intRestrooms || 0,
       totalBaths: properfy.intTotalBaths || 0,
       suites: properfy.intSuites || 0,
       parkingSpaces: properfy.intGarage || 0,
