@@ -81,7 +81,11 @@ export default async function Home() {
               Entre em contato
             </Link>
           </div>
-          <Image src={cardImg} className={styles.cardImg} alt="Imagem de um casal segurando uma chave" />
+          <Image
+            src={cardImg}
+            className={styles.cardImg}
+            alt="Imagem de um casal segurando uma chave"
+          />
           <Image
             className={styles.logoCard}
             src={logoCard}

@@ -170,14 +170,15 @@
   }
 
   .navButton {
-    cursor: pointer;
+    display: none;
+    /* cursor: pointer;
     transition: all 0.2s;
     position: absolute;
     top: 50%;
-    width: 8px;
+    width: 8px; */
   }
 
-  .navButtonPrev {
+  /* .navButtonPrev {
     left: 5%;
   }
 
@@ -188,7 +189,7 @@
   .navButton:disabled {
     opacity: 0.5;
     cursor: not-allowed;
-  }
+  } */
 
   .swiper :global(.swiper-pagination) {
     position: absolute;

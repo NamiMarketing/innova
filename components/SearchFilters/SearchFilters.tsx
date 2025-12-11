@@ -2,7 +2,11 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { PropertyFilters as PropertyFiltersType, PropertyType, PropertyCategory } from '@/types/property';
+import {
+  PropertyFilters as PropertyFiltersType,
+  PropertyType,
+  PropertyCategory,
+} from '@/types/property';
 import styles from './SearchFilters.module.css';
 
 interface SearchFiltersProps {
@@ -11,7 +15,13 @@ interface SearchFiltersProps {
   showAdvancedToggle?: boolean;
 }
 
-const CITIES = ['Curitiba', 'São José dos Pinhais', 'Colombo', 'Pinhais', 'Araucária'];
+const CITIES = [
+  'Curitiba',
+  'São José dos Pinhais',
+  'Colombo',
+  'Pinhais',
+  'Araucária',
+];
 const CATEGORIES: { value: PropertyCategory; label: string }[] = [
   { value: 'apartment', label: 'Apartamento' },
   { value: 'house', label: 'Casa' },
@@ -20,7 +30,11 @@ const CATEGORIES: { value: PropertyCategory; label: string }[] = [
   { value: 'farm', label: 'Chacara/Fazenda' },
 ];
 
-export function SearchFilters({ initialFilters = {}, onFilterChange, showAdvancedToggle = true }: SearchFiltersProps) {
+export function SearchFilters({
+  initialFilters = {},
+  onFilterChange,
+  showAdvancedToggle = true,
+}: SearchFiltersProps) {
   const router = useRouter();
   const [filters, setFilters] = useState<PropertyFiltersType>(initialFilters);
   const [showAdvanced, setShowAdvanced] = useState(false);
@@ -41,9 +55,12 @@ export function SearchFilters({ initialFilters = {}, onFilterChange, showAdvance
       if (filters.type) params.set('tipo', filters.type);
       if (filters.city) params.set('cidade', filters.city);
       if (filters.category) params.set('categoria', filters.category);
-      if (filters.minPrice) params.set('preco_min', filters.minPrice.toString());
-      if (filters.maxPrice) params.set('preco_max', filters.maxPrice.toString());
-      if (filters.minBedrooms) params.set('quartos', filters.minBedrooms.toString());
+      if (filters.minPrice)
+        params.set('preco_min', filters.minPrice.toString());
+      if (filters.maxPrice)
+        params.set('preco_max', filters.maxPrice.toString());
+      if (filters.minBedrooms)
+        params.set('quartos', filters.minBedrooms.toString());
 
       const queryString = params.toString();
       router.push(`/imoveis${queryString ? `?${queryString}` : ''}`);
@@ -57,7 +74,9 @@ export function SearchFilters({ initialFilters = {}, onFilterChange, showAdvance
           <label className={styles.label}>Tipo</label>
           <select
             value={filters.type || ''}
-            onChange={(e) => handleChange('type', e.target.value as PropertyType)}
+            onChange={(e) =>
+              handleChange('type', e.target.value as PropertyType)
+            }
             className={styles.select}
           >
             <option value="">Todos</option>
@@ -75,7 +94,9 @@ export function SearchFilters({ initialFilters = {}, onFilterChange, showAdvance
           >
             <option value="">Todas</option>
             {CITIES.map((city) => (
-              <option key={city} value={city}>{city}</option>
+              <option key={city} value={city}>
+                {city}
+              </option>
             ))}
           </select>
         </div>
@@ -84,19 +105,33 @@ export function SearchFilters({ initialFilters = {}, onFilterChange, showAdvance
           <label className={styles.label}>Tipo de Imovel</label>
           <select
             value={filters.category || ''}
-            onChange={(e) => handleChange('category', e.target.value as PropertyCategory)}
+            onChange={(e) =>
+              handleChange('category', e.target.value as PropertyCategory)
+            }
             className={styles.select}
           >
             <option value="">Todos</option>
             {CATEGORIES.map((cat) => (
-              <option key={cat.value} value={cat.value}>{cat.label}</option>
+              <option key={cat.value} value={cat.value}>
+                {cat.label}
+              </option>
             ))}
           </select>
         </div>
 
         <button type="submit" className={styles.submitButton}>
-          <svg className={styles.buttonIcon} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+          <svg
+            className={styles.buttonIcon}
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+            />
           </svg>
           Buscar
         </button>
@@ -109,8 +144,18 @@ export function SearchFilters({ initialFilters = {}, onFilterChange, showAdvance
             onClick={() => setShowAdvanced(!showAdvanced)}
             className={styles.toggleButton}
           >
-            <svg className={styles.toggleIcon} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={showAdvanced ? "M5 15l7-7 7 7" : "M19 9l-7 7-7-7"} />
+            <svg
+              className={styles.toggleIcon}
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d={showAdvanced ? 'M5 15l7-7 7 7' : 'M19 9l-7 7-7-7'}
+              />
             </svg>
             {showAdvanced ? 'Menos filtros' : 'Mais filtros'}
           </button>
@@ -122,7 +167,12 @@ export function SearchFilters({ initialFilters = {}, onFilterChange, showAdvance
                 <input
                   type="number"
                   value={filters.minPrice || ''}
-                  onChange={(e) => handleChange('minPrice', e.target.value ? Number(e.target.value) : undefined)}
+                  onChange={(e) =>
+                    handleChange(
+                      'minPrice',
+                      e.target.value ? Number(e.target.value) : undefined
+                    )
+                  }
                   placeholder="R$ 0"
                   className={styles.input}
                 />
@@ -132,7 +182,12 @@ export function SearchFilters({ initialFilters = {}, onFilterChange, showAdvance
                 <input
                   type="number"
                   value={filters.maxPrice || ''}
-                  onChange={(e) => handleChange('maxPrice', e.target.value ? Number(e.target.value) : undefined)}
+                  onChange={(e) =>
+                    handleChange(
+                      'maxPrice',
+                      e.target.value ? Number(e.target.value) : undefined
+                    )
+                  }
                   placeholder="R$ 0"
                   className={styles.input}
                 />
@@ -141,7 +196,12 @@ export function SearchFilters({ initialFilters = {}, onFilterChange, showAdvance
                 <label className={styles.label}>Quartos (min)</label>
                 <select
                   value={filters.minBedrooms || ''}
-                  onChange={(e) => handleChange('minBedrooms', e.target.value ? Number(e.target.value) : undefined)}
+                  onChange={(e) =>
+                    handleChange(
+                      'minBedrooms',
+                      e.target.value ? Number(e.target.value) : undefined
+                    )
+                  }
                   className={styles.select}
                 >
                   <option value="">Qualquer</option>
@@ -155,7 +215,12 @@ export function SearchFilters({ initialFilters = {}, onFilterChange, showAdvance
                 <label className={styles.label}>Banheiros (min)</label>
                 <select
                   value={filters.minBathrooms || ''}
-                  onChange={(e) => handleChange('minBathrooms', e.target.value ? Number(e.target.value) : undefined)}
+                  onChange={(e) =>
+                    handleChange(
+                      'minBathrooms',
+                      e.target.value ? Number(e.target.value) : undefined
+                    )
+                  }
                   className={styles.select}
                 >
                   <option value="">Qualquer</option>

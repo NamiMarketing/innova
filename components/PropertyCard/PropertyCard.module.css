@@ -210,23 +210,121 @@
 }
 
 /* Mobile Responsive */
-@media (max-width: 640px) {
+@media (max-width: 768px) {
   .card {
+    border-radius: 10px;
     flex-direction: column;
   }
 
   .imageContainer {
+    aspect-ratio: 316/230;
     width: 100%;
-    height: 200px;
-    min-height: auto;
+  }
+
+  .typeBadge {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    padding: 0.25rem 0.75rem;
+    border-radius: 4px;
+    font-size: 10px;
+    font-weight: 400;
+  }
+
+  .content {
+    padding: 20px;
+  }
+
+  .contentHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0px;
+  }
+
+  .favoriteButton {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 25px;
+    height: 25px;
+    border: 1px solid var(--gray-medium);
+    img{
+      width: 15px;
+    }
+  }
+
+  /* .category {
+    font-size: 20px;
+    color: var(--black);
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+    width: fit-content;
+  } */
+
+  .title {
+    font-size: 16px;
+    margin-bottom: 20px;
+  }
+
+  .address {
+    font-size: 15px;
+    line-height: 15px;
+    margin-bottom: 21px;
+    gap: 3px;
+  }
+
+  .features {
+    gap: 18px;
+    font-size: 14px;
+    margin-bottom: 20px;
+  }
+
+  .feature {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+  }
+
+  .featureIcon {
+    width: 12px;
+    height: 12px;
   }
 
   .priceContainer {
+    margin-top: auto;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+  }
+  .leftPrice {
+    display: flex;
     flex-direction: column;
-    align-items: flex-start;
+    gap: 4px;
+  }
+  .price {
+    font-size: 16px;
+    line-height: 16px;
   }
 
   .extraCosts {
-    text-align: left;
+    font-size: 14px;
+    line-height: 14px;
+    color: var(--gray-medium);
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .extraCost {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+  }
+
+  .rightPrice {
+    font-size: 15px;
+    line-height: 15px;
+    padding: 9px 18px;
   }
 }

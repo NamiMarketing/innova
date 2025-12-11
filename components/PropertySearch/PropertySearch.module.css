@@ -694,6 +694,12 @@
   }
   .searchButton {
     margin-bottom: 20px;
+    margin-top: 50px;
+  }
+
+  .amenityButton {
+    padding: 15px 18px;
+    font-size: 14px;
   }
 
   /* Results section takes full width */

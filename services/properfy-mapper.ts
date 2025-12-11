@@ -1,4 +1,11 @@
-import { Property, PropertyType, PropertyCategory, PropertyStatus, PropertyImage, PropertyAmenities } from '@/types/property';
+import {
+  Property,
+  PropertyType,
+  PropertyCategory,
+  PropertyStatus,
+  PropertyImage,
+  PropertyAmenities,
+} from '@/types/property';
 
 interface ProperfyPhoto {
   thumb: string;
@@ -76,22 +83,22 @@ function mapPropertyType(chrTransactionType: string): PropertyType {
 
 function mapPropertyCategory(chrType: string): PropertyCategory {
   const typeMap: Record<string, PropertyCategory> = {
-    'RESIDENTIAL_HOUSE': 'house',
-    'TWO_STORY_HOUSE': 'house',
-    'APARTMENT': 'apartment',
-    'COMMERCIAL': 'commercial',
-    'LAND': 'land',
-    'FARM': 'farm',
+    RESIDENTIAL_HOUSE: 'house',
+    TWO_STORY_HOUSE: 'house',
+    APARTMENT: 'apartment',
+    COMMERCIAL: 'commercial',
+    LAND: 'land',
+    FARM: 'farm',
   };
   return typeMap[chrType] || 'house';
 }
 
 function mapPropertyStatus(chrStatus: string): PropertyStatus {
   const statusMap: Record<string, PropertyStatus> = {
-    'LISTED': 'available',
-    'RENTED': 'rented',
-    'SOLD': 'sold',
-    'RESERVED': 'reserved',
+    LISTED: 'available',
+    RENTED: 'rented',
+    SOLD: 'sold',
+    RESERVED: 'reserved',
   };
   return statusMap[chrStatus] || 'available';
 }
@@ -99,38 +106,57 @@ function mapPropertyStatus(chrStatus: string): PropertyStatus {
 function mapPropertyImages(properfy: ProperfyProperty): PropertyImage[] {
   try {
     // If photos array exists and has items, map them
-    if (properfy.photos && Array.isArray(properfy.photos) && properfy.photos.length > 0) {
+    if (
+      properfy.photos &&
+      Array.isArray(properfy.photos) &&
+      properfy.photos.length > 0
+    ) {
       const mappedPhotos = properfy.photos
-        .filter(photo => photo && (photo.large || photo.medium || photo.small))
+        .filter(
+          (photo) => photo && (photo.large || photo.medium || photo.small)
+        )
         .map((photo, index) => ({
           id: `${properfy.hash}-${index}`,
           url: photo.large || photo.medium || photo.small || '',
           title: photo.cover ? 'Cover Photo' : undefined,
           order: photo.cover ? 0 : index + 1,
         }));
-      
+
       if (mappedPhotos.length > 0) return mappedPhotos;
     }
-    
+
     // If coverPhoto exists, use it
-    if (properfy.coverPhoto && (properfy.coverPhoto.large || properfy.coverPhoto.medium || properfy.coverPhoto.small)) {
-      return [{
-        id: `${properfy.hash}-cover`,
-        url: properfy.coverPhoto.large || properfy.coverPhoto.medium || properfy.coverPhoto.small || '',
-        title: 'Cover Photo',
-        order: 1,
-      }];
+    if (
+      properfy.coverPhoto &&
+      (properfy.coverPhoto.large ||
+        properfy.coverPhoto.medium ||
+        properfy.coverPhoto.small)
+    ) {
+      return [
+        {
+          id: `${properfy.hash}-cover`,
+          url:
+            properfy.coverPhoto.large ||
+            properfy.coverPhoto.medium ||
+            properfy.coverPhoto.small ||
+            '',
+          title: 'Cover Photo',
+          order: 1,
+        },
+      ];
     }
   } catch (error) {
     console.error('Error mapping property images:', error);
   }
-  
+
   // Fallback to placeholder
-  return [{
-    id: `${properfy.hash}-placeholder`,
-    url: 'https://images.unsplash.com/photo-1568605114967-8130f3a36994?w=800',
-    order: 1,
-  }];
+  return [
+    {
+      id: `${properfy.hash}-placeholder`,
+      url: 'https://images.unsplash.com/photo-1568605114967-8130f3a36994?w=800',
+      order: 1,
+    },
+  ];
 }
 
 export function mapProperfyProperty(properfy: ProperfyProperty): Property {
@@ -139,7 +165,9 @@ export function mapProperfyProperty(properfy: ProperfyProperty): Property {
 
   return {
     id: properfy.hash,
-    title: properfy.vrcTitle || `${mapPropertyCategory(properfy.chrType)} - ${properfy.chrAddressDistrict}`,
+    title:
+      properfy.vrcTitle ||
+      `${mapPropertyCategory(properfy.chrType)} - ${properfy.chrAddressDistrict}`,
     description: properfy.txtDescription || '',
     type,
     category: mapPropertyCategory(properfy.chrType),
@@ -174,8 +202,8 @@ export function mapProperfyProperty(properfy: ProperfyProperty): Property {
     },
     amenities: mapAmenities(properfy),
     // Use Portuguese translations if available, fallback to English
-    characteristics: properfy.mergedFeaturesFacilities?.length 
-      ? properfy.mergedFeaturesFacilities 
+    characteristics: properfy.mergedFeaturesFacilities?.length
+      ? properfy.mergedFeaturesFacilities
       : [...(properfy.features || []), ...(properfy.facilities || [])],
     images: mapPropertyImages(properfy),
     virtualTourUrl: properfy.vrcVirtualTour || undefined,
@@ -184,14 +212,14 @@ export function mapProperfyProperty(properfy: ProperfyProperty): Property {
 
 function mapAmenities(properfy: ProperfyProperty): PropertyAmenities {
   const amenities: PropertyAmenities = {};
-  
+
   try {
     // Combine features and facilities arrays
     const allFeatures: string[] = [
-      ...properfy.features || [],
-      ...properfy.facilities || [],
+      ...(properfy.features || []),
+      ...(properfy.facilities || []),
     ];
-    
+
     // Parse jsonFeatures and jsonFacilities if they exist
     if (properfy.jsonFeatures) {
       try {
@@ -203,7 +231,7 @@ function mapAmenities(properfy: ProperfyProperty): PropertyAmenities {
         console.warn('Failed to parse jsonFeatures:', e);
       }
     }
-    
+
     if (properfy.jsonFacilities) {
       try {
         const parsed = JSON.parse(properfy.jsonFacilities);
@@ -214,73 +242,126 @@ function mapAmenities(properfy: ProperfyProperty): PropertyAmenities {
         console.warn('Failed to parse jsonFacilities:', e);
       }
     }
-    
+
     // Map each feature to the corresponding amenity field
-    allFeatures.forEach(feature => {
+    allFeatures.forEach((feature) => {
       const featureUpper = feature.toUpperCase();
-      
+
       // Conveniences
-      if (featureUpper.includes('FURNISHED') || featureUpper.includes('MOBILIADO')) {
+      if (
+        featureUpper.includes('FURNISHED') ||
+        featureUpper.includes('MOBILIADO')
+      ) {
         amenities.furnished = true;
       }
-      if (featureUpper.includes('AIR_CONDITIONING') || featureUpper.includes('AR_CONDICIONADO')) {
+      if (
+        featureUpper.includes('AIR_CONDITIONING') ||
+        featureUpper.includes('AR_CONDICIONADO')
+      ) {
         amenities.airConditioning = true;
       }
-      if (featureUpper.includes('ELEVATOR') || featureUpper.includes('ELEVADOR')) {
+      if (
+        featureUpper.includes('ELEVATOR') ||
+        featureUpper.includes('ELEVADOR')
+      ) {
         amenities.elevator = true;
       }
-      if (featureUpper.includes('FIREPLACE') || featureUpper.includes('LAREIRA')) {
+      if (
+        featureUpper.includes('FIREPLACE') ||
+        featureUpper.includes('LAREIRA')
+      ) {
         amenities.fireplace = true;
       }
-      if (featureUpper.includes('LAUNDRY') || featureUpper.includes('LAVANDERIA')) {
+      if (
+        featureUpper.includes('LAUNDRY') ||
+        featureUpper.includes('LAVANDERIA')
+      ) {
         amenities.laundry = true;
       }
-      
+
       // Leisure
-      if (featureUpper.includes('BARBECUE') || featureUpper.includes('CHURRASQUEIRA') || featureUpper.includes('GRILL')) {
+      if (
+        featureUpper.includes('BARBECUE') ||
+        featureUpper.includes('CHURRASQUEIRA') ||
+        featureUpper.includes('GRILL')
+      ) {
         amenities.barbecue = true;
       }
-      if (featureUpper.includes('SWIMMING_POOL') || featureUpper.includes('POOL') || featureUpper.includes('PISCINA')) {
+      if (
+        featureUpper.includes('SWIMMING_POOL') ||
+        featureUpper.includes('POOL') ||
+        featureUpper.includes('PISCINA')
+      ) {
         amenities.pool = true;
       }
-      if (featureUpper.includes('GYM') || featureUpper.includes('ACADEMIA') || featureUpper.includes('FITNESS')) {
+      if (
+        featureUpper.includes('GYM') ||
+        featureUpper.includes('ACADEMIA') ||
+        featureUpper.includes('FITNESS')
+      ) {
         amenities.gym = true;
       }
-      if (featureUpper.includes('PARTY_ROOM') || featureUpper.includes('PARTY_HALL') || featureUpper.includes('SALAO')) {
+      if (
+        featureUpper.includes('PARTY_ROOM') ||
+        featureUpper.includes('PARTY_HALL') ||
+        featureUpper.includes('SALAO')
+      ) {
         amenities.partyHall = true;
       }
-      if (featureUpper.includes('PLAYGROUND') || featureUpper.includes('PARQUINHO')) {
+      if (
+        featureUpper.includes('PLAYGROUND') ||
+        featureUpper.includes('PARQUINHO')
+      ) {
         amenities.playground = true;
       }
-      if (featureUpper.includes('GOURMET_SPACE') || featureUpper.includes('GOURMET') || featureUpper.includes('ESPACO_GOURMET')) {
+      if (
+        featureUpper.includes('GOURMET_SPACE') ||
+        featureUpper.includes('GOURMET') ||
+        featureUpper.includes('ESPACO_GOURMET')
+      ) {
         amenities.gourmetSpace = true;
         amenities.gourmetArea = true; // Legacy compatibility
       }
-      
+
       // Security
-      if (featureUpper.includes('GATEKEEPER') || featureUpper.includes('PORTARIA') || featureUpper.includes('24H_GATEKEEPER')) {
+      if (
+        featureUpper.includes('GATEKEEPER') ||
+        featureUpper.includes('PORTARIA') ||
+        featureUpper.includes('24H_GATEKEEPER')
+      ) {
         amenities.gatekeeper = true;
         amenities.security24h = true; // Legacy compatibility
       }
-      if (featureUpper.includes('SECURITY_SYSTEM') || featureUpper.includes('SECURITY') || featureUpper.includes('CIRCUITO')) {
+      if (
+        featureUpper.includes('SECURITY_SYSTEM') ||
+        featureUpper.includes('SECURITY') ||
+        featureUpper.includes('CIRCUITO')
+      ) {
         amenities.securitySystem = true;
       }
-      
+
       // Legacy fields
       if (featureUpper.includes('GARDEN') || featureUpper.includes('JARDIM')) {
         amenities.garden = true;
       }
-      if (featureUpper.includes('BALCONY') || featureUpper.includes('VARANDA') || featureUpper.includes('SACADA')) {
+      if (
+        featureUpper.includes('BALCONY') ||
+        featureUpper.includes('VARANDA') ||
+        featureUpper.includes('SACADA')
+      ) {
         amenities.balcony = true;
       }
-      if (featureUpper.includes('SPORTS_FIELD') || featureUpper.includes('QUADRA')) {
+      if (
+        featureUpper.includes('SPORTS_FIELD') ||
+        featureUpper.includes('QUADRA')
+      ) {
         amenities.sportsField = true;
       }
     });
   } catch (error) {
     console.error('Error mapping amenities:', error);
   }
-  
+
   return amenities;
 }
 

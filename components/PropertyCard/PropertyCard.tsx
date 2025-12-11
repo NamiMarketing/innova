@@ -33,7 +33,7 @@ export function PropertyCard({ property }: PropertyCardProps) {
     }).format(price);
   };
 
-  const getCategoryLabel = (category: string) => {
+  const _getCategoryLabel = (category: string) => {
     const labels: Record<string, string> = {
       apartment: 'Apartamento',
       house: 'Casa',
@@ -50,10 +50,14 @@ export function PropertyCard({ property }: PropertyCardProps) {
 
   const mainImage = property.images?.[0]?.url || '/placeholder-property.jpg';
   const addressLineOne = property.address
-    ? `${property.address.street || ''}, ${property.address.number || ''}`.replace(/^, |, - $/, '').trim()
+    ? `${property.address.street || ''}, ${property.address.number || ''}`
+        .replace(/^, |, - $/, '')
+        .trim()
     : 'Endereco nao disponivel';
   const addressLineTwo = property.address
-    ? `${property.address.neighborhood || ''} - ${property.address.city || ''}/${property.address.state || ''}`.replace(/^, |, - $/, '').trim()
+    ? `${property.address.neighborhood || ''} - ${property.address.city || ''}/${property.address.state || ''}`
+        .replace(/^, |, - $/, '')
+        .trim()
     : 'Endereco nao disponivel';
 
   return (
@@ -71,7 +75,6 @@ export function PropertyCard({ property }: PropertyCardProps) {
 
           {/* Badge de tipo */}
           <div className={styles.typeBadge}>{getTypeLabel(property.type)}</div>
-
         </div>
 
         {/* Conteudo */}
@@ -83,7 +86,9 @@ export function PropertyCard({ property }: PropertyCardProps) {
               type="button"
               className={`${styles.favoriteButton} ${isFav ? styles.favoriteButtonActive : ''}`}
               onClick={handleFavoriteClick}
-              aria-label={isFav ? 'Remover dos favoritos' : 'Adicionar aos favoritos'}
+              aria-label={
+                isFav ? 'Remover dos favoritos' : 'Adicionar aos favoritos'
+              }
             >
               <Image src={favorito} alt="Favorito" width={20} height={17} />
             </button>
@@ -106,32 +111,62 @@ export function PropertyCard({ property }: PropertyCardProps) {
           <div className={styles.features}>
             {property.features.bedrooms > 0 && (
               <div className={styles.feature}>
-                <Image src={bedroom} alt="icone de quarto" width={15} height={12} />
-                <span className={styles.featureValue}>{property.features.bedrooms}</span>
+                <Image
+                  src={bedroom}
+                  alt="icone de quarto"
+                  width={15}
+                  height={12}
+                />
+                <span className={styles.featureValue}>
+                  {property.features.bedrooms}
+                </span>
               </div>
             )}
             {property.features.bathrooms > 0 && (
               <div className={styles.feature}>
-                <Image src={bathroom} alt="icone de banheiro" width={12} height={15} />
-                <span className={styles.featureValue}>{property.features.bathrooms}</span>
+                <Image
+                  src={bathroom}
+                  alt="icone de banheiro"
+                  width={12}
+                  height={15}
+                />
+                <span className={styles.featureValue}>
+                  {property.features.bathrooms}
+                </span>
               </div>
             )}
             {property.features.totalBaths > 0 && (
               <div className={styles.feature}>
-                <Image src={toilet} alt="icone de banheiro" width={12} height={12} />
-                <span className={styles.featureValue}>{property.features.totalBaths}</span>
+                <Image
+                  src={toilet}
+                  alt="icone de banheiro"
+                  width={12}
+                  height={12}
+                />
+                <span className={styles.featureValue}>
+                  {property.features.totalBaths}
+                </span>
               </div>
             )}
             {property.features.parkingSpaces > 0 && (
               <div className={styles.feature}>
-                <Image src={parking} alt="icone de carro" width={12} height={12} />
-                <span className={styles.featureValue}>{property.features.parkingSpaces}</span>
+                <Image
+                  src={parking}
+                  alt="icone de carro"
+                  width={12}
+                  height={12}
+                />
+                <span className={styles.featureValue}>
+                  {property.features.parkingSpaces}
+                </span>
               </div>
             )}
             {property.features.area > 0 && (
               <div className={styles.feature}>
                 <Image src={area} alt="icone de area" width={12} height={12} />
-                <span className={styles.featureValue}>{property.features.area}m2</span>
+                <span className={styles.featureValue}>
+                  {property.features.area}m2
+                </span>
               </div>
             )}
           </div>
@@ -140,22 +175,25 @@ export function PropertyCard({ property }: PropertyCardProps) {
           <div className={styles.priceContainer}>
             <div className={styles.leftPrice}>
               <div className={styles.price}>{formatPrice(property.price)}</div>
-              {property.type === 'rent' && (property.condoFee || property.iptu) && (
-                <div className={styles.extraCosts}>
-                  {property.condoFee && (
-                    <div className={styles.extraCost}>
-                      <span className={styles.extraCostPlus}>+</span>
-                      <span>Condominio: {formatPrice(property.condoFee)}/mês</span>
-                    </div>
-                  )}
-                  {property.iptu && (
-                    <div className={styles.extraCost}>
-                      <span className={styles.extraCostPlus}>+</span>
-                      <span>IPTU: {formatPrice(property.iptu)}/mês</span>
-                    </div>
-                  )}
-                </div>
-              )}
+              {property.type === 'rent' &&
+                (property.condoFee || property.iptu) && (
+                  <div className={styles.extraCosts}>
+                    {property.condoFee && (
+                      <div className={styles.extraCost}>
+                        <span className={styles.extraCostPlus}>+</span>
+                        <span>
+                          Condominio: {formatPrice(property.condoFee)}/mês
+                        </span>
+                      </div>
+                    )}
+                    {property.iptu && (
+                      <div className={styles.extraCost}>
+                        <span className={styles.extraCostPlus}>+</span>
+                        <span>IPTU: {formatPrice(property.iptu)}/mês</span>
+                      </div>
+                    )}
+                  </div>
+                )}
             </div>
             <button className={styles.rightPrice}>Ver imóvel</button>
           </div>

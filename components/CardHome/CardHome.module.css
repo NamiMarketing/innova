@@ -106,7 +106,7 @@
 .price {
   font-size: 20px;
   line-height: 20px;
-  font-weight: 500;
+  font-weight: 700;
 }
 
 .address {
@@ -162,13 +162,13 @@
 
   .imageContainer {
     width: 100%;
-    height: 180px !important;
-    aspect-ratio: unset !important;
+    height: 210px !important;
+    aspect-ratio: 28/21 !important;
     flex-shrink: 0;
   }
 
   .slideContent {
-    height: 180px;
+    height: 210px;
     aspect-ratio: unset;
   }
 
@@ -180,7 +180,7 @@
 
   .typeContainer {
     font-size: 14px;
-    gap: 5px;
+    gap: 7px;
   }
 
   .priceContainer {
@@ -191,19 +191,20 @@
   }
 
   .price {
-    font-size: 18px;
-    line-height: 18px;
+    font-size: 17px;
+    line-height: 16px;
+    margin-top: 5px;
   }
 
   .address {
     font-size: 15px;
-    margin-bottom: 15px;
-    line-height: 18px;
+    margin-bottom: 20px;
+    line-height: 17px;
   }
 
   .features {
     gap: 15px;
-    font-size: 0.8125rem;
+    font-size: 15px;
   }
 
   .feature {
@@ -211,20 +212,24 @@
   }
 
   .extraCosts {
-    text-align: left;
-    font-size: 0.6875rem;
+    text-align: right;
+    align-items: flex-end;
+    width: 100%;
+    font-size: 10px;
+    gap: 0;
+    margin-top: -23px;
   }
 
   .codeBadge {
     bottom: 12px;
-    left: 15px;
+    left: 21px;
     padding: 5px 10px;
     font-size: 14px;
   }
 
   .navigation {
     bottom: 12px;
-    right: 15px;
+    right: 20px;
   }
 
   .navButton {

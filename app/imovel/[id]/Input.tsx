@@ -7,7 +7,12 @@ interface InputProps {
   label?: string;
 }
 
-export default function Input({ type = 'text', placeholder, defaultValue, label }: InputProps) {
+export default function Input({
+  type = 'text',
+  placeholder,
+  defaultValue,
+  label,
+}: InputProps) {
   if (type === 'textarea') {
     return (
       <div className={styles.formGroup}>

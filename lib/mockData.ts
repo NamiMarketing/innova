@@ -4,7 +4,8 @@ export const mockProperties: Property[] = [
   {
     id: '1',
     title: 'Apartamento Moderno no Centro de Curitiba',
-    description: 'Lindo apartamento com acabamento de primeira, localizado em uma das regiões mais nobres de Curitiba. Próximo a shopping centers, escolas e hospitais.',
+    description:
+      'Lindo apartamento com acabamento de primeira, localizado em uma das regiões mais nobres de Curitiba. Próximo a shopping centers, escolas e hospitais.',
     type: 'sale',
     category: 'apartment',
     status: 'available',
@@ -57,7 +58,8 @@ export const mockProperties: Property[] = [
   {
     id: '2',
     title: 'Casa Espaçosa no Bairro Batel',
-    description: 'Casa ampla e confortável, perfeita para famílias. Com jardim e área gourmet completa.',
+    description:
+      'Casa ampla e confortável, perfeita para famílias. Com jardim e área gourmet completa.',
     type: 'sale',
     category: 'house',
     status: 'available',
@@ -107,7 +109,8 @@ export const mockProperties: Property[] = [
   {
     id: '3',
     title: 'Apartamento para Aluguel no Água Verde',
-    description: 'Apartamento aconchegante, ideal para casal ou pequena família. Localização privilegiada.',
+    description:
+      'Apartamento aconchegante, ideal para casal ou pequena família. Localização privilegiada.',
     type: 'rent',
     category: 'apartment',
     status: 'available',
@@ -157,7 +160,8 @@ export const mockProperties: Property[] = [
   {
     id: '4',
     title: 'Sala Comercial no Edifício Corporate',
-    description: 'Excelente sala comercial em prédio moderno. Perfeito para consultórios e escritórios.',
+    description:
+      'Excelente sala comercial em prédio moderno. Perfeito para consultórios e escritórios.',
     type: 'rent',
     category: 'commercial',
     status: 'available',
@@ -206,7 +210,8 @@ export const mockProperties: Property[] = [
   {
     id: '5',
     title: 'Terreno para Construção no Ecoville',
-    description: 'Terreno plano e escriturado, pronto para construir. Região em expansão com ótima infraestrutura.',
+    description:
+      'Terreno plano e escriturado, pronto para construir. Região em expansão com ótima infraestrutura.',
     type: 'sale',
     category: 'land',
     status: 'available',
@@ -249,7 +254,8 @@ export const mockProperties: Property[] = [
   {
     id: '6',
     title: 'Cobertura Duplex com Vista Panorâmica',
-    description: 'Cobertura luxuosa com vista deslumbrante. Lazer completo e alto padrão de acabamento.',
+    description:
+      'Cobertura luxuosa com vista deslumbrante. Lazer completo e alto padrão de acabamento.',
     type: 'sale',
     category: 'apartment',
     status: 'available',

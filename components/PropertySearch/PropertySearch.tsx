@@ -2,8 +2,12 @@
 
 import { useState, useCallback, useMemo } from 'react';
 import Image from 'next/image';
-import Link from 'next/link';
-import { Property, PropertyFilters, PropertyResponse, PropertyType, PropertyCategory } from '@/types/property';
+import {
+  Property,
+  PropertyFilters,
+  PropertyResponse,
+  PropertyCategory,
+} from '@/types/property';
 import { PropertyCard } from '@/components/PropertyCard';
 import { Selector, SelectorOption, ButtonSelector } from '@/components/ui';
 import styles from './PropertySearch.module.css';
@@ -44,11 +48,11 @@ const formatCurrencyInput = (value: string): string => {
   // Remove tudo exceto números
   const numbers = value.replace(/\D/g, '');
   if (!numbers) return '';
-  
+
   // Converte para centavos e depois para reais
   const cents = parseInt(numbers, 10);
   const reais = cents / 100;
-  
+
   return reais.toLocaleString('pt-BR', {
     style: 'currency',
     currency: 'BRL',
@@ -81,7 +85,7 @@ const formatAreaInput = (value: string): string => {
   // Remove tudo exceto números
   const numbers = value.replace(/\D/g, '');
   if (!numbers) return '';
-  
+
   const num = parseInt(numbers, 10);
   return `${num.toLocaleString('pt-BR')} m²`;
 };
@@ -91,7 +95,13 @@ interface PropertySearchProps {
   initialFilters?: PropertyFilters;
 }
 
-const CITIES = ['Curitiba', 'São José dos Pinhais', 'Colombo', 'Pinhais', 'Araucária'];
+const CITIES = [
+  'Curitiba',
+  'São José dos Pinhais',
+  'Colombo',
+  'Pinhais',
+  'Araucária',
+];
 
 const TYPE_LABELS: Record<string, string> = {
   apartment: 'Apartamento',
@@ -102,28 +112,50 @@ const TYPE_LABELS: Record<string, string> = {
 };
 
 const NEIGHBORHOODS_BY_CITY: Record<string, string[]> = {
-  'Curitiba': ['Centro', 'Batel', 'Água Verde', 'Bigorrilho', 'Cabral', 'Juvevê', 'Alto da XV', 'Cristo Rei', 'Rebouças', 'Santa Felicidade'],
-  'São José dos Pinhais': ['Centro', 'Afonso Pena', 'Cidade Jardim', 'São Pedro'],
-  'Colombo': ['Centro', 'Maracanã', 'Atuba'],
-  'Pinhais': ['Centro', 'Emiliano Perneta', 'Weissópolis'],
-  'Araucária': ['Centro', 'Costeira', 'Capela Velha'],
+  Curitiba: [
+    'Centro',
+    'Batel',
+    'Água Verde',
+    'Bigorrilho',
+    'Cabral',
+    'Juvevê',
+    'Alto da XV',
+    'Cristo Rei',
+    'Rebouças',
+    'Santa Felicidade',
+  ],
+  'São José dos Pinhais': [
+    'Centro',
+    'Afonso Pena',
+    'Cidade Jardim',
+    'São Pedro',
+  ],
+  Colombo: ['Centro', 'Maracanã', 'Atuba'],
+  Pinhais: ['Centro', 'Emiliano Perneta', 'Weissópolis'],
+  Araucária: ['Centro', 'Costeira', 'Capela Velha'],
 };
 
 const toOptions = (items: string[]): SelectorOption[] =>
   items.map((item) => ({ value: item, label: item }));
 
-const getCategoryLabel = (cat: string) => TYPE_LABELS[cat] || cat;
+const _getCategoryLabel = (cat: string) => TYPE_LABELS[cat] || cat;
 
-export function PropertySearch({ initialData, initialFilters = {} }: PropertySearchProps) {
+export function PropertySearch({
+  initialData,
+  initialFilters = {},
+}: PropertySearchProps) {
   const [filters, setFilters] = useState<PropertyFilters>(initialFilters);
-  const [appliedFilters, setAppliedFilters] = useState<PropertyFilters>(initialFilters); // Filtros aplicados após busca
-  const [properties, setProperties] = useState<Property[]>(initialData.data || []);
-  const [total, setTotal] = useState(initialData.total ?? 0);
+  const [appliedFilters, setAppliedFilters] =
+    useState<PropertyFilters>(initialFilters); // Filtros aplicados após busca
+  const [properties, setProperties] = useState<Property[]>(
+    initialData.data || []
+  );
+  const [, setTotal] = useState(initialData.total ?? 0);
   const [loading, setLoading] = useState(false);
-  
+
   // Mobile filters drawer state
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
-  
+
   // Sorting state
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc' | ''>('');
   const [showSortDropdown, setShowSortDropdown] = useState(false);
@@ -188,13 +220,20 @@ export function PropertySearch({ initialData, initialFilters = {} }: PropertySea
       if (newFilters.type) params.set('type', newFilters.type);
       if (newFilters.category) params.set('category', newFilters.category);
       if (newFilters.city) params.set('city', newFilters.city);
-      if (newFilters.neighborhood) params.set('neighborhood', newFilters.neighborhood);
-      if (newFilters.minPrice) params.set('minPrice', newFilters.minPrice.toString());
-      if (newFilters.maxPrice) params.set('maxPrice', newFilters.maxPrice.toString());
-      if (newFilters.minBedrooms) params.set('minBedrooms', newFilters.minBedrooms.toString());
-      if (newFilters.minBathrooms) params.set('minBathrooms', newFilters.minBathrooms.toString());
-      if (newFilters.minSuites) params.set('minSuites', newFilters.minSuites.toString());
-      if (newFilters.minParkingSpaces) params.set('minParkingSpaces', newFilters.minParkingSpaces.toString());
+      if (newFilters.neighborhood)
+        params.set('neighborhood', newFilters.neighborhood);
+      if (newFilters.minPrice)
+        params.set('minPrice', newFilters.minPrice.toString());
+      if (newFilters.maxPrice)
+        params.set('maxPrice', newFilters.maxPrice.toString());
+      if (newFilters.minBedrooms)
+        params.set('minBedrooms', newFilters.minBedrooms.toString());
+      if (newFilters.minBathrooms)
+        params.set('minBathrooms', newFilters.minBathrooms.toString());
+      if (newFilters.minSuites)
+        params.set('minSuites', newFilters.minSuites.toString());
+      if (newFilters.minParkingSpaces)
+        params.set('minParkingSpaces', newFilters.minParkingSpaces.toString());
       if (newFilters.code) params.set('code', newFilters.code);
       if (newFilters.amenities && newFilters.amenities.length > 0) {
         params.set('amenities', newFilters.amenities.join(','));
@@ -218,8 +257,12 @@ export function PropertySearch({ initialData, initialFilters = {} }: PropertySea
     setFilters(newFilters);
 
     // Reset neighborhoods that are not valid for the new city
-    if (newCity && selectedNeighborhoods.length > 0 && NEIGHBORHOODS_BY_CITY[newCity]) {
-      const validNeighborhoods = selectedNeighborhoods.filter(n =>
+    if (
+      newCity &&
+      selectedNeighborhoods.length > 0 &&
+      NEIGHBORHOODS_BY_CITY[newCity]
+    ) {
+      const validNeighborhoods = selectedNeighborhoods.filter((n) =>
         NEIGHBORHOODS_BY_CITY[newCity].includes(n)
       );
       if (validNeighborhoods.length !== selectedNeighborhoods.length) {
@@ -231,8 +274,14 @@ export function PropertySearch({ initialData, initialFilters = {} }: PropertySea
   const handleSubmit = () => {
     const newFilters: PropertyFilters = {
       ...filters,
-      category: selectedCategories.length > 0 ? selectedCategories.join(',') as PropertyCategory : undefined,
-      neighborhood: selectedNeighborhoods.length > 0 ? selectedNeighborhoods.join(',') : undefined,
+      category:
+        selectedCategories.length > 0
+          ? (selectedCategories.join(',') as PropertyCategory)
+          : undefined,
+      neighborhood:
+        selectedNeighborhoods.length > 0
+          ? selectedNeighborhoods.join(',')
+          : undefined,
       amenities: selectedAmenities.length > 0 ? selectedAmenities : undefined,
     };
     setAppliedFilters(newFilters); // Salva os filtros aplicados
@@ -255,7 +304,8 @@ export function PropertySearch({ initialData, initialFilters = {} }: PropertySea
 
   // Options
   const categoryOptions = useMemo(
-    () => Object.entries(TYPE_LABELS).map(([value, label]) => ({ value, label })),
+    () =>
+      Object.entries(TYPE_LABELS).map(([value, label]) => ({ value, label })),
     []
   );
 
@@ -266,8 +316,8 @@ export function PropertySearch({ initialData, initialFilters = {} }: PropertySea
       return NEIGHBORHOODS_BY_CITY[filters.city];
     }
     const all = new Set<string>();
-    Object.values(NEIGHBORHOODS_BY_CITY).forEach(neighborhoods => {
-      neighborhoods.forEach(n => all.add(n));
+    Object.values(NEIGHBORHOODS_BY_CITY).forEach((neighborhoods) => {
+      neighborhoods.forEach((n) => all.add(n));
     });
     return Array.from(all).sort();
   }, [filters.city]);
@@ -327,58 +377,84 @@ export function PropertySearch({ initialData, initialFilters = {} }: PropertySea
     <div className={styles.container}>
       {/* Mobile Action Bar */}
       <div className={styles.mobileActionBar}>
-        <button 
-          type="button" 
+        <button
+          type="button"
           className={`${styles.mobileActionButton} ${styles.mobileFilterButton}`}
           onClick={() => setMobileFiltersOpen(true)}
         >
-          <Image src={whiteFilterIcon} alt="icone para filtros" width={16} height={16} />
+          <Image
+            src={whiteFilterIcon}
+            alt="icone para filtros"
+            width={16}
+            height={16}
+          />
           Filtros
           {activeFiltersCount > 0 && (
-            <span className={styles.mobileFilterBadge}>+{activeFiltersCount}</span>
+            <span className={styles.mobileFilterBadge}>
+              +{activeFiltersCount}
+            </span>
           )}
         </button>
-        
-        <button 
-          type="button" 
+
+        <button
+          type="button"
           className={`${styles.mobileActionButton} ${styles.mobileSortButton}`}
           onClick={() => setShowSortDropdown(!showSortDropdown)}
         >
-          <Image src={ordenarIcon} alt="icone para ordenar" width={16} height={16} />
+          <Image
+            src={ordenarIcon}
+            alt="icone para ordenar"
+            width={16}
+            height={16}
+          />
           Ordenar
         </button>
-        
-        <button 
-          type="button" 
+
+        <button
+          type="button"
           className={`${styles.mobileActionButton} ${styles.mobileResetButton}`}
           onClick={handleReset}
         >
-          <Image src={trashIcon} alt="icone para limpar" width={16} height={16} />
+          <Image
+            src={trashIcon}
+            alt="icone para limpar"
+            width={16}
+            height={16}
+          />
           Limpar
         </button>
-        
+
         {/* Mobile Sort Dropdown */}
         {showSortDropdown && (
           <div className={styles.mobileSortDropdown}>
-            <button 
+            <button
               type="button"
               className={`${styles.sortOption} ${sortOrder === 'asc' ? styles.sortOptionActive : ''}`}
-              onClick={() => { setSortOrder('asc'); setShowSortDropdown(false); }}
+              onClick={() => {
+                setSortOrder('asc');
+                setShowSortDropdown(false);
+              }}
             >
               Menor preço
             </button>
-            <button 
+            <button
               type="button"
               className={`${styles.sortOption} ${sortOrder === 'desc' ? styles.sortOptionActive : ''}`}
-              onClick={() => { setSortOrder('desc'); setShowSortDropdown(false); }}
+              onClick={() => {
+                setSortOrder('desc');
+                setShowSortDropdown(false);
+              }}
             >
               Maior preço
             </button>
             {sortOrder && (
-              <button 
+              <button
                 type="button"
                 className={styles.sortOption}
-                onClick={() => { setSortOrder(''); setShowSortDropdown(false); }}
+                onClick={() => {
+                  setSortOrder('');
+                  setShowSortDropdown(false);
+                }}
               >
                 Limpar ordenação
               </button>
@@ -389,26 +465,37 @@ export function PropertySearch({ initialData, initialFilters = {} }: PropertySea
 
       {/* Mobile Overlay */}
       {mobileFiltersOpen && (
-        <div 
-          className={styles.mobileOverlay} 
+        <div
+          className={styles.mobileOverlay}
           onClick={() => setMobileFiltersOpen(false)}
         />
       )}
 
       {/* Filter Column Wrapper */}
-      <div className={`${styles.filterColumn} ${mobileFiltersOpen ? styles.filterColumnOpen : ''}`}>
+      <div
+        className={`${styles.filterColumn} ${mobileFiltersOpen ? styles.filterColumnOpen : ''}`}
+      >
         {/* Mobile Drawer Header */}
         <div className={styles.mobileDrawerHeader}>
-          <button 
-            type="button" 
+          <button
+            type="button"
             className={styles.mobileCloseButton}
             onClick={() => setMobileFiltersOpen(false)}
           >
             ✕
           </button>
           <h3 className={styles.mobileDrawerTitle}>Filtros</h3>
-          <button type="button" onClick={handleReset} className={styles.mobileClearButton}>
-            <Image src={trashIcon} alt="icone para limpar filtros" width={16} height={16} />
+          <button
+            type="button"
+            onClick={handleReset}
+            className={styles.mobileClearButton}
+          >
+            <Image
+              src={trashIcon}
+              alt="icone para limpar filtros"
+              width={16}
+              height={16}
+            />
             Limpar
           </button>
         </div>
@@ -421,7 +508,11 @@ export function PropertySearch({ initialData, initialFilters = {} }: PropertySea
           </div>
           <div className={styles.filterHeaderRight}>
             <Image src={trashIcon} alt="icone para limpar filtros" />
-            <button type="button" onClick={handleReset} className={styles.clearButton}>
+            <button
+              type="button"
+              onClick={handleReset}
+              className={styles.clearButton}
+            >
               Limpar tudo
             </button>
           </div>
@@ -429,261 +520,324 @@ export function PropertySearch({ initialData, initialFilters = {} }: PropertySea
 
         {activeFiltersCount > 0 && (
           <button type="button" className={styles.selectedFiltersButton}>
-            Selecionados <span className={styles.selectedCount}>{activeFiltersCount}</span>
+            Selecionados{' '}
+            <span className={styles.selectedCount}>{activeFiltersCount}</span>
           </button>
         )}
 
         {/* Sidebar Filters */}
         <aside className={styles.sidebar}>
-        <div className={styles.filterSection}>
-          <div className={styles.typeButtons}>
-            <button
-              type="button"
-              className={`${styles.typeButton} ${filters.type === 'rent' ? styles.typeButtonActive : ''}`}
-              onClick={() => setFilters({ ...filters, type: 'rent' })}
-            >
-              Alugar
-            </button>
-            <button
-              type="button"
-              className={`${styles.typeButton} ${filters.type === 'sale' ? styles.typeButtonActive : ''}`}
-              onClick={() => setFilters({ ...filters, type: 'sale' })}
-            >
-              Comprar
-            </button>
-          </div>
-        </div>
-
-        <div className={styles.filterSection}>
-          <Selector
-            multiple
-            options={categoryOptions}
-            value={selectedCategories}
-            onChange={setSelectedCategories}
-            label="Tipo de Imóvel"
-            icon={<Image src={houseIcon} alt="ícone de casa" width={12} height={12} />}
-          placeholder="Todos"
-          />
-        </div>
-
-        <div className={styles.filterSection}>
-          <Selector
-            searchable
-            options={cityOptions}
-            value={filters.city || ''}
-            onChange={handleCityChange}
-            label="Cidade"
-            icon={<Image src={cityIcon} alt="ícone de cidade" width={12} height={12} />}
-          placeholder="Busque por cidade"
-          />
-        </div>
-
-        <div className={styles.filterSection}>
-          <Selector
-            multiple
-            searchable
-            options={neighborhoodOptions}
-            value={selectedNeighborhoods}
-            onChange={setSelectedNeighborhoods}
-            label="Bairro"
-            icon={<Image src={neighborhoodIcon} alt="ícone de bairro" width={12} height={12} />}
-          placeholder="Busque por bairro"
-          />
-        </div>
-
-        <div className={styles.field}>
-          <label htmlFor="code" className={styles.label}>Código do Imóvel</label>
-          <input
-            type="text"
-            value={filters.code || ''}
-            onChange={(e) => setFilters({ ...filters, code: e.target.value || undefined })}
-            placeholder="Busque por código"
-            className={styles.codeInput}
-            id="code"
-          />
-        </div>
-
-        <span className={styles.separator}></span>
-
-        <div className={styles.filterSection}>
-          <div className={styles.wrapTitle}>
-          <h4 className={styles.filterTitle}>Preço a partir de</h4>
-          <h4 className={styles.filterTitle}>Até</h4>
-          </div>
-          <div className={styles.priceInputs}>
-            <input
-              type="text"
-              value={minPriceDisplay}
-              onChange={handleMinPriceChange}
-              placeholder="R$ 0,00"
-              className={styles.priceInput}
-            />
-            <input
-              type="text"
-              value={maxPriceDisplay}
-              onChange={handleMaxPriceChange}
-              placeholder="R$ 0,00"
-              className={styles.priceInput}
-            />
-          </div>
-        </div>
-
-        <span className={styles.separator}></span>
-
-        <div className={styles.filterSection}>
-          <ButtonSelector
-            options={quantityOptions}
-            value={filters.minBedrooms?.toString() || ''}
-            onChange={(v: string) => setFilters({ ...filters, minBedrooms: v ? Number(v) : undefined })}
-            label="Quartos"
-          />
-        </div>
-
-        <div className={styles.filterSection}>
-          <ButtonSelector
-            options={quantityOptions}
-            value={filters.minSuites?.toString() || ''}
-            onChange={(v: string) => setFilters({ ...filters, minSuites: v ? Number(v) : undefined })}
-            label="Suítes"
-          />
-        </div>
-
-        <div className={styles.filterSection}>
-          <ButtonSelector
-            options={quantityOptions}
-            value={filters.minBathrooms?.toString() || ''}
-            onChange={(v: string) => setFilters({ ...filters, minBathrooms: v ? Number(v) : undefined })}
-            label="Banheiros"
-          />
-        </div>
-
-        <div className={styles.filterSection}>
-          <ButtonSelector
-            options={quantityOptions}
-            value={filters.minParkingSpaces?.toString() || ''}
-            onChange={(v: string) => setFilters({ ...filters, minParkingSpaces: v ? Number(v) : undefined })}
-            label="Garagem"
-          />
-        </div>
-
-        <span className={styles.separator}></span>
-
-        <div className={styles.filterSection}>
-          <div className={styles.wrapTitle}>
-          <h4 className={styles.filterTitle}>Área útil (m²) de</h4>
-          <h4 className={styles.filterTitle}>Até</h4>
-          </div>
-          <div className={styles.priceInputs}>
-            <input
-              type="text"
-              value={minAreaDisplay}
-              onChange={handleMinAreaChange}
-              placeholder="0 m²"
-              className={styles.priceInput}
-            />
-            <input
-              type="text"
-              value={maxAreaDisplay}
-              onChange={handleMaxAreaChange}
-              placeholder="0 m²"
-              className={styles.priceInput}
-            />
-          </div>
-        </div>
-
-        <span className={styles.separator}></span>
-
-        <div className={styles.filterSection}>
-          <h4 className={styles.filterTitle}>Conveniências</h4>
-          <div className={styles.amenitiesGrid}>
-            {[
-              { value: 'furnished', label: 'Mobiliado' },
-              { value: 'airConditioning', label: 'Ar-condicionado' },
-              { value: 'elevator', label: 'Elevador' },
-              { value: 'fireplace', label: 'Lareira' },
-              { value: 'laundry', label: 'Lavanderia' },
-            ].map(amenity => (
+          <div className={styles.filterSection}>
+            <div className={styles.typeButtons}>
               <button
-                key={amenity.value}
                 type="button"
-                className={`${styles.amenityButton} ${selectedAmenities.includes(amenity.value) ? styles.amenityButtonActive : ''}`}
-                onClick={() => {
-                  if (selectedAmenities.includes(amenity.value)) {
-                    setSelectedAmenities(selectedAmenities.filter(a => a !== amenity.value));
-                  } else {
-                    setSelectedAmenities([...selectedAmenities, amenity.value]);
-                  }
-                }}
+                className={`${styles.typeButton} ${filters.type === 'rent' ? styles.typeButtonActive : ''}`}
+                onClick={() => setFilters({ ...filters, type: 'rent' })}
               >
-                {amenity.label}
+                Alugar
               </button>
-            ))}
-          </div>
-        </div>
-
-        <span className={styles.separator}></span>
-
-        <div className={styles.filterSection}>
-          <h4 className={styles.filterTitle}>Lazer</h4>
-          <div className={styles.amenitiesGrid}>
-            {[
-              { value: 'barbecue', label: 'Churrasqueira' },
-              { value: 'pool', label: 'Piscina' },
-              { value: 'gym', label: 'Academia' },
-              { value: 'partyHall', label: 'Salão de festas' },
-              { value: 'playground', label: 'Playground' },
-              { value: 'gourmetSpace', label: 'Espaço gourmet' },
-            ].map(amenity => (
               <button
-                key={amenity.value}
                 type="button"
-                className={`${styles.amenityButton} ${selectedAmenities.includes(amenity.value) ? styles.amenityButtonActive : ''}`}
-                onClick={() => {
-                  if (selectedAmenities.includes(amenity.value)) {
-                    setSelectedAmenities(selectedAmenities.filter(a => a !== amenity.value));
-                  } else {
-                    setSelectedAmenities([...selectedAmenities, amenity.value]);
-                  }
-                }}
+                className={`${styles.typeButton} ${filters.type === 'sale' ? styles.typeButtonActive : ''}`}
+                onClick={() => setFilters({ ...filters, type: 'sale' })}
               >
-                {amenity.label}
+                Comprar
               </button>
-            ))}
+            </div>
           </div>
-        </div>
 
-        <span className={styles.separator}></span>
-
-        <div className={styles.filterSection}>
-          <h4 className={styles.filterTitle}>Segurança</h4>
-          <div className={styles.amenitiesGrid}>
-            {[
-              { value: 'gatekeeper', label: 'Portaria' },
-              { value: 'securitySystem', label: 'Circuito de segurança' },
-            ].map(amenity => (
-              <button
-                key={amenity.value}
-                type="button"
-                className={`${styles.amenityButton} ${selectedAmenities.includes(amenity.value) ? styles.amenityButtonActive : ''}`}
-                onClick={() => {
-                  if (selectedAmenities.includes(amenity.value)) {
-                    setSelectedAmenities(selectedAmenities.filter(a => a !== amenity.value));
-                  } else {
-                    setSelectedAmenities([...selectedAmenities, amenity.value]);
-                  }
-                }}
-              >
-                {amenity.label}
-              </button>
-            ))}
+          <div className={styles.filterSection}>
+            <Selector
+              multiple
+              options={categoryOptions}
+              value={selectedCategories}
+              onChange={setSelectedCategories}
+              label="Tipo de Imóvel"
+              icon={
+                <Image
+                  src={houseIcon}
+                  alt="ícone de casa"
+                  width={12}
+                  height={12}
+                />
+              }
+              placeholder="Todos"
+            />
           </div>
-        </div>
 
-        <button type="button" onClick={handleMobileApply} className={styles.searchButton} disabled={loading}>
-          <Image src={whiteFilterIcon} alt="icone para filtros" />
-          Selecionar filtros
-        </button>
-      </aside>
+          <div className={styles.filterSection}>
+            <Selector
+              searchable
+              options={cityOptions}
+              value={filters.city || ''}
+              onChange={handleCityChange}
+              label="Cidade"
+              icon={
+                <Image
+                  src={cityIcon}
+                  alt="ícone de cidade"
+                  width={12}
+                  height={12}
+                />
+              }
+              placeholder="Busque por cidade"
+            />
+          </div>
+
+          <div className={styles.filterSection}>
+            <Selector
+              multiple
+              searchable
+              options={neighborhoodOptions}
+              value={selectedNeighborhoods}
+              onChange={setSelectedNeighborhoods}
+              label="Bairro"
+              icon={
+                <Image
+                  src={neighborhoodIcon}
+                  alt="ícone de bairro"
+                  width={12}
+                  height={12}
+                />
+              }
+              placeholder="Busque por bairro"
+            />
+          </div>
+
+          <div className={styles.field}>
+            <label htmlFor="code" className={styles.label}>
+              Código do Imóvel
+            </label>
+            <input
+              type="text"
+              value={filters.code || ''}
+              onChange={(e) =>
+                setFilters({ ...filters, code: e.target.value || undefined })
+              }
+              placeholder="Busque por código"
+              className={styles.codeInput}
+              id="code"
+            />
+          </div>
+
+          <span className={styles.separator}></span>
+
+          <div className={styles.filterSection}>
+            <div className={styles.wrapTitle}>
+              <h4 className={styles.filterTitle}>Preço a partir de</h4>
+              <h4 className={styles.filterTitle}>Até</h4>
+            </div>
+            <div className={styles.priceInputs}>
+              <input
+                type="text"
+                value={minPriceDisplay}
+                onChange={handleMinPriceChange}
+                placeholder="R$ 0,00"
+                className={styles.priceInput}
+              />
+              <input
+                type="text"
+                value={maxPriceDisplay}
+                onChange={handleMaxPriceChange}
+                placeholder="R$ 0,00"
+                className={styles.priceInput}
+              />
+            </div>
+          </div>
+
+          <span className={styles.separator}></span>
+
+          <div className={styles.filterSection}>
+            <ButtonSelector
+              options={quantityOptions}
+              value={filters.minBedrooms?.toString() || ''}
+              onChange={(v: string) =>
+                setFilters({
+                  ...filters,
+                  minBedrooms: v ? Number(v) : undefined,
+                })
+              }
+              label="Quartos"
+            />
+          </div>
+
+          <div className={styles.filterSection}>
+            <ButtonSelector
+              options={quantityOptions}
+              value={filters.minSuites?.toString() || ''}
+              onChange={(v: string) =>
+                setFilters({ ...filters, minSuites: v ? Number(v) : undefined })
+              }
+              label="Suítes"
+            />
+          </div>
+
+          <div className={styles.filterSection}>
+            <ButtonSelector
+              options={quantityOptions}
+              value={filters.minBathrooms?.toString() || ''}
+              onChange={(v: string) =>
+                setFilters({
+                  ...filters,
+                  minBathrooms: v ? Number(v) : undefined,
+                })
+              }
+              label="Banheiros"
+            />
+          </div>
+
+          <div className={styles.filterSection}>
+            <ButtonSelector
+              options={quantityOptions}
+              value={filters.minParkingSpaces?.toString() || ''}
+              onChange={(v: string) =>
+                setFilters({
+                  ...filters,
+                  minParkingSpaces: v ? Number(v) : undefined,
+                })
+              }
+              label="Garagem"
+            />
+          </div>
+
+          <span className={styles.separator}></span>
+
+          <div className={styles.filterSection}>
+            <div className={styles.wrapTitle}>
+              <h4 className={styles.filterTitle}>Área útil (m²) de</h4>
+              <h4 className={styles.filterTitle}>Até</h4>
+            </div>
+            <div className={styles.priceInputs}>
+              <input
+                type="text"
+                value={minAreaDisplay}
+                onChange={handleMinAreaChange}
+                placeholder="0 m²"
+                className={styles.priceInput}
+              />
+              <input
+                type="text"
+                value={maxAreaDisplay}
+                onChange={handleMaxAreaChange}
+                placeholder="0 m²"
+                className={styles.priceInput}
+              />
+            </div>
+          </div>
+
+          <span className={styles.separator}></span>
+
+          <div className={styles.filterSection}>
+            <h4 className={styles.filterTitle}>Conveniências</h4>
+            <div className={styles.amenitiesGrid}>
+              {[
+                { value: 'furnished', label: 'Mobiliado' },
+                { value: 'airConditioning', label: 'Ar-condicionado' },
+                { value: 'elevator', label: 'Elevador' },
+                { value: 'fireplace', label: 'Lareira' },
+                { value: 'laundry', label: 'Lavanderia' },
+              ].map((amenity) => (
+                <button
+                  key={amenity.value}
+                  type="button"
+                  className={`${styles.amenityButton} ${selectedAmenities.includes(amenity.value) ? styles.amenityButtonActive : ''}`}
+                  onClick={() => {
+                    if (selectedAmenities.includes(amenity.value)) {
+                      setSelectedAmenities(
+                        selectedAmenities.filter((a) => a !== amenity.value)
+                      );
+                    } else {
+                      setSelectedAmenities([
+                        ...selectedAmenities,
+                        amenity.value,
+                      ]);
+                    }
+                  }}
+                >
+                  {amenity.label}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <span className={styles.separator}></span>
+
+          <div className={styles.filterSection}>
+            <h4 className={styles.filterTitle}>Lazer</h4>
+            <div className={styles.amenitiesGrid}>
+              {[
+                { value: 'barbecue', label: 'Churrasqueira' },
+                { value: 'pool', label: 'Piscina' },
+                { value: 'gym', label: 'Academia' },
+                { value: 'partyHall', label: 'Salão de festas' },
+                { value: 'playground', label: 'Playground' },
+                { value: 'gourmetSpace', label: 'Espaço gourmet' },
+              ].map((amenity) => (
+                <button
+                  key={amenity.value}
+                  type="button"
+                  className={`${styles.amenityButton} ${selectedAmenities.includes(amenity.value) ? styles.amenityButtonActive : ''}`}
+                  onClick={() => {
+                    if (selectedAmenities.includes(amenity.value)) {
+                      setSelectedAmenities(
+                        selectedAmenities.filter((a) => a !== amenity.value)
+                      );
+                    } else {
+                      setSelectedAmenities([
+                        ...selectedAmenities,
+                        amenity.value,
+                      ]);
+                    }
+                  }}
+                >
+                  {amenity.label}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <span className={styles.separator}></span>
+
+          <div className={styles.filterSection}>
+            <h4 className={styles.filterTitle}>Segurança</h4>
+            <div className={styles.amenitiesGrid}>
+              {[
+                { value: 'gatekeeper', label: 'Portaria' },
+                { value: 'securitySystem', label: 'Circuito de segurança' },
+              ].map((amenity) => (
+                <button
+                  key={amenity.value}
+                  type="button"
+                  className={`${styles.amenityButton} ${selectedAmenities.includes(amenity.value) ? styles.amenityButtonActive : ''}`}
+                  onClick={() => {
+                    if (selectedAmenities.includes(amenity.value)) {
+                      setSelectedAmenities(
+                        selectedAmenities.filter((a) => a !== amenity.value)
+                      );
+                    } else {
+                      setSelectedAmenities([
+                        ...selectedAmenities,
+                        amenity.value,
+                      ]);
+                    }
+                  }}
+                >
+                  {amenity.label}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <button
+            type="button"
+            onClick={handleMobileApply}
+            className={styles.searchButton}
+            disabled={loading}
+          >
+            <Image src={whiteFilterIcon} alt="icone para filtros" />
+            Selecionar filtros
+          </button>
+        </aside>
       </div>
 
       {/* Results */}
@@ -693,17 +847,23 @@ export function PropertySearch({ initialData, initialFilters = {} }: PropertySea
           <div className={styles.headerTop}>
             <div className={styles.headerTitle}>
               <h1 className={styles.pageTitle}>
-                {appliedFilters.city ? `Imóveis em ${appliedFilters.city} - PR` : 'Imóveis à Venda e Aluguel'}
+                {appliedFilters.city
+                  ? `Imóveis em ${appliedFilters.city} - PR`
+                  : 'Imóveis à Venda e Aluguel'}
               </h1>
               <p className={styles.pageSubtitle}>
-                {properties.length === 0 ? 'Encontre seu imóvel perfeito' : `Encontramos ${properties.length} imóveis com seus critérios de busca`}
+                {properties.length === 0
+                  ? 'Encontre seu imóvel perfeito'
+                  : activeFiltersCount > 0
+                    ? `Encontramos ${properties.length} imóveis com seus critérios de busca`
+                    : 'Encontre seu imóvel perfeito'}
               </p>
             </div>
-            
+
             {/* Sort Dropdown */}
             <div className={styles.sortContainer}>
-              <button 
-                type="button" 
+              <button
+                type="button"
                 className={styles.sortButton}
                 onClick={() => setShowSortDropdown(!showSortDropdown)}
               >
@@ -712,25 +872,34 @@ export function PropertySearch({ initialData, initialFilters = {} }: PropertySea
               </button>
               {showSortDropdown && (
                 <div className={styles.sortDropdown}>
-                  <button 
+                  <button
                     type="button"
                     className={`${styles.sortOption} ${sortOrder === 'asc' ? styles.sortOptionActive : ''}`}
-                    onClick={() => { setSortOrder('asc'); setShowSortDropdown(false); }}
+                    onClick={() => {
+                      setSortOrder('asc');
+                      setShowSortDropdown(false);
+                    }}
                   >
                     Menor preço
                   </button>
-                  <button 
+                  <button
                     type="button"
                     className={`${styles.sortOption} ${sortOrder === 'desc' ? styles.sortOptionActive : ''}`}
-                    onClick={() => { setSortOrder('desc'); setShowSortDropdown(false); }}
+                    onClick={() => {
+                      setSortOrder('desc');
+                      setShowSortDropdown(false);
+                    }}
                   >
                     Maior preço
                   </button>
                   {sortOrder && (
-                    <button 
+                    <button
                       type="button"
                       className={styles.sortOption}
-                      onClick={() => { setSortOrder(''); setShowSortDropdown(false); }}
+                      onClick={() => {
+                        setSortOrder('');
+                        setShowSortDropdown(false);
+                      }}
                     >
                       Limpar ordenação
                     </button>
@@ -755,11 +924,23 @@ export function PropertySearch({ initialData, initialFilters = {} }: PropertySea
           </div>
         ) : properties.length === 0 ? (
           <div className={styles.emptyState}>
-            <svg className={styles.emptyIcon} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+            <svg
+              className={styles.emptyIcon}
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+              />
             </svg>
             <h3 className={styles.emptyTitle}>Nenhum imóvel encontrado</h3>
-            <p className={styles.emptyMessage}>Tente ajustar os filtros para encontrar mais opções.</p>
+            <p className={styles.emptyMessage}>
+              Tente ajustar os filtros para encontrar mais opções.
+            </p>
           </div>
         ) : (
           <>

@@ -1,6 +1,14 @@
 'use client';
 
-import { useState, useRef, useEffect, useCallback, KeyboardEvent, ReactNode, useId } from 'react';
+import {
+  useState,
+  useRef,
+  useEffect,
+  useCallback,
+  KeyboardEvent,
+  ReactNode,
+  useId,
+} from 'react';
 import { createPortal } from 'react-dom';
 import Image from 'next/image';
 import styles from './Selector.module.css';
@@ -60,7 +68,11 @@ export function Selector(props: SelectorProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [highlightedIndex, setHighlightedIndex] = useState(-1);
-  const [dropdownPosition, setDropdownPosition] = useState<DropdownPosition>({ top: 0, left: 0, width: 0 });
+  const [dropdownPosition, setDropdownPosition] = useState<DropdownPosition>({
+    top: 0,
+    left: 0,
+    width: 0,
+  });
   const containerRef = useRef<HTMLDivElement>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -127,7 +139,10 @@ export function Selector(props: SelectorProps) {
         e.preventDefault();
         if (!isOpen) {
           setIsOpen(true);
-        } else if (highlightedIndex >= 0 && highlightedIndex < filteredOptions.length) {
+        } else if (
+          highlightedIndex >= 0 &&
+          highlightedIndex < filteredOptions.length
+        ) {
           handleSelect(filteredOptions[highlightedIndex].value);
         }
         break;
@@ -168,8 +183,10 @@ export function Selector(props: SelectorProps) {
 
   const handleClickOutside = useCallback((event: MouseEvent) => {
     const target = event.target as Node;
-    const isOutsideContainer = containerRef.current && !containerRef.current.contains(target);
-    const isOutsideDropdown = dropdownRef.current && !dropdownRef.current.contains(target);
+    const isOutsideContainer =
+      containerRef.current && !containerRef.current.contains(target);
+    const isOutsideDropdown =
+      dropdownRef.current && !dropdownRef.current.contains(target);
 
     if (isOutsideContainer && isOutsideDropdown) {
       setIsOpen(false);
@@ -204,7 +221,9 @@ export function Selector(props: SelectorProps) {
 
   useEffect(() => {
     if (highlightedIndex >= 0 && listRef.current) {
-      const highlightedElement = listRef.current.children[highlightedIndex] as HTMLElement;
+      const highlightedElement = listRef.current.children[
+        highlightedIndex
+      ] as HTMLElement;
       if (highlightedElement) {
         highlightedElement.scrollIntoView({ block: 'nearest' });
       }
@@ -238,7 +257,12 @@ export function Selector(props: SelectorProps) {
           />
         </div>
       )}
-      <ul ref={listRef} id={listboxId} className={styles.optionsList} role="listbox">
+      <ul
+        ref={listRef}
+        id={listboxId}
+        className={styles.optionsList}
+        role="listbox"
+      >
         {filteredOptions.length === 0 ? (
           <li className={styles.noOptions}>Nenhuma opção encontrada</li>
         ) : (
@@ -255,9 +279,16 @@ export function Selector(props: SelectorProps) {
                 aria-selected={isSelected}
               >
                 {isMultiple && (
-                  <span className={`${styles.checkbox} ${isSelected ? styles.checkboxChecked : ''}`}>
+                  <span
+                    className={`${styles.checkbox} ${isSelected ? styles.checkboxChecked : ''}`}
+                  >
                     {isSelected && (
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3">
+                      <svg
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="3"
+                      >
                         <path d="M5 13l4 4L19 7" />
                       </svg>
                     )}
@@ -297,7 +328,9 @@ export function Selector(props: SelectorProps) {
                 <span className={styles.label}>{label}</span>
               </div>
             )}
-            <span className={`${styles.value} ${!hasValue ? styles.placeholder : ''}`}>
+            <span
+              className={`${styles.value} ${!hasValue ? styles.placeholder : ''}`}
+            >
               {hasValue ? displayValue : placeholder}
             </span>
           </div>
@@ -306,7 +339,8 @@ export function Selector(props: SelectorProps) {
           </span>
         </div>
       </div>
-      {typeof document !== 'undefined' && createPortal(dropdownContent, document.body)}
+      {typeof document !== 'undefined' &&
+        createPortal(dropdownContent, document.body)}
     </>
   );
 }

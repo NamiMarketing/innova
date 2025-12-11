@@ -17,11 +17,23 @@ const STATIC_CITIES = [
 ];
 
 const STATIC_CATEGORIES = [
-  { slug: 'apartamentos', name: 'Apartamentos', value: 'apartment' as PropertyCategory },
+  {
+    slug: 'apartamentos',
+    name: 'Apartamentos',
+    value: 'apartment' as PropertyCategory,
+  },
   { slug: 'casas', name: 'Casas', value: 'house' as PropertyCategory },
   { slug: 'terrenos', name: 'Terrenos', value: 'land' as PropertyCategory },
-  { slug: 'comerciais', name: 'Imoveis Comerciais', value: 'commercial' as PropertyCategory },
-  { slug: 'chacaras', name: 'Chacaras e Fazendas', value: 'farm' as PropertyCategory },
+  {
+    slug: 'comerciais',
+    name: 'Imoveis Comerciais',
+    value: 'commercial' as PropertyCategory,
+  },
+  {
+    slug: 'chacaras',
+    name: 'Chacaras e Fazendas',
+    value: 'farm' as PropertyCategory,
+  },
 ];
 
 // Generate all combinations of city + category at build time
@@ -41,7 +53,11 @@ export async function generateStaticParams() {
 }
 
 // Generate SEO metadata
-export async function generateMetadata({ params }: { params: Promise<{ city: string; category: string }> }): Promise<Metadata> {
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ city: string; category: string }>;
+}): Promise<Metadata> {
   const { city, category } = await params;
   const cityData = STATIC_CITIES.find((c) => c.slug === city);
   const categoryData = STATIC_CATEGORIES.find((c) => c.slug === category);
@@ -69,7 +85,7 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
   const categoryData = STATIC_CATEGORIES.find((c) => c.slug === category);
 
   const cityName = cityData?.name || city;
-  const categoryName = categoryData?.name || category;
+  const _categoryName = categoryData?.name || category;
   const categoryValue = categoryData?.value;
 
   // Fetch properties for this city and category
@@ -79,12 +95,21 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
       category: categoryValue,
     })
   );
-  const initialData = response ?? { data: [], total: 0, page: 1, limit: 20, totalPages: 0 };
+  const initialData = response ?? {
+    data: [],
+    total: 0,
+    page: 1,
+    limit: 30,
+    totalPages: 0,
+  };
 
   return (
     <div className={styles.container}>
       <div className={styles.content}>
-        <PropertySearch initialData={initialData} initialFilters={{ city: cityName, category: categoryValue }} />
+        <PropertySearch
+          initialData={initialData}
+          initialFilters={{ city: cityName, category: categoryValue }}
+        />
       </div>
     </div>
   );

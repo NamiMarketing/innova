@@ -1,6 +1,14 @@
 'use client';
 
-import { createContext, useContext, useState, useEffect, useCallback, ReactNode } from 'react';
+import {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  useCallback,
+  useRef,
+  ReactNode,
+} from 'react';
 
 interface FavoritesContextType {
   favorites: string[];
@@ -11,64 +19,70 @@ interface FavoritesContextType {
   clearFavorites: () => void;
 }
 
-const FavoritesContext = createContext<FavoritesContextType | undefined>(undefined);
+const FavoritesContext = createContext<FavoritesContextType | undefined>(
+  undefined
+);
 
 const STORAGE_KEY = 'innova-favorites';
 
 export function FavoritesProvider({ children }: { children: ReactNode }) {
-  const [favorites, setFavorites] = useState<string[]>([]);
-  const [isLoaded, setIsLoaded] = useState(false);
-
-  // Load favorites from localStorage on mount
-  useEffect(() => {
+  const isFirstRender = useRef(true);
+  const [favorites, setFavorites] = useState<string[]>(() => {
+    // Load favorites from localStorage on initial render
+    if (typeof window === 'undefined') return [];
     try {
       const stored = localStorage.getItem(STORAGE_KEY);
       if (stored) {
         const parsed = JSON.parse(stored);
         if (Array.isArray(parsed)) {
-          setFavorites(parsed);
+          return parsed;
         }
       }
     } catch (error) {
       console.error('Error loading favorites:', error);
     }
-    setIsLoaded(true);
-  }, []);
+    return [];
+  });
 
-  // Save favorites to localStorage whenever they change
+  // Save favorites to localStorage whenever they change (skip first render)
   useEffect(() => {
-    if (isLoaded) {
-      try {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(favorites));
-      } catch (error) {
-        console.error('Error saving favorites:', error);
-      }
+    if (isFirstRender.current) {
+      isFirstRender.current = false;
+      return;
     }
-  }, [favorites, isLoaded]);
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(favorites));
+    } catch (error) {
+      console.error('Error saving favorites:', error);
+    }
+  }, [favorites]);
 
   const addFavorite = useCallback((id: string) => {
-    setFavorites(prev => {
+    setFavorites((prev) => {
       if (prev.includes(id)) return prev;
       return [...prev, id];
     });
   }, []);
 
   const removeFavorite = useCallback((id: string) => {
-    setFavorites(prev => prev.filter(favId => favId !== id));
+    setFavorites((prev) => prev.filter((favId) => favId !== id));
   }, []);
 
   const toggleFavorite = useCallback((id: string) => {
-    setFavorites(prev => {
+    setFavorites((prev) => {
       if (prev.includes(id)) {
-        return prev.filter(favId => favId !== id);
+        return prev.filter((favId) => favId !== id);
       }
       return [...prev, id];
     });
   }, []);
 
-  const isFavorite = useCallback((id: string) => {
-    return favorites.includes(id);
-  }, [favorites]);
+  const isFavorite = useCallback(
+    (id: string) => {
+      return favorites.includes(id);
+    },
+    [favorites]
+  );
 
   const clearFavorites = useCallback(() => {
     setFavorites([]);

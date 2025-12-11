@@ -24,11 +24,11 @@ export default function FavoritosPage() {
         // Fetch all properties and filter by favorites
         const response = await fetch('/api/properties?limit=100');
         const data = await response.json();
-        
+
         const favoriteProperties = data.data.filter((property: Property) =>
           favorites.includes(property.id)
         );
-        
+
         setProperties(favoriteProperties);
       } catch (error) {
         console.error('Error fetching favorite properties:', error);
@@ -86,7 +86,8 @@ export default function FavoritosPage() {
           </svg>
           <h2 className={styles.emptyTitle}>Nenhum favorito ainda</h2>
           <p className={styles.emptyText}>
-            Encontre imóveis que você gosta e clique no coração para salvá-los aqui.
+            Encontre imóveis que você gosta e clique no coração para salvá-los
+            aqui.
           </p>
           <Link href="/imoveis" className={styles.exploreButton}>
             Explorar imóveis

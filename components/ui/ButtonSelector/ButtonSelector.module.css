@@ -50,3 +50,35 @@
   color: var(--gray-medium);
   border-color: var(--gray-medium);
 }
+
+@media (max-width: 768px) {
+  .container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .label {
+    font-size: 15px;
+    font-weight: 400;
+    line-height: 15px;
+  }
+
+  .buttonGroup {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 18px;
+  }
+
+  .button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 60px;
+    height: 44px;
+    padding: 15px 22px;
+    font-size: 15px;
+    font-weight: 400;
+    margin-bottom: 0px;
+  }
+}

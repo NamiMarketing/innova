@@ -24,7 +24,11 @@ export async function generateStaticParams() {
 }
 
 // Generate metadata for SEO
-export async function generateMetadata({ params }: { params: Promise<{ city: string }> }): Promise<Metadata> {
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ city: string }>;
+}): Promise<Metadata> {
   const { city } = await params;
   const cityData = STATIC_CITIES.find((c) => c.slug === city);
   const cityName = cityData?.name || city;
@@ -50,12 +54,21 @@ export default async function CityPage({ params }: CityPageProps) {
 
   // Fetch properties for this city
   const { data: response } = await safeFetch(getProperties({ city: cityName }));
-  const initialData = response ?? { data: [], total: 0, page: 1, limit: 20, totalPages: 0 };
+  const initialData = response ?? {
+    data: [],
+    total: 0,
+    page: 1,
+    limit: 30,
+    totalPages: 0,
+  };
 
   return (
     <div className={styles.container}>
       <div className={styles.content}>
-        <PropertySearch initialData={initialData} initialFilters={{ city: cityName }} />
+        <PropertySearch
+          initialData={initialData}
+          initialFilters={{ city: cityName }}
+        />
       </div>
     </div>
   );

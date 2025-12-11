@@ -1,5 +1,6 @@
 const getApiUrl = () => {
-  const url = process.env.NEXT_PUBLIC_PROPERFY_API_URL || 'https://dev.properfy.com.br';
+  const url =
+    process.env.NEXT_PUBLIC_PROPERFY_API_URL || 'https://dev.properfy.com.br';
   return url.endsWith('/api') ? url.slice(0, -4) : url;
 };
 

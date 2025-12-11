@@ -49,14 +49,22 @@ export function CardHome({ property }: PropertyCardProps) {
 
   const images = property.images?.slice(0, 5) || [];
   if (images.length === 0) {
-    images.push({ url: '/placeholder-property.jpg', id: 'placeholder', order: 0 });
+    images.push({
+      url: '/placeholder-property.jpg',
+      id: 'placeholder',
+      order: 0,
+    });
   }
 
   const addressLineOne = property.address
-    ? `${property.address.street || ''}, ${property.address.number || ''}`.replace(/^, |, - $/, '').trim()
+    ? `${property.address.street || ''}, ${property.address.number || ''}`
+        .replace(/^, |, - $/, '')
+        .trim()
     : 'Endereco nao disponivel';
   const addressLineTwo = property.address
-    ? `${property.address.neighborhood || ''} - ${property.address.city || ''}/${property.address.state || ''}`.replace(/^, |, - $/, '').trim()
+    ? `${property.address.neighborhood || ''} - ${property.address.city || ''}/${property.address.state || ''}`
+        .replace(/^, |, - $/, '')
+        .trim()
     : 'Endereco nao disponivel';
 
   return (
@@ -72,7 +80,10 @@ export function CardHome({ property }: PropertyCardProps) {
             allowTouchMove={true}
             onBeforeInit={(swiper) => {
               // Override navigation elements
-              if (typeof swiper.params.navigation !== 'boolean' && swiper.params.navigation) {
+              if (
+                typeof swiper.params.navigation !== 'boolean' &&
+                swiper.params.navigation
+              ) {
                 swiper.params.navigation.prevEl = prevRef.current;
                 swiper.params.navigation.nextEl = nextRef.current;
               }
@@ -107,8 +118,20 @@ export function CardHome({ property }: PropertyCardProps) {
                   swiper?.slidePrev();
                 }}
               >
-                <svg width="6" height="10" viewBox="0 0 6 10" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M5 9L1 5L5 1" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                <svg
+                  width="6"
+                  height="10"
+                  viewBox="0 0 6 10"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M5 9L1 5L5 1"
+                    stroke="white"
+                    strokeWidth="1.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
                 </svg>
               </button>
               <button
@@ -120,8 +143,20 @@ export function CardHome({ property }: PropertyCardProps) {
                   swiper?.slideNext();
                 }}
               >
-                <svg width="6" height="10" viewBox="0 0 6 10" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M1 9L5 5L1 1" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                <svg
+                  width="6"
+                  height="10"
+                  viewBox="0 0 6 10"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M1 9L5 5L1 1"
+                    stroke="white"
+                    strokeWidth="1.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
                 </svg>
               </button>
             </div>
@@ -131,32 +166,35 @@ export function CardHome({ property }: PropertyCardProps) {
         {/* Conteudo */}
         <div className={styles.content}>
           <div className={styles.typeContainer}>
-            <div className={styles.typeBadge}>{getTypeLabel(property.type)}</div>
+            <div className={styles.typeBadge}>
+              {getTypeLabel(property.type)}
+            </div>
             <p>•</p>
             <div className={styles.category}>
               {getCategoryLabel(property.category)}
             </div>
           </div>
 
-            {/* Preco */}
+          {/* Preco */}
           <div className={styles.priceContainer}>
             <div className={styles.price}>{formatPrice(property.price)}</div>
-            {property.type === 'rent' && (property.condoFee || property.iptu) && (
-              <div className={styles.extraCosts}>
-                {property.condoFee && (
-                  <div className={styles.extraCost}>
-                    <span className={styles.extraCostPlus}>+</span>
-                    <span>Condominio: {formatPrice(property.condoFee)}</span>
-                  </div>
-                )}
-                {property.iptu && (
-                  <div className={styles.extraCost}>
-                    <span className={styles.extraCostPlus}>+</span>
-                    <span>IPTU: {formatPrice(property.iptu)}</span>
-                  </div>
-                )}
-              </div>
-            )}
+            {property.type === 'rent' &&
+              (property.condoFee || property.iptu) && (
+                <div className={styles.extraCosts}>
+                  {property.condoFee && (
+                    <div className={styles.extraCost}>
+                      <span className={styles.extraCostPlus}>+</span>
+                      <span>Condominio: {formatPrice(property.condoFee)}</span>
+                    </div>
+                  )}
+                  {property.iptu && (
+                    <div className={styles.extraCost}>
+                      <span className={styles.extraCostPlus}>+</span>
+                      <span>IPTU: {formatPrice(property.iptu)}</span>
+                    </div>
+                  )}
+                </div>
+              )}
           </div>
 
           {/* Endereco */}
@@ -169,32 +207,62 @@ export function CardHome({ property }: PropertyCardProps) {
           <div className={styles.features}>
             {property.features.bedrooms > 0 && (
               <div className={styles.feature}>
-                <Image src={bedroom} alt="icone de quarto" width={15} height={12} />
-                <span className={styles.featureValue}>{property.features.bedrooms}</span>
+                <Image
+                  src={bedroom}
+                  alt="icone de quarto"
+                  width={15}
+                  height={12}
+                />
+                <span className={styles.featureValue}>
+                  {property.features.bedrooms}
+                </span>
               </div>
             )}
             {property.features.bathrooms > 0 && (
               <div className={styles.feature}>
-                <Image src={bathroom} alt="icone de banheiro" width={12} height={15} />
-                <span className={styles.featureValue}>{property.features.bathrooms}</span>
+                <Image
+                  src={bathroom}
+                  alt="icone de banheiro"
+                  width={12}
+                  height={15}
+                />
+                <span className={styles.featureValue}>
+                  {property.features.bathrooms}
+                </span>
               </div>
             )}
             {property.features.totalBaths > 0 && (
               <div className={styles.feature}>
-                <Image src={toilet} alt="icone de banheiro" width={12} height={12} />
-                <span className={styles.featureValue}>{property.features.totalBaths}</span>
+                <Image
+                  src={toilet}
+                  alt="icone de banheiro"
+                  width={12}
+                  height={12}
+                />
+                <span className={styles.featureValue}>
+                  {property.features.totalBaths}
+                </span>
               </div>
             )}
             {property.features.parkingSpaces > 0 && (
               <div className={styles.feature}>
-                <Image src={parking} alt="icone de carro" width={12} height={12} />
-                <span className={styles.featureValue}>{property.features.parkingSpaces}</span>
+                <Image
+                  src={parking}
+                  alt="icone de carro"
+                  width={12}
+                  height={12}
+                />
+                <span className={styles.featureValue}>
+                  {property.features.parkingSpaces}
+                </span>
               </div>
             )}
             {property.features.area > 0 && (
               <div className={styles.feature}>
                 <Image src={area} alt="icone de area" width={12} height={12} />
-                <span className={styles.featureValue}>{property.features.area}m2</span>
+                <span className={styles.featureValue}>
+                  {property.features.area}m2
+                </span>
               </div>
             )}
           </div>

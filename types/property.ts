@@ -1,5 +1,10 @@
 export type PropertyType = 'sale' | 'rent';
-export type PropertyCategory = 'apartment' | 'house' | 'commercial' | 'land' | 'farm';
+export type PropertyCategory =
+  | 'apartment'
+  | 'house'
+  | 'commercial'
+  | 'land'
+  | 'farm';
 export type PropertyStatus = 'available' | 'rented' | 'sold' | 'reserved';
 
 export interface PropertyAddress {
@@ -39,7 +44,7 @@ export interface PropertyAmenities {
   elevator?: boolean;
   fireplace?: boolean;
   laundry?: boolean;
-  
+
   // Leisure
   barbecue?: boolean;
   pool?: boolean;
@@ -47,11 +52,11 @@ export interface PropertyAmenities {
   partyHall?: boolean;
   playground?: boolean;
   gourmetSpace?: boolean;
-  
+
   // Security
   gatekeeper?: boolean;
   securitySystem?: boolean;
-  
+
   // Legacy fields (keeping for compatibility)
   gourmetArea?: boolean;
   sportsField?: boolean;

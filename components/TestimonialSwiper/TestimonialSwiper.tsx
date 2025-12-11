@@ -24,28 +24,28 @@ interface Testimonial {
 const TESTIMONIALS: Testimonial[] = [
   {
     id: 1,
-    name: "João Oliveira",
-    text: "Empresa séria, super profissional, Fui atendido desde o primeiro contato com muita clareza e transparência, tivemos a oportunidade de esclarecer todas as dúvidas e com uma negociação exclusiva, atendimento personalizado, desde diretoria e equipe de apoio, são sensacionais, com certeza é primeiro de muitos contratos que vamos fechar com Innova.",
+    name: 'João Oliveira',
+    text: 'Empresa séria, super profissional, Fui atendido desde o primeiro contato com muita clareza e transparência, tivemos a oportunidade de esclarecer todas as dúvidas e com uma negociação exclusiva, atendimento personalizado, desde diretoria e equipe de apoio, são sensacionais, com certeza é primeiro de muitos contratos que vamos fechar com Innova.',
     avatar: joao,
   },
   {
     id: 2,
-    name: "Carlos Souza",
-    text: "Excelente atendimento e suporte. A equipe foi muito atenciosa em todos os detalhes, desde a visita até a assinatura do contrato. Profissionalismo nota 10.",
+    name: 'Carlos Souza',
+    text: 'Excelente atendimento e suporte. A equipe foi muito atenciosa em todos os detalhes, desde a visita até a assinatura do contrato. Profissionalismo nota 10.',
     avatar: joao,
   },
   {
     id: 3,
-    name: "Mariana Oliveira",
-    text: "Gerenciar meus imóveis nunca foi tão fácil. A plataforma é intuitiva e o repasse é sempre pontual. A melhor parceira para proprietários.",
+    name: 'Mariana Oliveira',
+    text: 'Gerenciar meus imóveis nunca foi tão fácil. A plataforma é intuitiva e o repasse é sempre pontual. A melhor parceira para proprietários.',
     avatar: joao,
   },
   {
     id: 4,
-    name: "Ricardo Santos",
-    text: "Estava com dificuldade para vender meu apartamento, mas com a Innova foi tudo muito ágil. As fotos profissionais fizeram toda a diferença.",
+    name: 'Ricardo Santos',
+    text: 'Estava com dificuldade para vender meu apartamento, mas com a Innova foi tudo muito ágil. As fotos profissionais fizeram toda a diferença.',
     avatar: joao,
-  }
+  },
 ];
 
 export function TestimonialSwiper() {
@@ -56,10 +56,13 @@ export function TestimonialSwiper() {
   useEffect(() => {
     if (swiperRef.current && prevEl && nextEl) {
       const swiper = swiperRef.current;
-      if (typeof swiper.params.navigation !== 'boolean' && swiper.params.navigation) {
+      if (
+        typeof swiper.params.navigation !== 'boolean' &&
+        swiper.params.navigation
+      ) {
         swiper.params.navigation.prevEl = prevEl;
         swiper.params.navigation.nextEl = nextEl;
-        
+
         swiper.navigation.destroy();
         swiper.navigation.init();
         swiper.navigation.update();
@@ -70,16 +73,18 @@ export function TestimonialSwiper() {
   return (
     <div className={styles.container}>
       <div className={styles.titleContainer}>
-        <h2 className={styles.title}>A confiança refletida na experiência de cada cliente</h2>
+        <h2 className={styles.title}>
+          A confiança refletida na experiência de cada cliente
+        </h2>
       </div>
-      
-        <button 
-          ref={(node) => setPrevEl(node)}
-          className={`${styles.navButton} ${styles.navButtonPrev}`} 
-          aria-label="Anterior"
-        >
-          <Image src={previous} width={16} height={30} alt="Previous" />
-        </button>
+
+      <button
+        ref={(node) => setPrevEl(node)}
+        className={`${styles.navButton} ${styles.navButtonPrev}`}
+        aria-label="Anterior"
+      >
+        <Image src={previous} width={16} height={30} alt="Previous" />
+      </button>
       <div className={styles.swiperWrapper}>
         <Swiper
           modules={[Navigation, Pagination]}
@@ -103,10 +108,15 @@ export function TestimonialSwiper() {
             <SwiperSlide key={item.id}>
               <div className={styles.card}>
                 <div className={styles.avatar}>
-                  <Image src={item.avatar} width={80} height={80} alt={item.name} />
+                  <Image
+                    src={item.avatar}
+                    width={80}
+                    height={80}
+                    alt={item.name}
+                  />
                 </div>
                 <div className={styles.author}>
-                    <h4 className={styles.name}>{item.name}</h4>
+                  <h4 className={styles.name}>{item.name}</h4>
                 </div>
                 <p className={styles.text}>{item.text}</p>
               </div>
@@ -115,13 +125,13 @@ export function TestimonialSwiper() {
           <div className="swiper-pagination"></div>
         </Swiper>
       </div>
-        <button 
-          ref={(node) => setNextEl(node)}
-          className={`${styles.navButton} ${styles.navButtonNext}`} 
-          aria-label="Próximo"
-        >
-          <Image src={next} width={16} height={30} alt="Next" />
-        </button>
+      <button
+        ref={(node) => setNextEl(node)}
+        className={`${styles.navButton} ${styles.navButtonNext}`}
+        aria-label="Próximo"
+      >
+        <Image src={next} width={16} height={30} alt="Next" />
+      </button>
     </div>
   );
 }

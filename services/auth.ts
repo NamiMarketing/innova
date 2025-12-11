@@ -11,7 +11,10 @@ let tokenExpiry: number | null = null;
 
 const baseUrl = env.PROPERFY_API_URL;
 
-export async function login(username: string, password: string): Promise<string> {
+export async function login(
+  username: string,
+  password: string
+): Promise<string> {
   const loginUrl = `${baseUrl}/api/auth/token`;
 
   const response = await fetch(loginUrl, {
@@ -21,7 +24,7 @@ export async function login(username: string, password: string): Promise<string>
     },
     body: JSON.stringify({
       vrcEmail: username,
-      vrcPass: password
+      vrcPass: password,
     }),
   });
 
@@ -57,7 +60,7 @@ export function isTokenValid(): boolean {
     return false;
   }
   // Check if token is expired (with 5 minute buffer)
-  return Date.now() < (tokenExpiry - 5 * 60 * 1000);
+  return Date.now() < tokenExpiry - 5 * 60 * 1000;
 }
 
 export async function getToken(): Promise<string> {

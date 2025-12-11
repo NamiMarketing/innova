@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useCallback } from 'react';
 import Image from 'next/image';
 import styles from './page.module.css';
 
@@ -66,21 +66,23 @@ export default function Gallery({
     setExpandedIndex(null);
   };
 
-  const handleExpandedPrev = () => {
-    if (expandedIndex !== null) {
-      setExpandedIndex(
-        expandedIndex > 0 ? expandedIndex - 1 : images.length - 1
-      );
-    }
-  };
+  const handleExpandedPrev = useCallback(() => {
+    setExpandedIndex((prev) => {
+      if (prev !== null) {
+        return prev > 0 ? prev - 1 : images.length - 1;
+      }
+      return prev;
+    });
+  }, [images.length]);
 
-  const handleExpandedNext = () => {
-    if (expandedIndex !== null) {
-      setExpandedIndex(
-        expandedIndex < images.length - 1 ? expandedIndex + 1 : 0
-      );
-    }
-  };
+  const handleExpandedNext = useCallback(() => {
+    setExpandedIndex((prev) => {
+      if (prev !== null) {
+        return prev < images.length - 1 ? prev + 1 : 0;
+      }
+      return prev;
+    });
+  }, [images.length]);
 
   // Handle keyboard navigation
   useEffect(() => {
@@ -104,7 +106,7 @@ export default function Gallery({
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [isModalOpen, expandedIndex]);
+  }, [isModalOpen, expandedIndex, handleExpandedPrev, handleExpandedNext]);
 
   // Scroll the thumbnail into view when activeIndex changes
   useEffect(() => {

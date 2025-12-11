@@ -29,14 +29,18 @@ interface HomeSearchProps {
   types: string[];
 }
 
-export function HomeSearch({ cities = [], neighborhoodsByCity = {}, types = [] }: HomeSearchProps) {
+export function HomeSearch({
+  cities = [],
+  neighborhoodsByCity = {},
+  types = [],
+}: HomeSearchProps) {
   const router = useRouter();
   const [type, setType] = useState<PropertyType | ''>('rent');
   const [categories, setCategories] = useState<PropertyCategory[]>([]);
   const [city, setCity] = useState('');
   const [neighborhoods, setNeighborhoods] = useState<string[]>([]);
   const [code, setCode] = useState('');
-  
+
   // Derive available neighborhoods based on selected city
   const availableNeighborhoods = useMemo(() => {
     if (city && neighborhoodsByCity[city]) {
@@ -44,8 +48,8 @@ export function HomeSearch({ cities = [], neighborhoodsByCity = {}, types = [] }
     }
     // If no city selected, show all unique neighborhoods
     const allNeighborhoods = new Set<string>();
-    Object.values(neighborhoodsByCity).forEach(neighborhoods => {
-      neighborhoods.forEach(n => allNeighborhoods.add(n));
+    Object.values(neighborhoodsByCity).forEach((neighborhoods) => {
+      neighborhoods.forEach((n) => allNeighborhoods.add(n));
     });
     return Array.from(allNeighborhoods).sort();
   }, [city, neighborhoodsByCity]);
@@ -54,7 +58,9 @@ export function HomeSearch({ cities = [], neighborhoodsByCity = {}, types = [] }
     setCity(newCity);
     // Reset neighborhoods that are not valid for the new city
     if (newCity && neighborhoods.length > 0 && neighborhoodsByCity[newCity]) {
-      const validNeighborhoods = neighborhoods.filter(n => neighborhoodsByCity[newCity].includes(n));
+      const validNeighborhoods = neighborhoods.filter((n) =>
+        neighborhoodsByCity[newCity].includes(n)
+      );
       if (validNeighborhoods.length !== neighborhoods.length) {
         setNeighborhoods(validNeighborhoods);
       }
@@ -63,12 +69,13 @@ export function HomeSearch({ cities = [], neighborhoodsByCity = {}, types = [] }
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
-    
+
     const params = new URLSearchParams();
     if (type) params.set('type', type);
     if (categories.length > 0) params.set('category', categories.join(','));
     if (city) params.set('city', city);
-    if (neighborhoods.length > 0) params.set('neighborhood', neighborhoods.join(','));
+    if (neighborhoods.length > 0)
+      params.set('neighborhood', neighborhoods.join(','));
     if (code) params.set('code', code);
 
     router.push(`/imoveis?${params.toString()}`);
@@ -90,14 +97,14 @@ export function HomeSearch({ cities = [], neighborhoodsByCity = {}, types = [] }
     <div className={styles.container}>
       <h2>Seu próximo imóvel começa aqui</h2>
       <div className={styles.tabs}>
-        <button 
+        <button
           type="button"
           className={`${styles.tab} ${type === 'rent' ? styles.tabActive : ''}`}
           onClick={() => setType('rent')}
         >
           Alugar
         </button>
-        <button 
+        <button
           type="button"
           className={`${styles.tab} ${type === 'sale' ? styles.tabActive : ''}`}
           onClick={() => setType('sale')}
@@ -113,7 +120,9 @@ export function HomeSearch({ cities = [], neighborhoodsByCity = {}, types = [] }
           value={categories}
           onChange={(value) => setCategories(value as PropertyCategory[])}
           label="Tipo de Imóvel"
-          icon={<Image src={houseIcon} alt="ícone de casa" width={12} height={12} />}
+          icon={
+            <Image src={houseIcon} alt="ícone de casa" width={12} height={12} />
+          }
           placeholder="Todos"
           id="category"
         />
@@ -124,7 +133,14 @@ export function HomeSearch({ cities = [], neighborhoodsByCity = {}, types = [] }
           value={city}
           onChange={handleCityChange}
           label="Cidade"
-          icon={<Image src={cityIcon} alt="ícone de cidade" width={12} height={12} />}
+          icon={
+            <Image
+              src={cityIcon}
+              alt="ícone de cidade"
+              width={12}
+              height={12}
+            />
+          }
           placeholder="Busque por cidade"
           id="city"
         />
@@ -136,13 +152,22 @@ export function HomeSearch({ cities = [], neighborhoodsByCity = {}, types = [] }
           value={neighborhoods}
           onChange={setNeighborhoods}
           label="Bairro"
-          icon={<Image src={neighborhoodIcon} alt="ícone de bairro" width={12} height={12} />}
+          icon={
+            <Image
+              src={neighborhoodIcon}
+              alt="ícone de bairro"
+              width={12}
+              height={12}
+            />
+          }
           placeholder="Busque por bairro"
           id="neighborhood"
         />
 
         <div className={styles.field}>
-          <label htmlFor="code" className={styles.label}>Código do Imóvel</label>
+          <label htmlFor="code" className={styles.label}>
+            Código do Imóvel
+          </label>
           <input
             type="text"
             value={code}
@@ -154,8 +179,18 @@ export function HomeSearch({ cities = [], neighborhoodsByCity = {}, types = [] }
         </div>
 
         <button type="submit" className={styles.submitButton}>
-          <svg className={styles.buttonIcon} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+          <svg
+            className={styles.buttonIcon}
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+            />
           </svg>
           Buscar
         </button>

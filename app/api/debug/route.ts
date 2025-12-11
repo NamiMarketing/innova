@@ -6,16 +6,19 @@ export async function GET() {
     // Fetch raw data from Properfy API without any mapping
     const endpoint = 'api/property/shared?page=1&size=5';
     const rawResponse = await api(endpoint).json<unknown>();
-    
-    return NextResponse.json({
-      message: 'Raw API response from Properfy',
-      rawData: rawResponse,
-    }, { 
-      status: 200,
-      headers: {
-        'Content-Type': 'application/json',
+
+    return NextResponse.json(
+      {
+        message: 'Raw API response from Properfy',
+        rawData: rawResponse,
+      },
+      {
+        status: 200,
+        headers: {
+          'Content-Type': 'application/json',
+        },
       }
-    });
+    );
   } catch (error) {
     console.error('Error fetching debug data:', error);
     return NextResponse.json(
