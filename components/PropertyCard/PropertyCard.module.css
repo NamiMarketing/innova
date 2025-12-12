@@ -206,6 +206,53 @@
   cursor: pointer;
 }
 
+/* Tablet */
+@media (min-width: 769px) and (max-width: 1100px) {
+  .imageContainer {
+    aspect-ratio: 280/240;
+    width: 280px;
+  }
+
+  .content {
+    padding: 1rem;
+  }
+
+  .title {
+    font-size: 18px;
+    margin-bottom: 20px;
+  }
+
+  .address {
+    font-size: 15px;
+    line-height: 15px;
+    margin-bottom: 20px;
+  }
+
+  .features {
+    gap: 1rem;
+    font-size: 0.8rem;
+  }
+
+  .price {
+    font-size: 18px;
+  }
+
+  .extraCosts {
+    font-size: 14px;
+    line-height: 14px;
+  }
+
+  .rightPrice {
+    font-size: 15px;
+    padding: 10px 18px;
+  }
+
+  .favoriteButton {
+    width: 32px;
+    height: 32px;
+  }
+}
+
 /* Mobile Responsive */
 @media (max-width: 768px) {
   .card {

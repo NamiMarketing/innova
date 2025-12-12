@@ -143,3 +143,45 @@
     text-align: center;
   }
 }
+
+/* Tablet */
+@media (min-width: 641px) and (max-width: 1023px) {
+  .container {
+    padding: 30px 20px;
+  }
+
+  .header {
+    margin-bottom: 30px;
+  }
+
+  .title {
+    font-size: 24px;
+  }
+
+  .subtitle {
+    font-size: 16px;
+  }
+
+  .emptyState {
+    padding: 60px 20px;
+    border-radius: 16px;
+  }
+
+  .emptyIcon {
+    width: 60px;
+    height: 60px;
+  }
+
+  .emptyTitle {
+    font-size: 20px;
+  }
+
+  .emptyText {
+    font-size: 15px;
+  }
+
+  .exploreButton {
+    padding: 12px 24px;
+    font-size: 15px;
+  }
+}

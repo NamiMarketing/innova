@@ -99,6 +99,57 @@
   background-color: var(--orange);
 }
 
+/* Tablet */
+@media (min-width: 769px) and (max-width: 1023px) {
+  .container {
+    margin-bottom: 80px;
+  }
+
+  .titleContainer {
+    margin: 0 auto 50px;
+  }
+
+  .title {
+    font-size: 26px;
+  }
+
+  .swiperWrapper {
+    width: 75%;
+  }
+
+  .card {
+    width: 600px;
+    gap: 16px;
+  }
+
+  .name {
+    font-size: 18px;
+  }
+
+  .avatar {
+    width: 70px;
+    height: 70px;
+  }
+
+  .text {
+    font-size: 17px;
+    line-height: 24px;
+    margin-top: 15px;
+  }
+
+  .navButtonPrev {
+    left: 8%;
+  }
+
+  .navButtonNext {
+    right: 8%;
+  }
+
+  .navButton svg {
+    width: 16px;
+  }
+}
+
 @media (max-width: 768px) {
   .container {
     width: 100%;

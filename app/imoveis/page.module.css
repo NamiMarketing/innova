@@ -22,3 +22,11 @@
     padding: 20px 0 40px;
   }
 }
+
+/* Tablet */
+@media (min-width: 769px) and (max-width: 1023px) {
+  .content {
+    width: 95%;
+    padding: 50px 0 0;
+  }
+}

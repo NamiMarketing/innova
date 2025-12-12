@@ -68,7 +68,7 @@
 }
 
 /* Desktop */
-@media (min-width: 768px) {
+@media (min-width: 769px) {
   .container {
     margin: 0;
     padding: 72px 7% 10px 0; /* Original desktop padding preference? Or standardized? */
@@ -104,6 +104,34 @@
   }
   .copyright{
     width: 100vw;
+  }
+}
+
+/* Tablet */
+@media (min-width: 769px) and (max-width: 1023px) {
+  .container {
+    padding: 50px 5% 10px;
+  }
+
+  .grid {
+    gap: 1rem;
+  }
+
+  .left {
+    padding-bottom: 80px;
+  }
+
+  .linkList {
+    font-size: 16px;
+  }
+
+  .right {
+    gap: 25px;
+  }
+
+  .socials img {
+    width: 22px;
+    height: 22px;
   }
 }
 

@@ -467,6 +467,72 @@
   display: none;
 }
 
+/* Tablet */
+@media (min-width: 769px) and (max-width: 1200px) {
+  .filterColumn {
+    width: 320px;
+    margin-right: 40px;
+  }
+
+  .sidebar {
+    padding: 24px;
+  }
+
+  .selectedFiltersButton {
+    padding: 16px 24px;
+    font-size: 16px;
+  }
+
+  .selectedCount {
+    width: 26px;
+    height: 26px;
+    font-size: 16px;
+  }
+
+  .sidebarTitle {
+    font-size: 18px;
+  }
+
+  .filterTitle {
+    font-size: 15px;
+  }
+
+  .typeButton {
+    font-size: 16px;
+  }
+
+  .priceInput {
+    font-size: 15px;
+  }
+
+  .amenityButton {
+    padding: 14px 16px;
+    font-size: 14px;
+  }
+
+  .searchButton {
+    font-size: 16px;
+    padding: 10px 1.25rem;
+  }
+
+  .headerTitle {
+    margin-top: 40px;
+  }
+
+  .pageTitle {
+    font-size: 22px;
+  }
+
+  .pageSubtitle {
+    font-size: 18px;
+  }
+
+  .sortButton {
+    padding: 12px 16px;
+    font-size: 16px;
+  }
+}
+
 /* Mobile Responsive */
 @media (max-width: 768px) {
   .container {

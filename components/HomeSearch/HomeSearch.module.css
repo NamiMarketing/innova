@@ -114,6 +114,47 @@
   color: var(--gray-medium);
 }
 
+/* Tablet */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .container {
+    padding: 28px 24px;
+    max-width: 340px;
+    left: 50px;
+    h2 {
+      font-size: 24px;
+      margin-bottom: 24px;
+    }
+  }
+
+  .tabs {
+    gap: 20px;
+    margin-bottom: 16px;
+  }
+
+  .tab {
+    font-size: 15px;
+  }
+
+  .label {
+    font-size: 14px;
+  }
+
+  .select, .input {
+    font-size: 0.9rem;
+  }
+
+  .submitButton {
+    padding: 10px 1.25rem;
+    font-size: 15px;
+    height: 38px;
+  }
+
+  .buttonIcon {
+    width: 1rem;
+    height: 1rem;
+  }
+}
+
 @media (max-width: 767px) {
   .container {
     padding: 20px 16px;
