@@ -46,8 +46,6 @@ export default async function PropertyPage({ params }: PropertyPageProps) {
   const { id } = await params;
   const property = await getPropertyById(id);
 
-  console.log(property);
-
   if (!property) {
     notFound();
   }

@@ -68,7 +68,12 @@ export function CardHome({ property }: PropertyCardProps) {
     : 'Endereco nao disponivel';
 
   return (
-    <Link href={`/imovel/${property.id}`} className={styles.link}>
+    <Link
+      href={`/imovel/${property.id}`}
+      className={styles.link}
+      target="_blank"
+      rel="noopener noreferrer"
+    >
       <div className={styles.card}>
         {/* Imagem / Swiper */}
         <div className={styles.imageContainer}>

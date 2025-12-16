@@ -174,13 +174,13 @@ export function PropertyFilters({
   const handleMinPriceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const formatted = formatCurrencyInput(e.target.value);
     setMinPriceDisplay(formatted);
-    setFilters({ ...filters, minPrice: parseCurrency(formatted) });
+    setFilters((prev) => ({ ...prev, minPrice: parseCurrency(formatted) }));
   };
 
   const handleMaxPriceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const formatted = formatCurrencyInput(e.target.value);
     setMaxPriceDisplay(formatted);
-    setFilters({ ...filters, maxPrice: parseCurrency(formatted) });
+    setFilters((prev) => ({ ...prev, maxPrice: parseCurrency(formatted) }));
   };
 
   // States for formatted area display
@@ -195,18 +195,17 @@ export function PropertyFilters({
   const handleMinAreaChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const formatted = formatAreaInput(e.target.value);
     setMinAreaDisplay(formatted);
-    setFilters({ ...filters, minArea: parseArea(formatted) });
+    setFilters((prev) => ({ ...prev, minArea: parseArea(formatted) }));
   };
 
   const handleMaxAreaChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const formatted = formatAreaInput(e.target.value);
     setMaxAreaDisplay(formatted);
-    setFilters({ ...filters, maxArea: parseArea(formatted) });
+    setFilters((prev) => ({ ...prev, maxArea: parseArea(formatted) }));
   };
 
   const handleCityChange = (newCity: string) => {
-    const newFilters = { ...filters, city: newCity || undefined };
-    setFilters(newFilters);
+    setFilters((prev) => ({ ...prev, city: newCity || undefined }));
 
     // Reset neighborhoods that are not valid for the new city
     if (
@@ -374,14 +373,18 @@ export function PropertyFilters({
               <button
                 type="button"
                 className={`${styles.typeButton} ${filters.type === 'rent' ? styles.typeButtonActive : ''}`}
-                onClick={() => setFilters({ ...filters, type: 'rent' })}
+                onClick={() =>
+                  setFilters((prev) => ({ ...prev, type: 'rent' }))
+                }
               >
                 Alugar
               </button>
               <button
                 type="button"
                 className={`${styles.typeButton} ${filters.type === 'sale' ? styles.typeButtonActive : ''}`}
-                onClick={() => setFilters({ ...filters, type: 'sale' })}
+                onClick={() =>
+                  setFilters((prev) => ({ ...prev, type: 'sale' }))
+                }
               >
                 Comprar
               </button>
@@ -454,7 +457,10 @@ export function PropertyFilters({
               type="text"
               value={filters.code || ''}
               onChange={(e) =>
-                setFilters({ ...filters, code: e.target.value || undefined })
+                setFilters((prev) => ({
+                  ...prev,
+                  code: e.target.value || undefined,
+                }))
               }
               placeholder="Busque por código"
               className={styles.codeInput}
@@ -494,10 +500,10 @@ export function PropertyFilters({
               options={quantityOptions}
               value={filters.minBedrooms?.toString() || ''}
               onChange={(v: string) =>
-                setFilters({
-                  ...filters,
+                setFilters((prev) => ({
+                  ...prev,
                   minBedrooms: v ? Number(v) : undefined,
-                })
+                }))
               }
               label="Quartos"
             />
@@ -508,7 +514,10 @@ export function PropertyFilters({
               options={quantityOptions}
               value={filters.minSuites?.toString() || ''}
               onChange={(v: string) =>
-                setFilters({ ...filters, minSuites: v ? Number(v) : undefined })
+                setFilters((prev) => ({
+                  ...prev,
+                  minSuites: v ? Number(v) : undefined,
+                }))
               }
               label="Suítes"
             />
@@ -519,10 +528,10 @@ export function PropertyFilters({
               options={quantityOptions}
               value={filters.minBathrooms?.toString() || ''}
               onChange={(v: string) =>
-                setFilters({
-                  ...filters,
+                setFilters((prev) => ({
+                  ...prev,
                   minBathrooms: v ? Number(v) : undefined,
-                })
+                }))
               }
               label="Banheiros"
             />
@@ -533,10 +542,10 @@ export function PropertyFilters({
               options={quantityOptions}
               value={filters.minParkingSpaces?.toString() || ''}
               onChange={(v: string) =>
-                setFilters({
-                  ...filters,
+                setFilters((prev) => ({
+                  ...prev,
                   minParkingSpaces: v ? Number(v) : undefined,
-                })
+                }))
               }
               label="Garagem"
             />

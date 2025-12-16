@@ -32,17 +32,6 @@ export function PropertyCard({ property }: PropertyCardProps) {
     }).format(price);
   };
 
-  const _getCategoryLabel = (category: string) => {
-    const labels: Record<string, string> = {
-      apartment: 'Apartamento',
-      house: 'Casa',
-      commercial: 'Comercial',
-      land: 'Terreno',
-      farm: 'Chacara/Fazenda',
-    };
-    return labels[category] || category;
-  };
-
   const getTypeLabel = (type: string) => {
     return type === 'sale' ? 'Venda' : 'Aluguel';
   };
@@ -60,7 +49,12 @@ export function PropertyCard({ property }: PropertyCardProps) {
     : 'Endereco nao disponivel';
 
   return (
-    <Link href={`/imovel/${property.id}`} className={styles.link}>
+    <Link
+      href={`/imovel/${property.id}`}
+      className={styles.link}
+      target="_blank"
+      rel="noopener noreferrer"
+    >
       <div className={styles.card}>
         {/* Imagem */}
         <div className={styles.imageContainer}>

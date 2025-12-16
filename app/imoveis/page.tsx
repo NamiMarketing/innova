@@ -1,18 +1,53 @@
 import { Metadata } from 'next';
-import { getProperties } from '@/services/properfy';
-import { safeFetch } from '@/lib/safe-fetch';
+import { Suspense } from 'react';
 import { PropertyType, PropertyCategory } from '@/types/property';
 import { ImoveisContent } from './ImoveisContent';
+import { LoadingState } from './LoadingState';
 import styles from './page.module.css';
-
-// ISR: Revalidate every hour for SEO
-export const revalidate = 3600;
+import { getProperties } from '@/services/properfy';
 
 export const metadata: Metadata = {
   title: 'Imoveis a Venda e Aluguel | Innova Imobiliaria',
   description:
     'Encontre imoveis a venda e para alugar em Curitiba e regiao. Apartamentos, casas, terrenos e imoveis comerciais.',
 };
+
+// Dynamic rendering for real-time data
+export const dynamic = 'force-dynamic';
+
+async function PropertiesLoader({
+  searchParams,
+}: {
+  searchParams: { [key: string]: string | string[] | undefined };
+}) {
+  const filters = {
+    type: (searchParams.type as PropertyType) || undefined,
+    category: (searchParams.category as PropertyCategory) || undefined,
+    city: (searchParams.city as string) || undefined,
+    neighborhood: (searchParams.neighborhood as string) || undefined,
+    code: (searchParams.code as string) || undefined,
+    minPrice: searchParams.minPrice ? Number(searchParams.minPrice) : undefined,
+    maxPrice: searchParams.maxPrice ? Number(searchParams.maxPrice) : undefined,
+    minBedrooms: searchParams.minBedrooms
+      ? Number(searchParams.minBedrooms)
+      : undefined,
+    minBathrooms: searchParams.minBathrooms
+      ? Number(searchParams.minBathrooms)
+      : undefined,
+    minSuites: searchParams.minSuites
+      ? Number(searchParams.minSuites)
+      : undefined,
+    minParkingSpaces: searchParams.minParkingSpaces
+      ? Number(searchParams.minParkingSpaces)
+      : undefined,
+    minArea: searchParams.minArea ? Number(searchParams.minArea) : undefined,
+    maxArea: searchParams.maxArea ? Number(searchParams.maxArea) : undefined,
+  };
+
+  const initialData = await getProperties(filters);
+
+  return <ImoveisContent initialData={initialData} initialFilters={filters} />;
+}
 
 export default async function ImoveisPage({
   searchParams,
@@ -53,19 +88,12 @@ export default async function ImoveisPage({
       : undefined,
   };
 
-  const { data: response } = await safeFetch(getProperties(filters));
-  const initialData = response ?? {
-    data: [],
-    total: 0,
-    page: 1,
-    limit: 30,
-    totalPages: 0,
-  };
-
   return (
     <div className={styles.container}>
       <div className={styles.content}>
-        <ImoveisContent initialData={initialData} initialFilters={filters} />
+        <Suspense fallback={<LoadingState initialFilters={filters} />}>
+          <PropertiesLoader searchParams={resolvedSearchParams} />
+        </Suspense>
       </div>
     </div>
   );

@@ -69,8 +69,8 @@ export function Header() {
             <Image
               src={logoNav}
               alt="Logo do Innova Imobiliária Digital"
-              width={120}
-              height={50}
+              width={140}
+              height={58}
             />
           </Link>
 
