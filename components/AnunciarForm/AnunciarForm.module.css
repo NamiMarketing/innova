@@ -1,0 +1,146 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 60px;
+  background-color: #f8f8f8;
+}
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.formGroupTitle {
+  font-size: 30px;
+  font-weight: 500;
+  line-height: 30px;
+  color: var(--black);
+}
+
+.formRow {
+  display: flex;
+  gap: 20px;
+  width: 100%;
+}
+
+.formField {
+  flex: 1;
+}
+
+.formFieldSmall {
+  flex: 1;
+  min-width: 0;
+}
+
+.formFieldLarge {
+  flex: 2;
+  min-width: 0;
+}
+
+.input,
+.select,
+.textarea {
+  width: 100%;
+  height: 60px;
+  padding: 0 13px;
+  background-color: rgba(217, 217, 217, 0.4);
+  border: 0.5px solid var(--black);
+  border-radius: 10px;
+  font-size: 20px;
+  font-weight: 400;
+  color: var(--black);
+  font-family: 'Ubuntu', sans-serif;
+  opacity: 0.5;
+  transition: opacity 0.2s;
+}
+
+.input:focus,
+.select:focus,
+.textarea:focus {
+  outline: none;
+  opacity: 1;
+  border-color: var(--orange);
+}
+
+.input::placeholder,
+.select::placeholder,
+.textarea::placeholder {
+  color: var(--black);
+  opacity: 0.5;
+}
+
+.select {
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L6 6L11 1' stroke='%23000000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 20px center;
+  padding-right: 50px;
+}
+
+.textarea {
+  height: 120px;
+  padding: 20px 13px;
+  resize: vertical;
+  min-height: 120px;
+}
+
+.formActions {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.submitButton {
+  width: 340px;
+  height: 50px;
+  background-color: var(--orange);
+  color: var(--white);
+  border: none;
+  border-radius: 6px;
+  font-size: 20px;
+  font-weight: 400;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.submitButton:hover:not(:disabled) {
+  background-color: #d97528;
+}
+
+.submitButton:active:not(:disabled) {
+  transform: translateY(1px);
+}
+
+.submitButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .formGroupTitle {
+    font-size: 24px;
+  }
+
+  .formRow {
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .formFieldSmall,
+  .formFieldLarge {
+    flex: 1;
+  }
+
+  .input,
+  .select,
+  .textarea {
+    font-size: 16px;
+  }
+
+  .submitButton {
+    width: 100%;
+    max-width: 340px;
+  }
+}

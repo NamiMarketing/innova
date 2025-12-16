@@ -80,7 +80,7 @@ export function PropertyCard({ property }: PropertyCardProps) {
         <div className={styles.content}>
           {/* Header com código e favorito */}
           <div className={styles.contentHeader}>
-            <div className={styles.codeBadge}>Cod: {property.code}</div>
+            <div className={styles.codeBadge}>{property.code}</div>
             <button
               type="button"
               className={`${styles.favoriteButton} ${isFav ? styles.favoriteButtonActive : ''}`}
@@ -191,9 +191,7 @@ export function PropertyCard({ property }: PropertyCardProps) {
                     {property.condoFee && (
                       <div className={styles.extraCost}>
                         <span className={styles.extraCostPlus}>+</span>
-                        <span>
-                          Condominio: {formatPrice(property.condoFee)}/mês
-                        </span>
+                        <span>Cond: {formatPrice(property.condoFee)}/mês</span>
                       </div>
                     )}
                     {property.iptu && (
@@ -205,7 +203,7 @@ export function PropertyCard({ property }: PropertyCardProps) {
                   </div>
                 )}
             </div>
-            <button className={styles.rightPrice}>Ver imóvel</button>
+            <button className={styles.rightPrice}>Contatar</button>
           </div>
         </div>
       </div>

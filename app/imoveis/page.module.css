@@ -1,15 +1,15 @@
 .container {
-  height: calc(100vh - 80px);
   background: var(--background);
-  overflow: hidden;
+  overflow: visible;
 }
 
 .content {
-  height: 100%;
   width: 90%;
   max-width: 1500px;
   margin: 0 auto;
-  padding: 60px 0 0;
+  display: flex;
+  gap: 0;
+  min-height: calc(100vh - 100px);
 }
 
 @media (max-width: 768px) {
@@ -20,6 +20,7 @@
 
   .content {
     padding: 20px 0 40px;
+    flex-direction: column;
   }
 }
 

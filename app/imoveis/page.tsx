@@ -1,8 +1,8 @@
 import { Metadata } from 'next';
-import { PropertySearch } from '@/components/PropertySearch';
 import { getProperties } from '@/services/properfy';
 import { safeFetch } from '@/lib/safe-fetch';
 import { PropertyType, PropertyCategory } from '@/types/property';
+import { ImoveisContent } from './ImoveisContent';
 import styles from './page.module.css';
 
 // ISR: Revalidate every hour for SEO
@@ -65,7 +65,7 @@ export default async function ImoveisPage({
   return (
     <div className={styles.container}>
       <div className={styles.content}>
-        <PropertySearch initialData={initialData} initialFilters={filters} />
+        <ImoveisContent initialData={initialData} initialFilters={filters} />
       </div>
     </div>
   );

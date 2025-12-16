@@ -52,15 +52,21 @@ export function PropertyListing({
     fetchProperties();
   }, [filters]);
 
-  const handleFilterChange = (newFilters: PropertyFiltersType) => {
+  const handleFiltersChange = (newFilters: PropertyFiltersType) => {
     setFilters(newFilters);
+  };
+
+  const handleReset = () => {
+    setFilters({});
   };
 
   return (
     <section className={styles.section}>
       <PropertyFilters
-        onFilterChange={handleFilterChange}
+        onFiltersChange={handleFiltersChange}
+        onReset={handleReset}
         initialFilters={filters}
+        loading={loading}
       />
 
       {/* Error State */}
@@ -182,13 +188,7 @@ export function PropertyListing({
                   Nao encontramos imoveis com os filtros selecionados. Tente
                   ajustar os criterios para ver mais opcoes.
                 </p>
-                <button
-                  onClick={() => {
-                    setFilters({});
-                    handleFilterChange({});
-                  }}
-                  className={styles.clearButton}
-                >
+                <button onClick={handleReset} className={styles.clearButton}>
                   <svg
                     className={styles.clearButtonIcon}
                     fill="none"

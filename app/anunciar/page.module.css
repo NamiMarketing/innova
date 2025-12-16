@@ -1,0 +1,153 @@
+.container {
+  min-height: 100vh;
+  background-color: #f8f8f8;
+}
+
+/* Hero Section */
+.hero {
+  position: relative;
+  width: 100%;
+  height: 620px;
+  background-image: url('/img/anunciar/hero-bg.jpg');
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.heroOverlay {
+  position: absolute;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.2);
+}
+
+.heroTitle {
+  position: relative;
+  z-index: 1;
+  font-size: 40px;
+  font-weight: 500;
+  line-height: 40px;
+  color: var(--orange);
+  text-align: center;
+}
+
+.heroLogo {
+  position: absolute;
+  right: 0;
+  top: 294px;
+  width: 20.07%;
+  aspect-ratio: 770/1134;
+  opacity: 0.1;
+  pointer-events: none;
+}
+
+.heroLogoImage {
+  object-fit: cover;
+  object-position: center;
+}
+
+/* Process Section */
+.process {
+  width: 100%;
+  padding: 100px 0;
+}
+
+.processContent {
+  width: 85%;
+  margin: 0 auto;
+  max-width: 1440px;
+  display: flex;
+  gap: 90px;
+  align-items: flex-start;
+}
+
+.processTitle {
+  font-size: 40px;
+  font-weight: 500;
+  line-height: 50px;
+  color: var(--orange);
+  max-width: 505px;
+  flex-shrink: 0;
+}
+
+.processSteps {
+  display: flex;
+  flex-direction: column;
+  gap: 50px;
+  flex: 1;
+}
+
+.processStep {
+  display: flex;
+  align-items: flex-start;
+  gap: 30px;
+}
+
+.stepNumber {
+  flex-shrink: 0;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background-color: var(--orange);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  font-weight: 400;
+  color: var(--white);
+}
+
+.stepText {
+  font-size: 22px;
+  font-weight: 400;
+  line-height: 28px;
+  color: var(--black);
+  max-width: 540px;
+  margin-top: 10px;
+}
+
+/* Form Section */
+.formSection {
+  width: 85%;
+  margin: 0 auto 100px;
+  max-width: 1440px;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .hero {
+    height: 400px;
+  }
+
+  .heroTitle {
+    font-size: 28px;
+    line-height: 32px;
+    padding: 0 20px;
+  }
+
+  .heroLogo {
+    width: 150px;
+    height: 220px;
+  }
+
+  .processContent {
+    width: 90%;
+    flex-direction: column;
+    gap: 50px;
+  }
+
+  .processTitle {
+    font-size: 28px;
+    line-height: 36px;
+  }
+
+  .stepText {
+    font-size: 18px;
+    line-height: 24px;
+  }
+
+  .formSection {
+    width: 90%;
+  }
+}

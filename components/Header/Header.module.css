@@ -1,7 +1,13 @@
 .container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
   margin: 0 auto;
   padding: 20px 7%;
   border-bottom: 1px solid var(--gray-medium);
+  background: var(--white);
+  z-index: 1000;
 }
 
 .inner {

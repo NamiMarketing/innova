@@ -8,4 +8,11 @@
 
 .main {
   flex: 1;
+  padding-top: 100px;
+}
+
+@media (max-width: 768px) {
+  .main {
+    padding-top: 60px;
+  }
 }

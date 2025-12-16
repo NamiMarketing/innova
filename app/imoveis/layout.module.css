@@ -1,0 +1,8 @@
+.imoveisLayout {
+  min-height: 100vh;
+}
+
+/* Hide footer on imoveis page using global selector */
+:global(body:has(.imoveisLayout) footer) {
+  display: none !important;
+}
