@@ -19,19 +19,16 @@ import rapido from '@/img/home/rapido.png';
 import variedade from '@/img/home/variedade.png';
 import transparencia from '@/img/home/transparencia.png';
 import suporte from '@/img/home/suporte.png';
+import { getFilterOptions } from '@/services/properfy';
 
 // Cache the home page for 1 hour
 export const revalidate = 3600;
 
 export default async function Home() {
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
-  const filterOptionsRes = await fetch(`${baseUrl}/api/filter-options`, {
-    next: { revalidate: 14400 }, // 4 hours
-  });
-  const options = filterOptionsRes.ok ? await filterOptionsRes.json() : null;
-  const cities = options?.cities ?? [];
-  const neighborhoodsByCity = options?.neighborhoodsByCity ?? {};
-  const types = options?.types ?? [];
+  const options = await getFilterOptions();
+  const cities = options.cities;
+  const neighborhoodsByCity = options.neighborhoodsByCity;
+  const types = options.types;
 
   return (
     <div className={styles.container}>

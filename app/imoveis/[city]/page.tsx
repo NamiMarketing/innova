@@ -1,6 +1,6 @@
 import { Metadata } from 'next';
 import { PropertySearch } from '@/components/PropertySearch';
-import { getProperties } from '@/services/properfy';
+import { getProperties, getFilterOptions } from '@/services/properfy';
 import { safeFetch } from '@/lib/safe-fetch';
 import styles from '../page.module.css';
 
@@ -50,12 +50,9 @@ export default async function CityPage({ params }: CityPageProps) {
   const cityName = cityData?.name || city;
 
   // Fetch properties and filter options
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
-  const [{ data: response }, filterOptionsRes] = await Promise.all([
+  const [{ data: response }, options] = await Promise.all([
     safeFetch(getProperties({ city: cityName })),
-    fetch(`${baseUrl}/api/filter-options`, {
-      next: { revalidate: 14400 }, // 4 hours
-    }),
+    getFilterOptions(),
   ]);
 
   const initialData = response ?? {
@@ -65,10 +62,6 @@ export default async function CityPage({ params }: CityPageProps) {
     limit: 30,
     totalPages: 0,
   };
-
-  const options = filterOptionsRes.ok
-    ? await filterOptionsRes.json()
-    : { cities: [], neighborhoodsByCity: {}, types: [] };
 
   return (
     <div className={styles.container}>

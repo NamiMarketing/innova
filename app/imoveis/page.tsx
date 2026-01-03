@@ -4,7 +4,7 @@ import { PropertyType, PropertyCategory } from '@/types/property';
 import { ImoveisContent } from './ImoveisContent';
 import { LoadingState } from './LoadingState';
 import styles from './page.module.css';
-import { getProperties } from '@/services/properfy';
+import { getProperties, getFilterOptions } from '@/services/properfy';
 
 export const metadata: Metadata = {
   title: 'Imoveis a Venda e Aluguel | Innova Imobiliaria',
@@ -44,17 +44,10 @@ async function PropertiesLoader({
     maxArea: searchParams.maxArea ? Number(searchParams.maxArea) : undefined,
   };
 
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
-  const [initialData, filterOptionsRes] = await Promise.all([
+  const [initialData, filterOptions] = await Promise.all([
     getProperties(filters),
-    fetch(`${baseUrl}/api/filter-options`, {
-      next: { revalidate: 14400 }, // 4 hours
-    }),
+    getFilterOptions(),
   ]);
-
-  const filterOptions = filterOptionsRes.ok
-    ? await filterOptionsRes.json()
-    : { cities: [], neighborhoodsByCity: {}, types: [] };
 
   return (
     <ImoveisContent
