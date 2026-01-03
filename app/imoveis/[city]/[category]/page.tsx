@@ -115,6 +115,7 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
     <div className={styles.container}>
       <div className={styles.content}>
         <PropertySearch
+          key={`${cityName}-${categoryValue}`}
           initialData={initialData}
           initialFilters={{ city: cityName, category: categoryValue }}
           filterOptions={options}

@@ -13,13 +13,54 @@ import Link from 'next/link';
 
 interface PropertySwiperProps {
   title: string;
-  properties: Property[];
+  type?: 'highlighted' | 'exclusive';
+  properties?: Property[];
 }
 
-export function PropertySwiper({ title, properties }: PropertySwiperProps) {
+export function PropertySwiper({
+  title,
+  type,
+  properties: propProperties,
+}: PropertySwiperProps) {
+  const [properties, setProperties] = useState<Property[]>(
+    propProperties || []
+  );
+  const [loading, setLoading] = useState(!propProperties);
   const [prevEl, setPrevEl] = useState<HTMLButtonElement | null>(null);
   const [nextEl, setNextEl] = useState<HTMLButtonElement | null>(null);
   const swiperRef = useRef<SwiperType | null>(null);
+
+  // Fetch properties based on type (only if properties not provided)
+  useEffect(() => {
+    if (propProperties) {
+      setProperties(propProperties);
+      setLoading(false);
+      return;
+    }
+
+    if (!type) {
+      return;
+    }
+
+    const fetchProperties = async () => {
+      try {
+        setLoading(true);
+        const endpoint =
+          type === 'highlighted'
+            ? '/api/properties/highlighted'
+            : '/api/properties/exclusive';
+        const response = await fetch(endpoint);
+        const data = await response.json();
+        setProperties(data);
+      } catch (error) {
+        console.error(`Error fetching ${type} properties:`, error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProperties();
+  }, [type, propProperties]);
 
   // Update navigation when buttons are mounted
   useEffect(() => {
@@ -39,6 +80,36 @@ export function PropertySwiper({ title, properties }: PropertySwiperProps) {
       }
     }
   }, [prevEl, nextEl]);
+
+  if (loading) {
+    return (
+      <div className={styles.container}>
+        <div className={styles.titleContainer}>
+          <h2 className={styles.title}>{title}</h2>
+          <Link href="/imoveis" className={styles.link}>
+            Ver todos
+          </Link>
+        </div>
+        <div className={styles.skeletonWrapper}>
+          {[...Array(4)].map((_, i) => (
+            <div key={i} className={styles.skeletonCard}>
+              <div className={styles.skeletonImage} />
+              <div className={styles.skeletonContent}>
+                <div className={styles.skeletonTitle} />
+                <div className={styles.skeletonLocation} />
+                <div className={styles.skeletonFeatures}>
+                  <div className={styles.skeletonFeature} />
+                  <div className={styles.skeletonFeature} />
+                  <div className={styles.skeletonFeature} />
+                </div>
+                <div className={styles.skeletonPrice} />
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+  }
 
   if (properties.length === 0) {
     return null;

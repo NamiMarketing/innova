@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useCallback } from 'react';
+import { useRouter } from 'next/navigation';
 import { Property, PropertyFilters, PropertyResponse } from '@/types/property';
 import { PropertyFilters as PropertyFiltersComponent } from '@/components/PropertyFilters';
 import { PropertyResults } from '@/components/PropertyResults';
@@ -20,6 +21,7 @@ export function ImoveisContent({
   initialFilters = {},
   filterOptions,
 }: ImoveisContentProps) {
+  const router = useRouter();
   const [appliedFilters, setAppliedFilters] =
     useState<PropertyFilters>(initialFilters);
   const [properties, setProperties] = useState<Property[]>(
@@ -84,7 +86,6 @@ export function ImoveisContent({
         setTotal(data.total ?? 0);
         setCurrentPage(data.page ?? page);
         setTotalPages(data.totalPages ?? 1);
-        setAppliedFilters(newFilters);
       } catch (error) {
         console.error('Error fetching properties:', error);
       } finally {
@@ -96,12 +97,49 @@ export function ImoveisContent({
   );
 
   const handleFiltersChange = (newFilters: PropertyFilters) => {
+    // Update applied filters immediately for UI responsiveness
+    setAppliedFilters(newFilters);
+
+    // Update URL with new filters
+    const params = new URLSearchParams();
+    if (newFilters.type) params.set('type', newFilters.type);
+    if (newFilters.category) params.set('category', newFilters.category);
+    if (newFilters.city) params.set('city', newFilters.city);
+    if (newFilters.neighborhood)
+      params.set('neighborhood', newFilters.neighborhood);
+    if (newFilters.minPrice)
+      params.set('minPrice', newFilters.minPrice.toString());
+    if (newFilters.maxPrice)
+      params.set('maxPrice', newFilters.maxPrice.toString());
+    if (newFilters.minBedrooms)
+      params.set('minBedrooms', newFilters.minBedrooms.toString());
+    if (newFilters.minBathrooms)
+      params.set('minBathrooms', newFilters.minBathrooms.toString());
+    if (newFilters.minSuites)
+      params.set('minSuites', newFilters.minSuites.toString());
+    if (newFilters.minParkingSpaces)
+      params.set('minParkingSpaces', newFilters.minParkingSpaces.toString());
+    if (newFilters.code) params.set('code', newFilters.code);
+    if (newFilters.amenities && newFilters.amenities.length > 0) {
+      params.set('amenities', newFilters.amenities.join(','));
+    }
+    if (newFilters.minArea)
+      params.set('minArea', newFilters.minArea.toString());
+    if (newFilters.maxArea)
+      params.set('maxArea', newFilters.maxArea.toString());
+
+    const queryString = params.toString();
+    const newUrl = queryString ? `/imoveis?${queryString}` : '/imoveis';
+    router.push(newUrl, { scroll: false });
+
     setCurrentPage(1);
     fetchProperties(newFilters, 1, false);
   };
 
   const handleReset = () => {
     const resetFilters: PropertyFilters = {};
+    setAppliedFilters(resetFilters);
+    router.push('/imoveis', { scroll: false });
     setCurrentPage(1);
     fetchProperties(resetFilters, 1, false);
   };
@@ -117,7 +155,7 @@ export function ImoveisContent({
   return (
     <>
       <PropertyFiltersComponent
-        initialFilters={initialFilters}
+        initialFilters={appliedFilters}
         onFiltersChange={handleFiltersChange}
         onReset={handleReset}
         loading={loading}

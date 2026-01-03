@@ -74,6 +74,7 @@ export default async function CityPage({ params }: CityPageProps) {
     <div className={styles.container}>
       <div className={styles.content}>
         <PropertySearch
+          key={cityName}
           initialData={initialData}
           initialFilters={{ city: cityName }}
           filterOptions={options}

@@ -72,8 +72,20 @@ export function PropertyResults({
     overscan: 2,
   });
 
+  // Track if component has mounted to prevent auto-loading on initial render
+  const [hasMounted, setHasMounted] = useState(false);
+
+  useEffect(() => {
+    setHasMounted(true);
+  }, []);
+
   // Infinite scroll - load more when scrolling near the bottom
   useEffect(() => {
+    // Don't auto-load on initial mount
+    if (!hasMounted) {
+      return;
+    }
+
     const virtualItems = rowVirtualizer.getVirtualItems();
     const [lastItem] = [...virtualItems].reverse();
 
@@ -89,8 +101,14 @@ export function PropertyResults({
     ) {
       onLoadMore();
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [hasMore, loadingMore, sortedProperties.length, onLoadMore]);
+  }, [
+    hasMounted,
+    hasMore,
+    loadingMore,
+    sortedProperties.length,
+    onLoadMore,
+    rowVirtualizer,
+  ]);
 
   const getSortLabel = () => {
     if (sortOrder === 'asc') return 'Menor preço';
@@ -224,7 +242,11 @@ export function PropertyResults({
             <h1 className={styles.pageTitle}>
               {appliedFilters.city
                 ? `Imóveis em ${appliedFilters.city} - PR`
-                : 'Imóveis à Venda e Aluguel'}
+                : appliedFilters.type === 'sale'
+                  ? 'Imóveis à Venda'
+                  : appliedFilters.type === 'rent'
+                    ? 'Imóveis para Alugar'
+                    : 'Imóveis à Venda e Aluguel'}
             </h1>
             <p className={styles.pageSubtitle}>
               {properties.length === 0

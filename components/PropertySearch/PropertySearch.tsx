@@ -262,14 +262,33 @@ export function PropertySearch({
           : undefined,
       amenities: selectedAmenities.length > 0 ? selectedAmenities : undefined,
     };
-    setAppliedFilters(newFilters); // Salva os filtros aplicados
+    setAppliedFilters(newFilters);
+    fetchProperties(newFilters);
+  };
+
+  const handleTypeChange = (type: 'sale' | 'rent') => {
+    const newFilters: PropertyFilters = {
+      ...filters,
+      type,
+      category:
+        selectedCategories.length > 0
+          ? (selectedCategories.join(',') as PropertyCategory)
+          : undefined,
+      neighborhood:
+        selectedNeighborhoods.length > 0
+          ? selectedNeighborhoods.join(',')
+          : undefined,
+      amenities: selectedAmenities.length > 0 ? selectedAmenities : undefined,
+    };
+    setFilters(newFilters);
+    setAppliedFilters(newFilters);
     fetchProperties(newFilters);
   };
 
   const handleReset = () => {
     const resetFilters: PropertyFilters = {};
     setFilters(resetFilters);
-    setAppliedFilters(resetFilters); // Limpa também os filtros aplicados
+    setAppliedFilters(resetFilters);
     setSelectedCategories([]);
     setSelectedNeighborhoods([]);
     setSelectedAmenities([]);
@@ -514,15 +533,15 @@ export function PropertySearch({
             <div className={styles.typeButtons}>
               <button
                 type="button"
-                className={`${styles.typeButton} ${filters.type === 'rent' ? styles.typeButtonActive : ''}`}
-                onClick={() => setFilters({ ...filters, type: 'rent' })}
+                className={`${styles.typeButton} ${appliedFilters.type === 'rent' ? styles.typeButtonActive : ''}`}
+                onClick={() => handleTypeChange('rent')}
               >
                 Alugar
               </button>
               <button
                 type="button"
-                className={`${styles.typeButton} ${filters.type === 'sale' ? styles.typeButtonActive : ''}`}
-                onClick={() => setFilters({ ...filters, type: 'sale' })}
+                className={`${styles.typeButton} ${appliedFilters.type === 'sale' ? styles.typeButtonActive : ''}`}
+                onClick={() => handleTypeChange('sale')}
               >
                 Comprar
               </button>
@@ -832,7 +851,11 @@ export function PropertySearch({
               <h1 className={styles.pageTitle}>
                 {appliedFilters.city
                   ? `Imóveis em ${appliedFilters.city} - PR`
-                  : 'Imóveis à Venda e Aluguel'}
+                  : appliedFilters.type === 'sale'
+                    ? 'Imóveis à Venda'
+                    : appliedFilters.type === 'rent'
+                      ? 'Imóveis para Alugar'
+                      : 'Imóveis à Venda e Aluguel'}
               </h1>
               <p className={styles.pageSubtitle}>
                 {properties.length === 0

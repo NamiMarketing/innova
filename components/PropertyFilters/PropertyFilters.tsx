@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import Image from 'next/image';
 import { PropertyFilters as PropertyFiltersType } from '@/types/property';
 import { Selector, SelectorOption, ButtonSelector } from '@/components/ui';
@@ -148,6 +148,14 @@ export function PropertyFilters({
     formatCurrency(initialFilters.maxPrice)
   );
 
+  // States for formatted area display
+  const [minAreaDisplay, setMinAreaDisplay] = useState(
+    formatArea(initialFilters.minArea)
+  );
+  const [maxAreaDisplay, setMaxAreaDisplay] = useState(
+    formatArea(initialFilters.maxArea)
+  );
+
   // Handlers for price input
   const handleMinPriceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const formatted = formatCurrencyInput(e.target.value);
@@ -160,14 +168,6 @@ export function PropertyFilters({
     setMaxPriceDisplay(formatted);
     setFilters((prev) => ({ ...prev, maxPrice: parseCurrency(formatted) }));
   };
-
-  // States for formatted area display
-  const [minAreaDisplay, setMinAreaDisplay] = useState(
-    formatArea(initialFilters.minArea)
-  );
-  const [maxAreaDisplay, setMaxAreaDisplay] = useState(
-    formatArea(initialFilters.maxArea)
-  );
 
   // Handlers for area input
   const handleMinAreaChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -198,6 +198,23 @@ export function PropertyFilters({
         setSelectedNeighborhoods(validNeighborhoods);
       }
     }
+  };
+
+  const handleTypeChange = (type: 'sale' | 'rent') => {
+    const newFilters: PropertyFiltersType = {
+      ...initialFilters,
+      type,
+      category:
+        selectedCategories.length > 0
+          ? (selectedCategories.join(',') as PropertyFiltersType['category'])
+          : undefined,
+      neighborhood:
+        selectedNeighborhoods.length > 0
+          ? selectedNeighborhoods.join(',')
+          : undefined,
+      amenities: selectedAmenities.length > 0 ? selectedAmenities : undefined,
+    };
+    onFiltersChange(newFilters);
   };
 
   const handleApply = () => {
@@ -355,19 +372,15 @@ export function PropertyFilters({
             <div className={styles.typeButtons}>
               <button
                 type="button"
-                className={`${styles.typeButton} ${filters.type === 'rent' ? styles.typeButtonActive : ''}`}
-                onClick={() =>
-                  setFilters((prev) => ({ ...prev, type: 'rent' }))
-                }
+                className={`${styles.typeButton} ${initialFilters.type === 'rent' ? styles.typeButtonActive : ''}`}
+                onClick={() => handleTypeChange('rent')}
               >
                 Alugar
               </button>
               <button
                 type="button"
-                className={`${styles.typeButton} ${filters.type === 'sale' ? styles.typeButtonActive : ''}`}
-                onClick={() =>
-                  setFilters((prev) => ({ ...prev, type: 'sale' }))
-                }
+                className={`${styles.typeButton} ${initialFilters.type === 'sale' ? styles.typeButtonActive : ''}`}
+                onClick={() => handleTypeChange('sale')}
               >
                 Comprar
               </button>

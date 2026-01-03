@@ -2,11 +2,6 @@ import { HomeSearch } from '@/components/HomeSearch';
 import Image from 'next/image';
 import styles from './page.module.css';
 import headerImg from '@/img/home/header.png';
-import {
-  getHighlightedProperties,
-  getExclusiveProperties,
-} from '@/services/properfy';
-import { safeFetch } from '@/lib/safe-fetch';
 import Link from 'next/link';
 import cardImg from '@/img/home/card-image.png';
 import logoCard from '@/img/home/logo-card.png';
@@ -25,6 +20,9 @@ import variedade from '@/img/home/variedade.png';
 import transparencia from '@/img/home/transparencia.png';
 import suporte from '@/img/home/suporte.png';
 
+// Cache the home page for 1 hour
+export const revalidate = 3600;
+
 export default async function Home() {
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
   const filterOptionsRes = await fetch(`${baseUrl}/api/filter-options`, {
@@ -34,14 +32,6 @@ export default async function Home() {
   const cities = options?.cities ?? [];
   const neighborhoodsByCity = options?.neighborhoodsByCity ?? {};
   const types = options?.types ?? [];
-
-  // Fetch properties for swiper sections
-  const { data: highlightedProperties } = await safeFetch(
-    getHighlightedProperties(10)
-  );
-  const { data: exclusiveProperties } = await safeFetch(
-    getExclusiveProperties(10)
-  );
 
   return (
     <div className={styles.container}>
@@ -124,16 +114,10 @@ export default async function Home() {
       </section>
 
       {/* imoveis em destaque swiper */}
-      <PropertySwiper
-        title="Imóveis em destaque"
-        properties={highlightedProperties ?? []}
-      />
+      <PropertySwiper title="Imóveis em destaque" type="highlighted" />
 
       {/* imoveis exclusivos swiper */}
-      <PropertySwiper
-        title="Exclusivos Innova"
-        properties={exclusiveProperties ?? []}
-      />
+      <PropertySwiper title="Exclusivos Innova" type="exclusive" />
 
       <section className={styles.escolher}>
         <Image

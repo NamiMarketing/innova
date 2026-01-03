@@ -58,6 +58,7 @@ async function PropertiesLoader({
 
   return (
     <ImoveisContent
+      key={JSON.stringify(filters)}
       initialData={initialData}
       initialFilters={filters}
       filterOptions={filterOptions}
