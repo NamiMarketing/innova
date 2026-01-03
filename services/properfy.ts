@@ -102,6 +102,34 @@ export async function getProperties(
   return result;
 }
 
+export async function getPropertiesByIds(
+  ids: string[]
+): Promise<PropertyResponse> {
+  try {
+    const promises = ids.map((id) => getPropertyById(id));
+    const results = await Promise.all(promises);
+
+    const properties = results.filter((p): p is Property => p !== null);
+
+    return {
+      data: properties,
+      total: properties.length,
+      page: 1,
+      limit: ids.length,
+      totalPages: 1,
+    };
+  } catch (error) {
+    console.error('Error fetching properties by ids:', error);
+    return {
+      data: [],
+      total: 0,
+      page: 1,
+      limit: 0,
+      totalPages: 0,
+    };
+  }
+}
+
 export async function getPropertyById(id: string): Promise<Property | null> {
   try {
     const endpoint = `api/property/property/${id}`;
@@ -119,9 +147,9 @@ export async function getFilterOptions(): Promise<{
   types: string[];
 }> {
   try {
-    // Fetch a batch of properties to extract unique values
-    // Using a larger limit to get a good representation
-    const { data } = await getProperties({ limit: 100 });
+    // Fetch all properties to extract unique values
+    // Using a large limit to ensure we get all cities and neighborhoods
+    const { data } = await getProperties({ limit: 1000 });
 
     const cities = Array.from(
       new Set(data.map((p) => p.address.city).filter(Boolean))

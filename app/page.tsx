@@ -3,7 +3,6 @@ import Image from 'next/image';
 import styles from './page.module.css';
 import headerImg from '@/img/home/header.png';
 import {
-  getFilterOptions,
   getHighlightedProperties,
   getExclusiveProperties,
 } from '@/services/properfy';
@@ -27,7 +26,11 @@ import transparencia from '@/img/home/transparencia.png';
 import suporte from '@/img/home/suporte.png';
 
 export default async function Home() {
-  const { data: options } = await safeFetch(getFilterOptions());
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
+  const filterOptionsRes = await fetch(`${baseUrl}/api/filter-options`, {
+    next: { revalidate: 14400 }, // 4 hours
+  });
+  const options = filterOptionsRes.ok ? await filterOptionsRes.json() : null;
   const cities = options?.cities ?? [];
   const neighborhoodsByCity = options?.neighborhoodsByCity ?? {};
   const types = options?.types ?? [];

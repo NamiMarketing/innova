@@ -13,15 +13,13 @@ interface SearchFiltersProps {
   initialFilters?: PropertyFiltersType;
   onFilterChange?: (filters: PropertyFiltersType) => void;
   showAdvancedToggle?: boolean;
+  filterOptions?: {
+    cities: string[];
+    neighborhoodsByCity: Record<string, string[]>;
+    types: string[];
+  };
 }
 
-const CITIES = [
-  'Curitiba',
-  'São José dos Pinhais',
-  'Colombo',
-  'Pinhais',
-  'Araucária',
-];
 const CATEGORIES: { value: PropertyCategory; label: string }[] = [
   { value: 'apartment', label: 'Apartamento' },
   { value: 'house', label: 'Casa' },
@@ -34,6 +32,7 @@ export function SearchFilters({
   initialFilters = {},
   onFilterChange,
   showAdvancedToggle = true,
+  filterOptions = { cities: [], neighborhoodsByCity: {}, types: [] },
 }: SearchFiltersProps) {
   const router = useRouter();
   const [filters, setFilters] = useState<PropertyFiltersType>(initialFilters);
@@ -93,7 +92,7 @@ export function SearchFilters({
             className={styles.select}
           >
             <option value="">Todas</option>
-            {CITIES.map((city) => (
+            {filterOptions.cities.map((city) => (
               <option key={city} value={city}>
                 {city}
               </option>

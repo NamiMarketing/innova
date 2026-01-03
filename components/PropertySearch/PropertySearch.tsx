@@ -93,15 +93,12 @@ const formatAreaInput = (value: string): string => {
 interface PropertySearchProps {
   initialData: PropertyResponse;
   initialFilters?: PropertyFilters;
+  filterOptions: {
+    cities: string[];
+    neighborhoodsByCity: Record<string, string[]>;
+    types: string[];
+  };
 }
-
-const CITIES = [
-  'Curitiba',
-  'São José dos Pinhais',
-  'Colombo',
-  'Pinhais',
-  'Araucária',
-];
 
 const TYPE_LABELS: Record<string, string> = {
   apartment: 'Apartamento',
@@ -109,30 +106,6 @@ const TYPE_LABELS: Record<string, string> = {
   commercial: 'Comercial',
   land: 'Terreno',
   farm: 'Chácara/Fazenda',
-};
-
-const NEIGHBORHOODS_BY_CITY: Record<string, string[]> = {
-  Curitiba: [
-    'Centro',
-    'Batel',
-    'Água Verde',
-    'Bigorrilho',
-    'Cabral',
-    'Juvevê',
-    'Alto da XV',
-    'Cristo Rei',
-    'Rebouças',
-    'Santa Felicidade',
-  ],
-  'São José dos Pinhais': [
-    'Centro',
-    'Afonso Pena',
-    'Cidade Jardim',
-    'São Pedro',
-  ],
-  Colombo: ['Centro', 'Maracanã', 'Atuba'],
-  Pinhais: ['Centro', 'Emiliano Perneta', 'Weissópolis'],
-  Araucária: ['Centro', 'Costeira', 'Capela Velha'],
 };
 
 const toOptions = (items: string[]): SelectorOption[] =>
@@ -143,6 +116,7 @@ const _getCategoryLabel = (cat: string) => TYPE_LABELS[cat] || cat;
 export function PropertySearch({
   initialData,
   initialFilters = {},
+  filterOptions,
 }: PropertySearchProps) {
   const [filters, setFilters] = useState<PropertyFilters>(initialFilters);
   const [appliedFilters, setAppliedFilters] =
@@ -162,10 +136,14 @@ export function PropertySearch({
 
   // Multi-select states
   const [selectedCategories, setSelectedCategories] = useState<string[]>(
-    initialFilters.category ? [initialFilters.category] : []
+    initialFilters.category
+      ? initialFilters.category.split(',').map((c) => c.trim())
+      : []
   );
   const [selectedNeighborhoods, setSelectedNeighborhoods] = useState<string[]>(
-    initialFilters.neighborhood ? [initialFilters.neighborhood] : []
+    initialFilters.neighborhood
+      ? initialFilters.neighborhood.split(',').map((n) => n.trim())
+      : []
   );
   const [selectedAmenities, setSelectedAmenities] = useState<string[]>(
     initialFilters.amenities || []
@@ -260,10 +238,10 @@ export function PropertySearch({
     if (
       newCity &&
       selectedNeighborhoods.length > 0 &&
-      NEIGHBORHOODS_BY_CITY[newCity]
+      filterOptions.neighborhoodsByCity[newCity]
     ) {
       const validNeighborhoods = selectedNeighborhoods.filter((n) =>
-        NEIGHBORHOODS_BY_CITY[newCity].includes(n)
+        filterOptions.neighborhoodsByCity[newCity].includes(n)
       );
       if (validNeighborhoods.length !== selectedNeighborhoods.length) {
         setSelectedNeighborhoods(validNeighborhoods);
@@ -309,18 +287,23 @@ export function PropertySearch({
     []
   );
 
-  const cityOptions = useMemo(() => toOptions(CITIES), []);
+  const cityOptions = useMemo(
+    () => toOptions(filterOptions.cities),
+    [filterOptions.cities]
+  );
 
   const availableNeighborhoods = useMemo(() => {
-    if (filters.city && NEIGHBORHOODS_BY_CITY[filters.city]) {
-      return NEIGHBORHOODS_BY_CITY[filters.city];
+    if (filters.city && filterOptions.neighborhoodsByCity[filters.city]) {
+      return filterOptions.neighborhoodsByCity[filters.city];
     }
     const all = new Set<string>();
-    Object.values(NEIGHBORHOODS_BY_CITY).forEach((neighborhoods) => {
-      neighborhoods.forEach((n) => all.add(n));
-    });
+    Object.values(filterOptions.neighborhoodsByCity).forEach(
+      (neighborhoods) => {
+        neighborhoods.forEach((n) => all.add(n));
+      }
+    );
     return Array.from(all).sort();
-  }, [filters.city]);
+  }, [filters.city, filterOptions.neighborhoodsByCity]);
 
   const neighborhoodOptions = useMemo(
     () => toOptions(availableNeighborhoods),

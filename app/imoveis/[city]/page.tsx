@@ -11,9 +11,6 @@ export const revalidate = 3600;
 const STATIC_CITIES = [
   { slug: 'curitiba', name: 'Curitiba' },
   { slug: 'sao-jose-dos-pinhais', name: 'São José dos Pinhais' },
-  { slug: 'colombo', name: 'Colombo' },
-  { slug: 'pinhais', name: 'Pinhais' },
-  { slug: 'araucaria', name: 'Araucária' },
 ];
 
 // Generate static params for SEO - these pages will be pre-rendered at build time
@@ -52,8 +49,15 @@ export default async function CityPage({ params }: CityPageProps) {
   const cityData = STATIC_CITIES.find((c) => c.slug === city);
   const cityName = cityData?.name || city;
 
-  // Fetch properties for this city
-  const { data: response } = await safeFetch(getProperties({ city: cityName }));
+  // Fetch properties and filter options
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
+  const [{ data: response }, filterOptionsRes] = await Promise.all([
+    safeFetch(getProperties({ city: cityName })),
+    fetch(`${baseUrl}/api/filter-options`, {
+      next: { revalidate: 14400 }, // 4 hours
+    }),
+  ]);
+
   const initialData = response ?? {
     data: [],
     total: 0,
@@ -62,12 +66,17 @@ export default async function CityPage({ params }: CityPageProps) {
     totalPages: 0,
   };
 
+  const options = filterOptionsRes.ok
+    ? await filterOptionsRes.json()
+    : { cities: [], neighborhoodsByCity: {}, types: [] };
+
   return (
     <div className={styles.container}>
       <div className={styles.content}>
         <PropertySearch
           initialData={initialData}
           initialFilters={{ city: cityName }}
+          filterOptions={options}
         />
       </div>
     </div>

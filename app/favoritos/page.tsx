@@ -21,15 +21,13 @@ export default function FavoritosPage() {
       }
 
       try {
-        // Fetch all properties and filter by favorites
-        const response = await fetch('/api/properties?limit=100');
+        // Fetch only favorite properties
+        const response = await fetch(
+          `/api/properties?ids=${favorites.join(',')}`
+        );
         const data = await response.json();
 
-        const favoriteProperties = data.data.filter((property: Property) =>
-          favorites.includes(property.id)
-        );
-
-        setProperties(favoriteProperties);
+        setProperties(data.data);
       } catch (error) {
         console.error('Error fetching favorite properties:', error);
       } finally {

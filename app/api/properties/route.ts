@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getProperties } from '@/services/properfy';
+import { getProperties, getPropertiesByIds } from '@/services/properfy';
 import { PropertyFilters } from '@/types/property';
 
 function parseFilters(searchParams: URLSearchParams): PropertyFilters {
@@ -29,6 +29,13 @@ function parseFilters(searchParams: URLSearchParams): PropertyFilters {
 
 export async function GET(request: NextRequest) {
   try {
+    const ids = request.nextUrl.searchParams.get('ids');
+    if (ids) {
+      const idsArray = ids.split(',').filter(Boolean);
+      const response = await getPropertiesByIds(idsArray);
+      return NextResponse.json(response);
+    }
+
     const filters = parseFilters(request.nextUrl.searchParams);
     const response = await getProperties(filters);
     return NextResponse.json(response);

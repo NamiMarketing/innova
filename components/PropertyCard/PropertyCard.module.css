@@ -113,6 +113,7 @@
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   transition: color 0.2s ease;
+  line-height: 20px;
 }
 
 .link:hover .title {

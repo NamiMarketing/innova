@@ -8,11 +8,17 @@ import { PropertyResults } from '@/components/PropertyResults';
 interface ImoveisContentProps {
   initialData: PropertyResponse;
   initialFilters?: PropertyFilters;
+  filterOptions: {
+    cities: string[];
+    neighborhoodsByCity: Record<string, string[]>;
+    types: string[];
+  };
 }
 
 export function ImoveisContent({
   initialData,
   initialFilters = {},
+  filterOptions,
 }: ImoveisContentProps) {
   const [appliedFilters, setAppliedFilters] =
     useState<PropertyFilters>(initialFilters);
@@ -117,6 +123,7 @@ export function ImoveisContent({
         loading={loading}
         mobileFiltersOpen={mobileFiltersOpen}
         setMobileFiltersOpen={setMobileFiltersOpen}
+        filterOptions={filterOptions}
       />
       <PropertyResults
         properties={properties}

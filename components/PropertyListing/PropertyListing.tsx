@@ -24,7 +24,26 @@ export function PropertyListing({
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [total, setTotal] = useState(initialTotal);
+  const [filterOptions, setFilterOptions] = useState<{
+    cities: string[];
+    neighborhoodsByCity: Record<string, string[]>;
+    types: string[];
+  }>({ cities: [], neighborhoodsByCity: {}, types: [] });
   const isFirstRender = useRef(true);
+
+  useEffect(() => {
+    const fetchFilterOptions = async () => {
+      try {
+        const response = await fetch('/api/filter-options');
+        const options = await response.json();
+        setFilterOptions(options);
+      } catch (err) {
+        console.error('Error fetching filter options:', err);
+      }
+    };
+
+    fetchFilterOptions();
+  }, []);
 
   useEffect(() => {
     if (isFirstRender.current) {
@@ -67,6 +86,7 @@ export function PropertyListing({
         onReset={handleReset}
         initialFilters={filters}
         loading={loading}
+        filterOptions={filterOptions}
       />
 
       {/* Error State */}

@@ -44,9 +44,25 @@ async function PropertiesLoader({
     maxArea: searchParams.maxArea ? Number(searchParams.maxArea) : undefined,
   };
 
-  const initialData = await getProperties(filters);
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
+  const [initialData, filterOptionsRes] = await Promise.all([
+    getProperties(filters),
+    fetch(`${baseUrl}/api/filter-options`, {
+      next: { revalidate: 14400 }, // 4 hours
+    }),
+  ]);
 
-  return <ImoveisContent initialData={initialData} initialFilters={filters} />;
+  const filterOptions = filterOptionsRes.ok
+    ? await filterOptionsRes.json()
+    : { cities: [], neighborhoodsByCity: {}, types: [] };
+
+  return (
+    <ImoveisContent
+      initialData={initialData}
+      initialFilters={filters}
+      filterOptions={filterOptions}
+    />
+  );
 }
 
 export default async function ImoveisPage({
@@ -91,7 +107,14 @@ export default async function ImoveisPage({
   return (
     <div className={styles.container}>
       <div className={styles.content}>
-        <Suspense fallback={<LoadingState initialFilters={filters} />}>
+        <Suspense
+          fallback={
+            <LoadingState
+              initialFilters={filters}
+              filterOptions={{ cities: [], neighborhoodsByCity: {}, types: [] }}
+            />
+          }
+        >
           <PropertiesLoader searchParams={resolvedSearchParams} />
         </Suspense>
       </div>

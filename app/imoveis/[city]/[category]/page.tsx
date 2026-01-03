@@ -11,9 +11,6 @@ export const revalidate = 3600;
 const STATIC_CITIES = [
   { slug: 'curitiba', name: 'Curitiba' },
   { slug: 'sao-jose-dos-pinhais', name: 'São José dos Pinhais' },
-  { slug: 'colombo', name: 'Colombo' },
-  { slug: 'pinhais', name: 'Pinhais' },
-  { slug: 'araucaria', name: 'Araucária' },
 ];
 
 const STATIC_CATEGORIES = [
@@ -88,13 +85,20 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
   const _categoryName = categoryData?.name || category;
   const categoryValue = categoryData?.value;
 
-  // Fetch properties for this city and category
-  const { data: response } = await safeFetch(
-    getProperties({
-      city: cityName,
-      category: categoryValue,
-    })
-  );
+  // Fetch properties and filter options
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
+  const [{ data: response }, filterOptionsRes] = await Promise.all([
+    safeFetch(
+      getProperties({
+        city: cityName,
+        category: categoryValue,
+      })
+    ),
+    fetch(`${baseUrl}/api/filter-options`, {
+      next: { revalidate: 14400 }, // 4 hours
+    }),
+  ]);
+
   const initialData = response ?? {
     data: [],
     total: 0,
@@ -103,12 +107,17 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
     totalPages: 0,
   };
 
+  const options = filterOptionsRes.ok
+    ? await filterOptionsRes.json()
+    : { cities: [], neighborhoodsByCity: {}, types: [] };
+
   return (
     <div className={styles.container}>
       <div className={styles.content}>
         <PropertySearch
           initialData={initialData}
           initialFilters={{ city: cityName, category: categoryValue }}
+          filterOptions={options}
         />
       </div>
     </div>
