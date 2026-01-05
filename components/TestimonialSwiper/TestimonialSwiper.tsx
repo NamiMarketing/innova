@@ -108,12 +108,12 @@ export function TestimonialSwiper() {
             <SwiperSlide key={item.id}>
               <div className={styles.card}>
                 <div className={styles.avatar}>
-                  <Image
+                  {/* <Image
                     src={item.avatar}
                     width={80}
                     height={80}
                     alt={item.name}
-                  />
+                  /> */}
                 </div>
                 <div className={styles.author}>
                   <h4 className={styles.name}>{item.name}</h4>
