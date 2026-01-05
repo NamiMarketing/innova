@@ -189,7 +189,7 @@ export function CardHome({ property }: PropertyCardProps) {
                   {property.condoFee && (
                     <div className={styles.extraCost}>
                       <span className={styles.extraCostPlus}>+</span>
-                      <span>Condominio: {formatPrice(property.condoFee)}</span>
+                      <span>Condomínio: {formatPrice(property.condoFee)}</span>
                     </div>
                   )}
                   {property.iptu && (

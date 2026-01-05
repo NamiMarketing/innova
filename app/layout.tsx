@@ -17,6 +17,9 @@ export const metadata: Metadata = {
   title: 'Innova | Imobiliária Digital',
   description:
     'Encontre o imóvel perfeito para você. Apartamentos, casas, terrenos e imóveis comerciais em Curitiba e região.',
+  icons: {
+    icon: '/img/favicon-32x32.png',
+  },
 };
 
 export default function RootLayout({

@@ -78,7 +78,10 @@ export default async function PropertyPage({ params }: PropertyPageProps) {
   const whatsappMessage = encodeURIComponent(
     `Ola! Tenho interesse no imovel ${property.code} - ${property.title}`
   );
-  const whatsappLink = `https://wa.me/5541987010407?text=${whatsappMessage}`;
+  // WhatsApp: Aluguel -> 41 8701-0407, Venda -> 41 8701-0071
+  const whatsappNumber =
+    property.type === 'rent' ? '5541987010407' : '5541987010071';
+  const whatsappLink = `https://wa.me/${whatsappNumber}?text=${whatsappMessage}`;
 
   return (
     <div className={styles.container}>
@@ -102,7 +105,7 @@ export default async function PropertyPage({ params }: PropertyPageProps) {
                   <p className={styles.price}>{formatPrice(property.price)}</p>
                   {property.type === 'rent' && property.condoFee && (
                     <p className={styles.priceExtra}>
-                      Condominio R$ {property.condoFee.toLocaleString('pt-BR')}
+                      Condomínio R$ {property.condoFee.toLocaleString('pt-BR')}
                       /mês
                     </p>
                   )}

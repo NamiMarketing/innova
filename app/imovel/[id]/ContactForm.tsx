@@ -12,7 +12,7 @@ export default function ContactForm({
   propertyCode,
   whatsappLink,
 }: ContactFormProps) {
-  const defaultMessage = `Ola, gostaria de mais informacoes sobre o imovel ${propertyCode}.`;
+  const defaultMessage = `Olá, gostaria de mais informações sobre o imóvel ${propertyCode}.`;
 
   return (
     <div className={styles.contactCard}>

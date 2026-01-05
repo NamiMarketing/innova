@@ -71,7 +71,7 @@ export function Footer() {
                 Locação <br /> (41) 98701-0407
               </p>
               <p>
-                Vendas <br /> (41) 98701-0407
+                Vendas <br /> (41) 98701-0071
               </p>
             </div>
           </div>
