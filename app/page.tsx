@@ -40,6 +40,8 @@ export default async function Home() {
             src={headerImg}
             alt="Header"
             fill
+            unoptimized={true}
+            priority
             className={styles.heroPatternInner}
           />
         </div>

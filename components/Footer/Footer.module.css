@@ -53,6 +53,12 @@
 .link {
   text-decoration: none;
   transition: color 0.2s ease;
+  display: flex;
+  gap: 18px;
+  align-items: flex-end;
+  svg{
+    margin-bottom: 5px;
+  }
 }
 
 .link:hover {
@@ -124,7 +130,7 @@
   .linkList {
     font-size: 16px;
   }
-
+  
   .right {
     gap: 25px;
   }
@@ -160,6 +166,15 @@
   .container {
     margin: 0 auto;
     padding: 40px 0px 5px;
+  }
+  .link {
+    gap: 15px;
+    align-items: flex-end;
+    svg{
+      width: 16px;
+      height: 16px;
+      margin-bottom: 5px;
+    }
   }
   .left{
     padding: 0px 20px;
