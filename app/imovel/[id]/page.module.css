@@ -573,10 +573,22 @@
   object-fit: cover;
 }
 
-.favoriteButton {
+.actionButtons {
   position: absolute;
   top: 30px;
   right: 30px;
+  display: flex;
+  gap: 10px;
+  z-index: 5;
+
+  @media (max-width: 767px) {
+    top: 10px;
+    right: 10px;
+    gap: 8px;
+  }
+}
+
+.favoriteButton {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -591,14 +603,79 @@
     height: 26px;
   }
   @media (max-width: 767px) {
-    top: 10px;
-    right: 10px;
     width: 40px;
     height: 40px;
     svg{
       width: 20px;
       height: 20px;
     }
+  }
+}
+
+.shareButton {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: white;
+  border: 1px solid var(--gray-medium);
+  width: 52px;
+  height: 52px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  svg{
+    width: 24px;
+    height: 24px;
+  }
+  &:hover {
+    border-color: var(--orange);
+    path {
+      fill: var(--orange);
+    }
+  }
+  @media (max-width: 767px) {
+    width: 40px;
+    height: 40px;
+    svg{
+      width: 18px;
+      height: 18px;
+    }
+  }
+}
+
+.copiedTooltip {
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--black);
+  color: white;
+  padding: 6px 12px;
+  border-radius: 4px;
+  font-size: 12px;
+  white-space: nowrap;
+  animation: fadeIn 0.2s ease;
+}
+
+.copiedTooltip::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 6px solid transparent;
+  border-top-color: var(--black);
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
   }
 }
 
