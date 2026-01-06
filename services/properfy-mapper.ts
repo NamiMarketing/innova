@@ -84,12 +84,24 @@ function mapPropertyType(chrTransactionType: string): PropertyType {
 
 function mapPropertyCategory(chrType: string): PropertyCategory {
   const typeMap: Record<string, PropertyCategory> = {
+    // House types
     RESIDENTIAL_HOUSE: 'house',
     TWO_STORY_HOUSE: 'house',
+    TOWNHOUSE_IN_CONDOMINIUM: 'house',
+    CONDOMINIUM_HOUSE: 'house',
+    // Apartment types
     APARTMENT: 'apartment',
-    COMMERCIAL: 'commercial',
-    LAND: 'land',
+    PENTHOUSE: 'apartment',
+    STUDIO: 'apartment',
+    // Commercial types
+    SHOP: 'commercial',
+    OFFICES: 'commercial',
+    COMMERCIAL_HOUSE: 'commercial',
+    // Land types
+    RESIDENTIAL_PLOT: 'land',
+    // Farm types
     FARM: 'farm',
+    RURAL_PROPERTY: 'farm',
   };
   return typeMap[chrType] || 'house';
 }

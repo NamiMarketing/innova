@@ -2,14 +2,26 @@ import { Property, PropertyFilters, PropertyResponse } from '@/types/property';
 import { mapProperfyResponse, mapProperfyProperty } from './properfy-mapper';
 import { api } from './api';
 
-export async function getProperties(
-  filters: PropertyFilters = {}
-): Promise<PropertyResponse> {
+// Category to Properfy chrType mapping
+const CATEGORY_MAP: Record<string, string[]> = {
+  house: [
+    'RESIDENTIAL_HOUSE',
+    'TOWNHOUSE_IN_CONDOMINIUM',
+    'TWO_STORY_HOUSE',
+    'CONDOMINIUM_HOUSE',
+  ],
+  apartment: ['APARTMENT', 'PENTHOUSE', 'STUDIO'],
+  commercial: ['SHOP', 'OFFICES', 'COMMERCIAL_HOUSE'],
+  land: ['RESIDENTIAL_PLOT'],
+  farm: ['FARM', 'RURAL_PROPERTY'],
+};
+
+// Helper function to build base params without category
+function buildBaseParams(filters: PropertyFilters): URLSearchParams {
   const params = new URLSearchParams();
 
   // Pagination
   if (filters.page) params.append('page', filters.page.toString());
-  // Default limit to 30 if not specified
   const limit = filters.limit || 30;
   params.append('size', limit.toString());
 
@@ -17,25 +29,6 @@ export async function getProperties(
   if (filters.type) {
     const transactionType = filters.type === 'sale' ? 'SALE' : 'RENT';
     params.append('chrTransactionType', transactionType);
-  }
-
-  // Property type/category - send multiple params for OR logic
-  if (filters.category) {
-    const categoryMap: Record<string, string> = {
-      house: 'RESIDENTIAL_HOUSE',
-      apartment: 'APARTMENT',
-      commercial: 'COMMERCIAL',
-      land: 'LAND',
-      farm: 'FARM',
-    };
-
-    const categories = (filters.category as string).split(',');
-    categories.forEach((cat) => {
-      const properfyType = categoryMap[cat.trim()];
-      if (properfyType) {
-        params.append('chrType[]', properfyType);
-      }
-    });
   }
 
   // Price filters
@@ -71,35 +64,94 @@ export async function getProperties(
   // Code/Reference filter
   if (filters.code) params.append('chrReference', filters.code);
 
-  // Note: Amenities filtering is done client-side after fetching results
-  // because Properfy API doesn't support filtering by jsonFeatures/jsonFacilities
-
-  // Only show listed properties (using comma-separated instead of array notation)
+  // Only show listed properties
   params.append('chrStatus', 'LISTED');
 
   // Default sorting by price
   params.append('chrOrder', 'lesser_value');
 
-  const queryString = params.toString();
-  const endpoint = `api/property/shared${queryString ? `?${queryString}` : ''}`;
+  return params;
+}
 
+// Fetch properties for a single chrType
+async function fetchPropertiesForType(
+  baseParams: URLSearchParams,
+  chrType: string
+): Promise<Property[]> {
+  const params = new URLSearchParams(baseParams);
+  params.append('chrType', chrType);
+
+  const endpoint = `api/property/shared?${params.toString()}`;
   const response = await api(endpoint).json<unknown>();
   const result = mapProperfyResponse(response as never);
+  return result.data;
+}
+
+export async function getProperties(
+  filters: PropertyFilters = {}
+): Promise<PropertyResponse> {
+  const baseParams = buildBaseParams(filters);
+
+  let allProperties: Property[] = [];
+
+  // Check if we need to filter by category
+  if (filters.category) {
+    const categories = (filters.category as string)
+      .split(',')
+      .map((c) => c.trim());
+
+    // Collect all chrTypes we need to fetch
+    const chrTypesToFetch: string[] = [];
+    categories.forEach((cat) => {
+      const properfyTypes = CATEGORY_MAP[cat];
+      if (properfyTypes) {
+        chrTypesToFetch.push(...properfyTypes);
+      }
+    });
+
+    if (chrTypesToFetch.length > 0) {
+      // Properfy API only accepts one chrType at a time, so we need to make parallel requests
+      const promises = chrTypesToFetch.map((chrType) =>
+        fetchPropertiesForType(baseParams, chrType)
+      );
+
+      const results = await Promise.all(promises);
+      allProperties = results.flat();
+
+      // Remove duplicates by id
+      const seen = new Set<string>();
+      allProperties = allProperties.filter((p) => {
+        if (seen.has(p.id)) return false;
+        seen.add(p.id);
+        return true;
+      });
+    }
+  } else {
+    // No category filter - just fetch normally
+    const endpoint = `api/property/shared?${baseParams.toString()}`;
+    const response = await api(endpoint).json<unknown>();
+    const result = mapProperfyResponse(response as never);
+    allProperties = result.data;
+  }
 
   // Client-side amenity filtering
   if (filters.amenities && filters.amenities.length > 0) {
-    result.data = result.data.filter((property) => {
-      // Check if property has all selected amenities
+    allProperties = allProperties.filter((property) => {
       return filters.amenities!.every((amenity) => {
         const amenityValue =
           property.amenities[amenity as keyof typeof property.amenities];
         return amenityValue === true;
       });
     });
-    result.total = result.data.length;
   }
 
-  return result;
+  return {
+    data: allProperties,
+    total: allProperties.length,
+    page: filters.page || 1,
+    limit: filters.limit || 30,
+    totalPages: Math.ceil(allProperties.length / (filters.limit || 30)),
+  };
 }
 
 export async function getPropertiesByIds(
