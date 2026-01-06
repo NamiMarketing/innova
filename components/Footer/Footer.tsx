@@ -88,7 +88,7 @@ export function Footer() {
           <div className={styles.right}>
             <div className={`${styles.icons} ${styles.socials}`}>
               <Link
-                href="https://www.instagram.com/innovaimobiliaria/"
+                href="https://www.instagram.com/innovaimobiliariadigital/"
                 target="_blank"
               >
                 <Image src={instagram} alt="Instagram" width={30} height={30} />
