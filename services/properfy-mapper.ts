@@ -167,7 +167,7 @@ function mapPropertyImages(properfy: ProperfyProperty): PropertyImage[] {
   return [
     {
       id: `${properfy.hash}-placeholder`,
-      url: 'https://images.unsplash.com/photo-1568605114967-8130f3a36994?w=800',
+      url: '/img/no-image.png',
       order: 1,
     },
   ];
