@@ -67,12 +67,20 @@ export function Footer() {
                 R. Anne Frank, 2132 <br />
                 Hauer - Curitiba/PR
               </p>
-              <p>
+              <Link
+                href="https://wa.me/5541987010407"
+                target="_blank"
+                className={styles.link}
+              >
                 Locação <br /> (41) 98701-0407
-              </p>
-              <p>
+              </Link>
+              <Link
+                href="https://wa.me/5541987010071"
+                target="_blank"
+                className={styles.link}
+              >
                 Vendas <br /> (41) 98701-0071
-              </p>
+              </Link>
             </div>
           </div>
 
@@ -92,7 +100,7 @@ export function Footer() {
                 <Image src={facebook} alt="Facebook" width={30} height={30} />
               </Link>
               <Link
-                href="https://www.linkedin.com/company/innovaimobiliaria/"
+                href="https://br.linkedin.com/company/innova-imobili%C3%A1ria-digital"
                 target="_blank"
               >
                 <Image src={linkedin} alt="LinkedIn" width={30} height={30} />
