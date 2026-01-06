@@ -25,6 +25,7 @@ interface ProperfyProperty {
   chrStatus: string;
   dcmSale: number;
   dcmRentRawValue: number;
+  dcmRentNetValue: number;
   dcmCondoValue: number;
   dcmPropertyTax: number;
   chrAddressStreet: string;
@@ -174,7 +175,7 @@ function mapPropertyImages(properfy: ProperfyProperty): PropertyImage[] {
 
 export function mapProperfyProperty(properfy: ProperfyProperty): Property {
   const type = mapPropertyType(properfy.chrTransactionType);
-  const price = type === 'sale' ? properfy.dcmSale : properfy.dcmRentRawValue;
+  const price = type === 'sale' ? properfy.dcmSale : properfy.dcmRentNetValue;
 
   return {
     id: properfy.hash,

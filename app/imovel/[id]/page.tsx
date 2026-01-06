@@ -46,6 +46,12 @@ export default async function PropertyPage({ params }: PropertyPageProps) {
   const { id } = await params;
   const property = await getPropertyById(id);
 
+  console.log('[DEBUG PropertyPage] Property ID:', id);
+  console.log(
+    '[DEBUG PropertyPage] Full Property Data:',
+    JSON.stringify(property, null, 2)
+  );
+
   if (!property) {
     notFound();
   }
@@ -321,18 +327,18 @@ export default async function PropertyPage({ params }: PropertyPageProps) {
                   xmlns="http://www.w3.org/2000/svg"
                 >
                   <path
-                    fill-rule="evenodd"
-                    clip-rule="evenodd"
+                    fillRule="evenodd"
+                    clipRule="evenodd"
                     d="M6.5 16.499L7.131 15.7898C7.847 14.9726 8.49133 14.1949 9.064 13.4568L9.537 12.8344C11.5123 10.1805 12.5 8.07492 12.5 6.51758C12.5 3.1941 9.814 0.5 6.5 0.5C3.186 0.5 0.5 3.1941 0.5 6.51758C0.5 8.07492 1.48767 10.1809 3.463 12.8354L3.936 13.4578C4.75355 14.5024 5.60877 15.5162 6.5 16.499Z"
                     stroke="black"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
                   />
                   <path
                     d="M6.5 8.97828C7.88071 8.97828 9 7.86185 9 6.48467C9 5.10749 7.88071 3.99106 6.5 3.99106C5.11929 3.99106 4 5.10749 4 6.48467C4 7.86185 5.11929 8.97828 6.5 8.97828Z"
                     stroke="black"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
                   />
                 </svg>
                 <span className={styles.locationText}>{address}</span>
@@ -388,15 +394,15 @@ export default async function PropertyPage({ params }: PropertyPageProps) {
                           <path
                             d="M12 23C13.4448 23.0018 14.8757 22.7181 16.2105 22.1651C17.5453 21.6122 18.7577 20.801 19.7781 19.7781C20.801 18.7577 21.6122 17.5453 22.1651 16.2105C22.7181 14.8757 23.0018 13.4448 23 12C23.0018 10.5552 22.7181 9.12429 22.1651 7.78947C21.6122 6.45466 20.801 5.24225 19.7781 4.22191C18.7577 3.199 17.5453 2.38778 16.2105 1.83486C14.8757 1.28194 13.4448 0.998227 12 1.00001C10.5552 0.998227 9.12429 1.28194 7.78947 1.83486C6.45466 2.38778 5.24225 3.199 4.22191 4.22191C3.199 5.24225 2.38778 6.45466 1.83486 7.78947C1.28194 9.12429 0.998227 10.5552 1.00001 12C0.998227 13.4448 1.28194 14.8757 1.83486 16.2105C2.38778 17.5453 3.199 18.7577 4.22191 19.7781C5.24225 20.801 6.45466 21.6122 7.78947 22.1651C9.12429 22.7181 10.5552 23.0018 12 23Z"
                             stroke="#EF8634"
-                            stroke-width="2"
-                            stroke-linejoin="round"
+                            strokeWidth="2"
+                            strokeLinejoin="round"
                           />
                           <path
                             d="M7.6001 11.9999L10.9001 15.2999L17.5001 8.69995"
                             stroke="#EF8634"
-                            stroke-width="2"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
+                            strokeWidth="2"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
                           />
                         </svg>
                         <span>{translateCharacteristic(char)}</span>
