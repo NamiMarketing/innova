@@ -10,13 +10,18 @@ export async function GET(request: Request) {
 
     // Pegar filtros da query string
     const category = url.searchParams.get('category');
+    const chrType = url.searchParams.get('chrType');
     const size = url.searchParams.get('size') || '10';
 
     // Construir URL da API
     let apiUrl = `${env.PROPERFY_API_URL}/api/property/shared?size=${size}&chrStatus=LISTED`;
 
-    // Adicionar filtro de categoria se existir
-    if (category) {
+    // Adicionar filtro de chrType direto se existir
+    if (chrType) {
+      apiUrl += `&chrType=${chrType}`;
+    }
+    // Ou usar categoria mapeada
+    else if (category) {
       const categoryMap: Record<string, string> = {
         house: 'RESIDENTIAL_HOUSE',
         apartment: 'APARTMENT',
@@ -26,7 +31,6 @@ export async function GET(request: Request) {
       };
       const properfyType = categoryMap[category];
       if (properfyType) {
-        // Testar sem colchetes
         apiUrl += `&chrType=${properfyType}`;
       }
     }

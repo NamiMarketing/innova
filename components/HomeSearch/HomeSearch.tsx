@@ -3,22 +3,12 @@
 import Image from 'next/image';
 import { useState, useMemo, FormEvent } from 'react';
 import { useRouter } from 'next/navigation';
-import { PropertyType, PropertyCategory } from '@/types/property';
+import { PropertyType } from '@/types/property';
 import styles from './HomeSearch.module.css';
 import cityIcon from '@/img/icons/city-icon.svg';
 import neighborhoodIcon from '@/img/icons/bairro-icon.svg';
 import houseIcon from '@/img/icons/casa-icon.svg';
 import { Selector, SelectorOption } from '../ui';
-
-const TYPE_LABELS: Record<string, string> = {
-  apartment: 'Apartamento',
-  house: 'Casa',
-  commercial: 'Comercial',
-  land: 'Terreno',
-  farm: 'Chácara/Fazenda',
-};
-
-const getTypeLabel = (type: string) => TYPE_LABELS[type] || type;
 
 const toOptions = (items: string[]): SelectorOption[] =>
   items.map((item) => ({ value: item, label: item }));
@@ -26,7 +16,7 @@ const toOptions = (items: string[]): SelectorOption[] =>
 interface HomeSearchProps {
   cities: string[];
   neighborhoodsByCity: Record<string, string[]>;
-  types: string[];
+  types: Array<{ value: string; text: string }>;
 }
 
 export function HomeSearch({
@@ -36,7 +26,7 @@ export function HomeSearch({
 }: HomeSearchProps) {
   const router = useRouter();
   const [type, setType] = useState<PropertyType | ''>('rent');
-  const [categories, setCategories] = useState<PropertyCategory[]>([]);
+  const [chrTypes, setChrTypes] = useState<string[]>([]);
   const [city, setCity] = useState('');
   const [neighborhoods, setNeighborhoods] = useState<string[]>([]);
   const [code, setCode] = useState('');
@@ -72,7 +62,7 @@ export function HomeSearch({
 
     const params = new URLSearchParams();
     if (type) params.set('type', type);
-    if (categories.length > 0) params.set('category', categories.join(','));
+    if (chrTypes.length > 0) params.set('chrTypes', chrTypes.join(','));
     if (city) params.set('city', city);
     if (neighborhoods.length > 0)
       params.set('neighborhood', neighborhoods.join(','));
@@ -82,7 +72,7 @@ export function HomeSearch({
   };
 
   const categoryOptions = useMemo(
-    () => types.map((t) => ({ value: t, label: getTypeLabel(t) })),
+    () => types.map((t) => ({ value: t.value, label: t.text })),
     [types]
   );
 
@@ -117,14 +107,14 @@ export function HomeSearch({
         <Selector
           multiple
           options={categoryOptions}
-          value={categories}
-          onChange={(value) => setCategories(value as PropertyCategory[])}
+          value={chrTypes}
+          onChange={(value) => setChrTypes(value as string[])}
           label="Tipo de Imóvel"
           icon={
             <Image src={houseIcon} alt="ícone de casa" width={12} height={12} />
           }
           placeholder="Todos"
-          id="category"
+          id="chrTypes"
         />
 
         <Selector

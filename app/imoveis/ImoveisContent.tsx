@@ -12,7 +12,7 @@ interface ImoveisContentProps {
   filterOptions: {
     cities: string[];
     neighborhoodsByCity: Record<string, string[]>;
-    types: string[];
+    types: Array<{ value: string; text: string }>;
   };
 }
 
@@ -45,7 +45,7 @@ export function ImoveisContent({
       try {
         const params = new URLSearchParams();
         if (newFilters.type) params.set('type', newFilters.type);
-        if (newFilters.category) params.set('category', newFilters.category);
+        if (newFilters.chrTypes) params.set('chrTypes', newFilters.chrTypes);
         if (newFilters.city) params.set('city', newFilters.city);
         if (newFilters.neighborhood)
           params.set('neighborhood', newFilters.neighborhood);
@@ -103,7 +103,7 @@ export function ImoveisContent({
     // Update URL with new filters
     const params = new URLSearchParams();
     if (newFilters.type) params.set('type', newFilters.type);
-    if (newFilters.category) params.set('category', newFilters.category);
+    if (newFilters.chrTypes) params.set('chrTypes', newFilters.chrTypes);
     if (newFilters.city) params.set('city', newFilters.city);
     if (newFilters.neighborhood)
       params.set('neighborhood', newFilters.neighborhood);

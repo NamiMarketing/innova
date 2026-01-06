@@ -184,6 +184,7 @@ export function mapProperfyProperty(properfy: ProperfyProperty): Property {
     description: properfy.txtDescription || '',
     type,
     category: mapPropertyCategory(properfy.chrType),
+    chrType: properfy.chrType,
     status: mapPropertyStatus(properfy.chrStatus),
     price,
     condoFee: properfy.dcmCondoValue || undefined,

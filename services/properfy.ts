@@ -1,6 +1,7 @@
 import { Property, PropertyFilters, PropertyResponse } from '@/types/property';
 import { mapProperfyResponse, mapProperfyProperty } from './properfy-mapper';
 import { api } from './api';
+import { PROPERTY_TYPES } from '@/constants/property-types';
 
 // Category to Properfy chrType mapping
 const CATEGORY_MAP: Record<string, string[]> = {
@@ -22,7 +23,7 @@ function buildBaseParams(filters: PropertyFilters): URLSearchParams {
 
   // Pagination
   if (filters.page) params.append('page', filters.page.toString());
-  const limit = filters.limit || 30;
+  const limit = filters.limit || 1000;
   params.append('size', limit.toString());
 
   // Transaction type (sale/rent)
@@ -94,40 +95,47 @@ export async function getProperties(
 
   let allProperties: Property[] = [];
 
-  // Check if we need to filter by category
-  if (filters.category) {
+  // Collect chrTypes to fetch
+  const chrTypesToFetch: string[] = [];
+
+  // First, check if we have chrTypes filter (new way)
+  if (filters.chrTypes) {
+    const types = filters.chrTypes.split(',').map((t) => t.trim());
+    chrTypesToFetch.push(...types);
+  }
+  // Otherwise, check if we have category filter (legacy way)
+  else if (filters.category) {
     const categories = (filters.category as string)
       .split(',')
       .map((c) => c.trim());
 
-    // Collect all chrTypes we need to fetch
-    const chrTypesToFetch: string[] = [];
     categories.forEach((cat) => {
       const properfyTypes = CATEGORY_MAP[cat];
       if (properfyTypes) {
         chrTypesToFetch.push(...properfyTypes);
       }
     });
+  }
 
-    if (chrTypesToFetch.length > 0) {
-      // Properfy API only accepts one chrType at a time, so we need to make parallel requests
-      const promises = chrTypesToFetch.map((chrType) =>
-        fetchPropertiesForType(baseParams, chrType)
-      );
+  // If we have specific chrTypes to fetch, make parallel requests
+  if (chrTypesToFetch.length > 0) {
+    // Properfy API only accepts one chrType at a time, so we need to make parallel requests
+    const promises = chrTypesToFetch.map((chrType) =>
+      fetchPropertiesForType(baseParams, chrType)
+    );
 
-      const results = await Promise.all(promises);
-      allProperties = results.flat();
+    const results = await Promise.all(promises);
+    allProperties = results.flat();
 
-      // Remove duplicates by id
-      const seen = new Set<string>();
-      allProperties = allProperties.filter((p) => {
-        if (seen.has(p.id)) return false;
-        seen.add(p.id);
-        return true;
-      });
-    }
+    // Remove duplicates by id
+    const seen = new Set<string>();
+    allProperties = allProperties.filter((p) => {
+      if (seen.has(p.id)) return false;
+      seen.add(p.id);
+      return true;
+    });
   } else {
-    // No category filter - just fetch normally
+    // No type filter - just fetch normally
     const endpoint = `api/property/shared?${baseParams.toString()}`;
     const response = await api(endpoint).json<unknown>();
     const result = mapProperfyResponse(response as never);
@@ -149,8 +157,8 @@ export async function getProperties(
     data: allProperties,
     total: allProperties.length,
     page: filters.page || 1,
-    limit: filters.limit || 30,
-    totalPages: Math.ceil(allProperties.length / (filters.limit || 30)),
+    limit: filters.limit || 1000,
+    totalPages: Math.ceil(allProperties.length / (filters.limit || 1000)),
   };
 }
 
@@ -196,19 +204,25 @@ export async function getPropertyById(id: string): Promise<Property | null> {
 export async function getFilterOptions(): Promise<{
   cities: string[];
   neighborhoodsByCity: Record<string, string[]>;
-  types: string[];
+  types: Array<{ value: string; text: string }>;
 }> {
   try {
-    // Fetch all properties to extract unique values
-    // Using a large limit to ensure we get all cities and neighborhoods
+    // Fetch up to 1000 properties to extract unique values
     const { data } = await getProperties({ limit: 1000 });
 
     const cities = Array.from(
       new Set(data.map((p) => p.address.city).filter(Boolean))
     ).sort();
-    const types = Array.from(
-      new Set(data.map((p) => p.category).filter(Boolean))
+
+    // Get unique chrTypes and map them to objects with value and text
+    const uniqueChrTypes = Array.from(
+      new Set(data.map((p) => p.chrType).filter(Boolean))
     ).sort();
+
+    const types = uniqueChrTypes.map((chrType) => ({
+      value: chrType,
+      text: PROPERTY_TYPES.find((t) => t.value === chrType)?.text || chrType,
+    }));
 
     const neighborhoodsByCity: Record<string, string[]> = {};
 

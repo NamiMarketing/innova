@@ -72,6 +72,7 @@ export interface Property {
   description: string;
   type: PropertyType;
   category: PropertyCategory;
+  chrType: string; // Original Properfy type (e.g., "APARTMENT", "RESIDENTIAL_HOUSE")
   status: PropertyStatus;
   price: number;
   condoFee?: number;
@@ -93,6 +94,7 @@ export interface Property {
 export interface PropertyFilters {
   type?: PropertyType;
   category?: PropertyCategory;
+  chrTypes?: string; // Comma-separated chrTypes (e.g., "APARTMENT,TWO_STORY_HOUSE")
   city?: string;
   neighborhood?: string;
   minPrice?: number;

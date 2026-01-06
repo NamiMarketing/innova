@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useMemo, useEffect } from 'react';
+import { useState, useMemo } from 'react';
 import Image from 'next/image';
 import { PropertyFilters as PropertyFiltersType } from '@/types/property';
 import { Selector, SelectorOption, ButtonSelector } from '@/components/ui';
@@ -93,17 +93,9 @@ interface PropertyFiltersProps {
   filterOptions: {
     cities: string[];
     neighborhoodsByCity: Record<string, string[]>;
-    types: string[];
+    types: Array<{ value: string; text: string }>;
   };
 }
-
-const TYPE_LABELS: Record<string, string> = {
-  apartment: 'Apartamento',
-  house: 'Casa',
-  commercial: 'Comercial',
-  land: 'Terreno',
-  farm: 'Chácara/Fazenda',
-};
 
 const toOptions = (items: string[]): SelectorOption[] =>
   items.map((item) => ({ value: item, label: item }));
@@ -126,10 +118,12 @@ export function PropertyFilters({
   };
 
   // Multi-select states
-  const [selectedCategories, setSelectedCategories] = useState<string[]>(
-    initialFilters.category
-      ? initialFilters.category.split(',').map((c) => c.trim())
-      : []
+  const [selectedChrTypes, setSelectedChrTypes] = useState<string[]>(
+    initialFilters.chrTypes
+      ? initialFilters.chrTypes.split(',').map((c) => c.trim())
+      : initialFilters.category
+        ? initialFilters.category.split(',').map((c) => c.trim())
+        : []
   );
   const [selectedNeighborhoods, setSelectedNeighborhoods] = useState<string[]>(
     initialFilters.neighborhood
@@ -204,10 +198,8 @@ export function PropertyFilters({
     const newFilters: PropertyFiltersType = {
       ...initialFilters,
       type,
-      category:
-        selectedCategories.length > 0
-          ? (selectedCategories.join(',') as PropertyFiltersType['category'])
-          : undefined,
+      chrTypes:
+        selectedChrTypes.length > 0 ? selectedChrTypes.join(',') : undefined,
       neighborhood:
         selectedNeighborhoods.length > 0
           ? selectedNeighborhoods.join(',')
@@ -220,10 +212,8 @@ export function PropertyFilters({
   const handleApply = () => {
     const newFilters: PropertyFiltersType = {
       ...filters,
-      category:
-        selectedCategories.length > 0
-          ? (selectedCategories.join(',') as PropertyFiltersType['category'])
-          : undefined,
+      chrTypes:
+        selectedChrTypes.length > 0 ? selectedChrTypes.join(',') : undefined,
       neighborhood:
         selectedNeighborhoods.length > 0
           ? selectedNeighborhoods.join(',')
@@ -237,7 +227,7 @@ export function PropertyFilters({
   const handleReset = () => {
     const resetFilters: PropertyFiltersType = {};
     setFilters(resetFilters);
-    setSelectedCategories([]);
+    setSelectedChrTypes([]);
     setSelectedNeighborhoods([]);
     setSelectedAmenities([]);
     setMinPriceDisplay('');
@@ -250,8 +240,11 @@ export function PropertyFilters({
   // Options
   const categoryOptions = useMemo(
     () =>
-      Object.entries(TYPE_LABELS).map(([value, label]) => ({ value, label })),
-    []
+      filterOptions.types.map((type) => ({
+        value: type.value,
+        label: type.text,
+      })),
+    [filterOptions.types]
   );
 
   const cityOptions = useMemo(
@@ -296,11 +289,11 @@ export function PropertyFilters({
     if (filters.minSuites) count++;
     if (filters.minParkingSpaces) count++;
     if (filters.code) count++;
-    count += selectedCategories.length;
+    count += selectedChrTypes.length;
     count += selectedNeighborhoods.length;
     count += selectedAmenities.length;
     return count;
-  }, [filters, selectedCategories, selectedNeighborhoods, selectedAmenities]);
+  }, [filters, selectedChrTypes, selectedNeighborhoods, selectedAmenities]);
 
   return (
     <>
@@ -391,8 +384,8 @@ export function PropertyFilters({
             <Selector
               multiple
               options={categoryOptions}
-              value={selectedCategories}
-              onChange={setSelectedCategories}
+              value={selectedChrTypes}
+              onChange={setSelectedChrTypes}
               label="Tipo de Imóvel"
               icon={
                 <Image

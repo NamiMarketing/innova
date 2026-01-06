@@ -12,6 +12,7 @@ function parseFilters(searchParams: URLSearchParams): PropertyFilters {
   return {
     type: getString('type') as PropertyFilters['type'],
     category: getString('category') as PropertyFilters['category'],
+    chrTypes: getString('chrTypes'),
     city: getString('city'),
     neighborhood: getString('neighborhood'),
     minPrice: getNumber('minPrice'),

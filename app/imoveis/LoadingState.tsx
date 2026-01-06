@@ -9,7 +9,7 @@ interface LoadingStateProps {
   filterOptions: {
     cities: string[];
     neighborhoodsByCity: Record<string, string[]>;
-    types: string[];
+    types: Array<{ value: string; text: string }>;
   };
 }
 

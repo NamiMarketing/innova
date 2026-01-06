@@ -16,17 +16,9 @@ interface SearchFiltersProps {
   filterOptions?: {
     cities: string[];
     neighborhoodsByCity: Record<string, string[]>;
-    types: string[];
+    types: Array<{ value: string; text: string }>;
   };
 }
-
-const CATEGORIES: { value: PropertyCategory; label: string }[] = [
-  { value: 'apartment', label: 'Apartamento' },
-  { value: 'house', label: 'Casa' },
-  { value: 'commercial', label: 'Comercial' },
-  { value: 'land', label: 'Terreno' },
-  { value: 'farm', label: 'Chacara/Fazenda' },
-];
 
 export function SearchFilters({
   initialFilters = {},
@@ -110,9 +102,9 @@ export function SearchFilters({
             className={styles.select}
           >
             <option value="">Todos</option>
-            {CATEGORIES.map((cat) => (
-              <option key={cat.value} value={cat.value}>
-                {cat.label}
+            {filterOptions.types.map((type) => (
+              <option key={type.value} value={type.value}>
+                {type.text}
               </option>
             ))}
           </select>

@@ -23,6 +23,7 @@ async function PropertiesLoader({
   const filters = {
     type: (searchParams.type as PropertyType) || undefined,
     category: (searchParams.category as PropertyCategory) || undefined,
+    chrTypes: (searchParams.chrTypes as string) || undefined,
     city: (searchParams.city as string) || undefined,
     neighborhood: (searchParams.neighborhood as string) || undefined,
     code: (searchParams.code as string) || undefined,
@@ -69,6 +70,7 @@ export default async function ImoveisPage({
   const filters = {
     type: (resolvedSearchParams.type as PropertyType) || undefined,
     category: (resolvedSearchParams.category as PropertyCategory) || undefined,
+    chrTypes: (resolvedSearchParams.chrTypes as string) || undefined,
     city: (resolvedSearchParams.city as string) || undefined,
     neighborhood: (resolvedSearchParams.neighborhood as string) || undefined,
     code: (resolvedSearchParams.code as string) || undefined,

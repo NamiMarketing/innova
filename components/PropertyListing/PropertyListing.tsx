@@ -27,7 +27,7 @@ export function PropertyListing({
   const [filterOptions, setFilterOptions] = useState<{
     cities: string[];
     neighborhoodsByCity: Record<string, string[]>;
-    types: string[];
+    types: Array<{ value: string; text: string }>;
   }>({ cities: [], neighborhoodsByCity: {}, types: [] });
   const isFirstRender = useRef(true);
 
