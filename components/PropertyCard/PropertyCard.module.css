@@ -47,7 +47,6 @@
   font-weight: 600;
 }
 
-
 .codeBadge {
   bottom: 0.75rem;
   left: 0.75rem;
@@ -70,6 +69,69 @@
   align-items: center;
 }
 
+.actionButtons {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.shareButton {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  background: white;
+  border: 1px solid var(--gray-medium);
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.shareButton:hover {
+  border-color: var(--orange);
+}
+
+.shareButton:hover path {
+  fill: var(--orange);
+}
+
+.copiedTooltip {
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--black);
+  color: white;
+  padding: 6px 12px;
+  border-radius: 4px;
+  font-size: 12px;
+  white-space: nowrap;
+  animation: fadeIn 0.2s ease;
+}
+
+.copiedTooltip::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 6px solid transparent;
+  border-top-color: var(--black);
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}
+
 .favoriteButton {
   display: flex;
   align-items: center;
@@ -83,12 +145,11 @@
   transition: all 0.2s ease;
 }
 
-
 .favoriteButtonActive {
   border-color: #ef4444;
-  path{
+  path {
     fill: #ef4444;
-  };
+  }
 }
 
 .favoriteButtonActive:hover {
@@ -103,14 +164,12 @@
   width: fit-content;
 } */
 
-
 .title {
   font-size: 20px;
   font-weight: 500;
   color: var(--black);
   margin-bottom: 12px;
   display: -webkit-box;
-  -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   transition: color 0.2s ease;
   line-height: 20px;
@@ -133,7 +192,6 @@
 
 .addressText {
   display: -webkit-box;
-  -webkit-line-clamp: 1;
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
@@ -253,6 +311,11 @@
     width: 32px;
     height: 32px;
   }
+
+  .shareButton {
+    width: 32px;
+    height: 32px;
+  }
 }
 
 /* Mobile Responsive */
@@ -294,17 +357,31 @@
     margin-bottom: 0px;
   }
 
-  .favoriteButton {
+  .actionButtons {
     position: absolute;
     top: 16px;
     right: 16px;
+    display: flex;
+    gap: 8px;
+  }
+
+  .favoriteButton {
     display: flex;
     align-items: center;
     justify-content: center;
     width: 25px;
     height: 25px;
-    svg{
+    svg {
       width: 15px;
+    }
+  }
+
+  .shareButton {
+    width: 25px;
+    height: 25px;
+    svg {
+      width: 12px;
+      height: 14px;
     }
   }
 
