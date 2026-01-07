@@ -1,5 +1,6 @@
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
+import { cache } from 'react';
 import { getPropertyById, getHighlightedProperties } from '@/services/properfy';
 import { translateCharacteristic } from '@/utils/translations';
 import { safeFetch } from '@/lib/safe-fetch';
@@ -11,6 +12,11 @@ import styles from './page.module.css';
 // ISR: Revalidate every hour
 export const revalidate = 3600;
 
+// Cache the property fetch to avoid duplicate calls
+const getCachedPropertyById = cache(async (id: string) => {
+  return getPropertyById(id);
+});
+
 interface PropertyPageProps {
   params: Promise<{ slug: string }>;
   searchParams: Promise<{ id?: string; ref?: string }>;
@@ -19,15 +25,8 @@ interface PropertyPageProps {
 export async function generateMetadata({
   searchParams,
 }: PropertyPageProps): Promise<Metadata> {
-  const { id } = await searchParams;
-  
-  if (!id) {
-    return {
-      title: 'Imóvel não encontrado | Innova Imobiliária',
-    };
-  }
-
-  const property = await getPropertyById(id);
+  const { id } = await params;
+  const property = await getCachedPropertyById(id);
 
   if (!property) {
     return {
@@ -50,23 +49,18 @@ export async function generateMetadata({
   };
 }
 
-export default async function PropertyPage({ searchParams }: PropertyPageProps) {
-  const { id } = await searchParams;
+export default async function PropertyPage({ params }: PropertyPageProps) {
+  const { id } = await params;
 
-  if (!id) {
-    notFound();
-  }
-
-  const property = await getPropertyById(id);
+  // Fetch property and highlighted properties in parallel
+  const [property, { data: highlightedProperties }] = await Promise.all([
+    getCachedPropertyById(id),
+    safeFetch(getHighlightedProperties(10)),
+  ]);
 
   if (!property) {
     notFound();
   }
-
-  // Fetch highlighted properties for the swiper
-  const { data: highlightedProperties } = await safeFetch(
-    getHighlightedProperties(10)
-  );
 
   const formatPrice = (price: number) => {
     return new Intl.NumberFormat('pt-BR', {
