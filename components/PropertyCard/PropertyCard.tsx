@@ -188,7 +188,7 @@ export function PropertyCard({ property }: PropertyCardProps) {
                 </span>
               </div>
             )}
-            {property.features.bathrooms > 0 && (
+            {(property.features.bathrooms || 0) + (property.features.suites || 0) > 0 && (
               <div className={styles.feature}>
                 <Image
                   src={bathroom}
@@ -197,7 +197,7 @@ export function PropertyCard({ property }: PropertyCardProps) {
                   height={15}
                 />
                 <span className={styles.featureValue}>
-                  {property.features.bathrooms}
+                  {(property.features.bathrooms || 0) + (property.features.suites || 0)}
                 </span>
               </div>
             )}
