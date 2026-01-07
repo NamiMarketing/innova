@@ -194,15 +194,7 @@ export async function getPropertyById(id: string): Promise<Property | null> {
   try {
     const endpoint = `api/property/property/${id}`;
     const response = await api(endpoint).json<unknown>();
-    console.log(
-      '[DEBUG getPropertyById] Raw API Response:',
-      JSON.stringify(response, null, 2)
-    );
     const mapped = mapProperfyProperty(response as never);
-    console.log(
-      '[DEBUG getPropertyById] Mapped Property:',
-      JSON.stringify(mapped, null, 2)
-    );
     return mapped;
   } catch (error) {
     console.error('Error fetching property:', error);
