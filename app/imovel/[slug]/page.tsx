@@ -25,7 +25,14 @@ interface PropertyPageProps {
 export async function generateMetadata({
   searchParams,
 }: PropertyPageProps): Promise<Metadata> {
-  const { id } = await params;
+  const { id } = await searchParams;
+
+  if (!id) {
+    return {
+      title: 'Imóvel não encontrado | Innova Imobiliária',
+    };
+  }
+
   const property = await getCachedPropertyById(id);
 
   if (!property) {
@@ -49,8 +56,12 @@ export async function generateMetadata({
   };
 }
 
-export default async function PropertyPage({ params }: PropertyPageProps) {
-  const { id } = await params;
+export default async function PropertyPage({ searchParams }: PropertyPageProps) {
+  const { id } = await searchParams;
+
+  if (!id) {
+    notFound();
+  }
 
   // Fetch property and highlighted properties in parallel
   const [property, { data: highlightedProperties }] = await Promise.all([
