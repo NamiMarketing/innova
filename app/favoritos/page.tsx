@@ -87,8 +87,8 @@ export default function FavoritosPage() {
             Encontre imóveis que você gosta e clique no coração para salvá-los
             aqui.
           </p>
-          <Link href="/imoveis" className={styles.exploreButton}>
-            Explorar imóveis
+          <Link href="/venda" className={styles.exploreButton}>
+            Ver imóveis
           </Link>
         </div>
       ) : (

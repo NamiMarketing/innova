@@ -2,7 +2,8 @@
 
 import { useState, useMemo } from 'react';
 import Image from 'next/image';
-import { PropertyFilters as PropertyFiltersType } from '@/types/property';
+import Link from 'next/link';
+import { PropertyFilters as PropertyFiltersType, PropertyType } from '@/types/property';
 import { Selector, SelectorOption, ButtonSelector } from '@/components/ui';
 import styles from './PropertyFilters.module.css';
 import houseIcon from '@/img/icons/casa-icon.svg';
@@ -95,6 +96,7 @@ interface PropertyFiltersProps {
     neighborhoodsByCity: Record<string, string[]>;
     types: Array<{ value: string; text: string }>;
   };
+  lockedType?: PropertyType;
 }
 
 const toOptions = (items: string[]): SelectorOption[] =>
@@ -108,6 +110,7 @@ export function PropertyFilters({
   mobileFiltersOpen = false,
   setMobileFiltersOpen,
   filterOptions,
+  lockedType,
 }: PropertyFiltersProps) {
   const [filters, setFilters] = useState<PropertyFiltersType>(initialFilters);
 
@@ -361,22 +364,56 @@ export function PropertyFilters({
 
         {/* Sidebar Filters */}
         <aside className={styles.sidebar}>
+          {/* Type buttons - only show when type is not locked */}
+          {/* Type buttons - show as links when locked, or filter toggles when unlocked */}
           <div className={styles.filterSection}>
             <div className={styles.typeButtons}>
-              <button
-                type="button"
-                className={`${styles.typeButton} ${initialFilters.type === 'rent' ? styles.typeButtonActive : ''}`}
-                onClick={() => handleTypeChange('rent')}
-              >
-                Alugar
-              </button>
-              <button
-                type="button"
-                className={`${styles.typeButton} ${initialFilters.type === 'sale' ? styles.typeButtonActive : ''}`}
-                onClick={() => handleTypeChange('sale')}
-              >
-                Comprar
-              </button>
+              {lockedType ? (
+                <>
+                  {lockedType === 'rent' ? (
+                    <>
+                      <button
+                        type="button"
+                        className={`${styles.typeButton} ${styles.typeButtonActive}`}
+                      >
+                        Alugar
+                      </button>
+                      <Link href="/venda" className={styles.typeButton}>
+                        Comprar
+                      </Link>
+                    </>
+                  ) : (
+                    <>
+                      <Link href="/locacao" className={styles.typeButton}>
+                        Alugar
+                      </Link>
+                      <button
+                        type="button"
+                        className={`${styles.typeButton} ${styles.typeButtonActive}`}
+                      >
+                        Comprar
+                      </button>
+                    </>
+                  )}
+                </>
+              ) : (
+                <>
+                  <button
+                    type="button"
+                    className={`${styles.typeButton} ${initialFilters.type === 'rent' ? styles.typeButtonActive : ''}`}
+                    onClick={() => handleTypeChange('rent')}
+                  >
+                    Alugar
+                  </button>
+                  <button
+                    type="button"
+                    className={`${styles.typeButton} ${initialFilters.type === 'sale' ? styles.typeButtonActive : ''}`}
+                    onClick={() => handleTypeChange('sale')}
+                  >
+                    Comprar
+                  </button>
+                </>
+              )}
             </div>
           </div>
 

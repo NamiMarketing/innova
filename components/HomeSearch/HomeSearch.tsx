@@ -61,14 +61,15 @@ export function HomeSearch({
     e.preventDefault();
 
     const params = new URLSearchParams();
-    if (type) params.set('type', type);
+    // Don't add type to params as it's part of the route
     if (chrTypes.length > 0) params.set('chrTypes', chrTypes.join(','));
     if (city) params.set('city', city);
     if (neighborhoods.length > 0)
       params.set('neighborhood', neighborhoods.join(','));
     if (code) params.set('code', code);
 
-    router.push(`/imoveis?${params.toString()}`);
+    const basePath = type === 'rent' ? '/locacao' : '/venda';
+    router.push(`${basePath}?${params.toString()}`);
   };
 
   const categoryOptions = useMemo(

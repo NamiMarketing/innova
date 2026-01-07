@@ -54,7 +54,19 @@ export function SearchFilters({
         params.set('quartos', filters.minBedrooms.toString());
 
       const queryString = params.toString();
-      router.push(`/imoveis${queryString ? `?${queryString}` : ''}`);
+      
+      // Determine base path based on type filter
+      let basePath = '/venda';
+      if (filters.type === 'rent') {
+        basePath = '/locacao';
+        params.delete('tipo'); // Remove type param as it's implied by the route
+      } else if (filters.type === 'sale') {
+        basePath = '/venda';
+        params.delete('tipo'); // Remove type param as it's implied by the route
+      }
+
+      const finalQueryString = params.toString();
+      router.push(`${basePath}${finalQueryString ? `?${finalQueryString}` : ''}`);
     }
   };
 

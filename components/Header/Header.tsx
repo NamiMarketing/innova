@@ -100,10 +100,10 @@ export function Header() {
             <Link href="/" className={styles.navLink}>
               Início
             </Link>
-            <Link href="/imoveis?type=rent" className={styles.navLink}>
+            <Link href="/locacao" className={styles.navLink}>
               Alugar
             </Link>
-            <Link href="/imoveis?type=sale" className={styles.navLink}>
+            <Link href="/venda" className={styles.navLink}>
               Comprar
             </Link>
             <Link href="/anunciar" className={styles.navLink}>
@@ -146,14 +146,14 @@ export function Header() {
                 Início
               </Link>
               <Link
-                href="/imoveis?type=rent"
+                href="/locacao"
                 className={styles.mobileNavLink}
                 onClick={() => setMobileMenuOpen(false)}
               >
                 Alugar
               </Link>
               <Link
-                href="/imoveis?type=sale"
+                href="/venda"
                 className={styles.mobileNavLink}
                 onClick={() => setMobileMenuOpen(false)}
               >

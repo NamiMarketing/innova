@@ -30,13 +30,13 @@ export function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="/imoveis?type=rent" className={styles.link}>
-                  Alugar
+                <Link href="/locacao" className={styles.link}>
+                  Imóveis para Alugar
                 </Link>
               </li>
               <li>
-                <Link href="/imoveis?type=sale" className={styles.link}>
-                  Comprar
+                <Link href="/venda" className={styles.link}>
+                  Imóveis à Venda
                 </Link>
               </li>
               <li>

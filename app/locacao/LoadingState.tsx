@@ -2,7 +2,7 @@
 
 import { PropertyFilters as PropertyFiltersComponent } from '@/components/PropertyFilters';
 import { PropertySkeleton } from './PropertySkeleton';
-import { PropertyFilters } from '@/types/property';
+import { PropertyFilters, PropertyType } from '@/types/property';
 
 interface LoadingStateProps {
   initialFilters: PropertyFilters;
@@ -11,11 +11,14 @@ interface LoadingStateProps {
     neighborhoodsByCity: Record<string, string[]>;
     types: Array<{ value: string; text: string }>;
   };
+  lockedType?: PropertyType;
+  basePath?: string;
 }
 
 export function LoadingState({
   initialFilters,
   filterOptions,
+  lockedType,
 }: LoadingStateProps) {
   return (
     <>
@@ -25,6 +28,7 @@ export function LoadingState({
         onReset={() => {}}
         loading={true}
         filterOptions={filterOptions}
+        lockedType={lockedType}
       />
       <PropertySkeleton />
     </>

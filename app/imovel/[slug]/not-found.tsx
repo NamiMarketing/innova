@@ -10,8 +10,8 @@ export default function NotFound() {
           <p className={styles.notFoundMessage}>
             O imovel que voce esta procurando nao existe ou foi removido.
           </p>
-          <Link href="/imoveis" className={styles.backButton}>
-            Ver todos os imoveis
+          <Link href="/venda" className={styles.backButton}>
+            Voltar para imóveis
           </Link>
         </div>
       </div>

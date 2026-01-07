@@ -5,6 +5,7 @@ import { Property } from '@/types/property';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useFavorites } from '@/contexts/FavoritesContext';
+import { generatePropertyUrl } from '@/utils/slug';
 import styles from './PropertyCard.module.css';
 import parking from '@/img/parking.svg';
 import bathroom from '@/img/bathroom.svg';
@@ -31,7 +32,7 @@ export function PropertyCard({ property }: PropertyCardProps) {
     e.preventDefault();
     e.stopPropagation();
 
-    const propertyUrl = `${window.location.origin}/imovel/${property.id}`;
+    const propertyUrl = `${window.location.origin}${generatePropertyUrl(property)}`;
     const shareData = {
       title: property.title,
       text: `Confira este imóvel: ${property.title}`,
@@ -83,7 +84,7 @@ export function PropertyCard({ property }: PropertyCardProps) {
 
   return (
     <Link
-      href={`/imovel/${property.id}`}
+      href={generatePropertyUrl(property)}
       className={styles.link}
       target="_blank"
       rel="noopener noreferrer"
@@ -174,7 +175,7 @@ export function PropertyCard({ property }: PropertyCardProps) {
 
           {/* Caracteristicas */}
           <div className={styles.features}>
-            {property.features.bedrooms > 0 && (
+            {(property.features.bedrooms || 0) + (property.features.suites || 0) > 0 && (
               <div className={styles.feature}>
                 <Image
                   src={bedroom}
@@ -183,7 +184,7 @@ export function PropertyCard({ property }: PropertyCardProps) {
                   height={12}
                 />
                 <span className={styles.featureValue}>
-                  {property.features.bedrooms}
+                  {(property.features.bedrooms || 0) + (property.features.suites || 0)}
                 </span>
               </div>
             )}

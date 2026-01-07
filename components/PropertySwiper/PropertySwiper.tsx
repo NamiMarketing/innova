@@ -86,7 +86,7 @@ export function PropertySwiper({
       <div className={styles.container}>
         <div className={styles.titleContainer}>
           <h2 className={styles.title}>{title}</h2>
-          <Link href="/imoveis" className={styles.link}>
+          <Link href="/venda" className={styles.link}>
             Ver todos
           </Link>
         </div>
@@ -119,7 +119,7 @@ export function PropertySwiper({
     <div className={styles.container}>
       <div className={styles.titleContainer}>
         <h2 className={styles.title}>{title}</h2>
-        <Link href="/imoveis" className={styles.link}>
+        <Link href="/venda" className={styles.link}>
           Ver todos
         </Link>
       </div>

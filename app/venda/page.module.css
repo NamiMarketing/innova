@@ -1,0 +1,33 @@
+.container {
+  background: var(--background);
+  overflow: visible;
+}
+
+.content {
+  width: 90%;
+  max-width: 1500px;
+  margin: 0 auto;
+  display: flex;
+  gap: 0;
+  min-height: calc(100vh - 100px);
+}
+
+@media (max-width: 768px) {
+  .container {
+    height: auto;
+    overflow: visible;
+  }
+
+  .content {
+    padding: 20px 0 40px;
+    flex-direction: column;
+  }
+}
+
+/* Tablet */
+@media (min-width: 769px) and (max-width: 1023px) {
+  .content {
+    width: 95%;
+    padding: 50px 0 0;
+  }
+}
