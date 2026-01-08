@@ -335,10 +335,22 @@ export function PropertyResults({
               d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
             />
           </svg>
-          <h3 className={styles.emptyTitle}>Nenhum imóvel encontrado</h3>
-          <p className={styles.emptyMessage}>
-            Tente ajustar os filtros para encontrar mais opções.
-          </p>
+          {appliedFilters.code ? (
+            <>
+              <h3 className={styles.emptyTitle}>Código não encontrado</h3>
+              <p className={styles.emptyMessage}>
+                O imóvel com código &quot;{appliedFilters.code}&quot; não foi
+                encontrado.
+              </p>
+            </>
+          ) : (
+            <>
+              <h3 className={styles.emptyTitle}>Nenhum imóvel encontrado</h3>
+              <p className={styles.emptyMessage}>
+                Tente ajustar os filtros para encontrar mais opções.
+              </p>
+            </>
+          )}
         </div>
       ) : (
         <div ref={parentRef} className={styles.virtualScrollContainer}>

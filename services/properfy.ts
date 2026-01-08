@@ -26,6 +26,14 @@ function buildBaseParams(filters: PropertyFilters): URLSearchParams {
   const limit = filters.limit || 1000;
   params.append('size', limit.toString());
 
+  // If a code is provided, ignore all other filters - search only by code
+  if (filters.code) {
+    params.append('chrReference', filters.code);
+    params.append('chrStatus', 'LISTED');
+    params.append('chrOrder', 'lesser_value');
+    return params;
+  }
+
   // Transaction type (sale/rent)
   if (filters.type) {
     const transactionType = filters.type === 'sale' ? 'SALE' : 'RENT';
@@ -62,9 +70,6 @@ function buildBaseParams(filters: PropertyFilters): URLSearchParams {
   if (filters.minArea) params.append('dcmMinArea', filters.minArea.toString());
   if (filters.maxArea) params.append('dcmMaxArea', filters.maxArea.toString());
 
-  // Code/Reference filter
-  if (filters.code) params.append('chrReference', filters.code);
-
   // Only show listed properties
   params.append('chrStatus', 'LISTED');
 
@@ -95,51 +100,59 @@ export async function getProperties(
 
   let allProperties: Property[] = [];
 
-  // Collect chrTypes to fetch
-  const chrTypesToFetch: string[] = [];
-
-  // First, check if we have chrTypes filter (new way)
-  if (filters.chrTypes) {
-    const types = filters.chrTypes.split(',').map((t) => t.trim());
-    chrTypesToFetch.push(...types);
-  }
-  // Otherwise, check if we have category filter (legacy way)
-  else if (filters.category) {
-    const categories = (filters.category as string)
-      .split(',')
-      .map((c) => c.trim());
-
-    categories.forEach((cat) => {
-      const properfyTypes = CATEGORY_MAP[cat];
-      if (properfyTypes) {
-        chrTypesToFetch.push(...properfyTypes);
-      }
-    });
-  }
-
-  // If we have specific chrTypes to fetch, make parallel requests
-  if (chrTypesToFetch.length > 0) {
-    // Properfy API only accepts one chrType at a time, so we need to make parallel requests
-    const promises = chrTypesToFetch.map((chrType) =>
-      fetchPropertiesForType(baseParams, chrType)
-    );
-
-    const results = await Promise.all(promises);
-    allProperties = results.flat();
-
-    // Remove duplicates by id
-    const seen = new Set<string>();
-    allProperties = allProperties.filter((p) => {
-      if (seen.has(p.id)) return false;
-      seen.add(p.id);
-      return true;
-    });
-  } else {
-    // No type filter - just fetch normally
+  // If searching by code, skip category/type filtering - search directly
+  if (filters.code) {
     const endpoint = `api/property/shared?${baseParams.toString()}`;
     const response = await api(endpoint).json<unknown>();
     const result = mapProperfyResponse(response as never);
     allProperties = result.data;
+  } else {
+    // Collect chrTypes to fetch
+    const chrTypesToFetch: string[] = [];
+
+    // First, check if we have chrTypes filter (new way)
+    if (filters.chrTypes) {
+      const types = filters.chrTypes.split(',').map((t) => t.trim());
+      chrTypesToFetch.push(...types);
+    }
+    // Otherwise, check if we have category filter (legacy way)
+    else if (filters.category) {
+      const categories = (filters.category as string)
+        .split(',')
+        .map((c) => c.trim());
+
+      categories.forEach((cat) => {
+        const properfyTypes = CATEGORY_MAP[cat];
+        if (properfyTypes) {
+          chrTypesToFetch.push(...properfyTypes);
+        }
+      });
+    }
+
+    // If we have specific chrTypes to fetch, make parallel requests
+    if (chrTypesToFetch.length > 0) {
+      // Properfy API only accepts one chrType at a time, so we need to make parallel requests
+      const promises = chrTypesToFetch.map((chrType) =>
+        fetchPropertiesForType(baseParams, chrType)
+      );
+
+      const results = await Promise.all(promises);
+      allProperties = results.flat();
+
+      // Remove duplicates by id
+      const seen = new Set<string>();
+      allProperties = allProperties.filter((p) => {
+        if (seen.has(p.id)) return false;
+        seen.add(p.id);
+        return true;
+      });
+    } else {
+      // No type filter - just fetch normally
+      const endpoint = `api/property/shared?${baseParams.toString()}`;
+      const response = await api(endpoint).json<unknown>();
+      const result = mapProperfyResponse(response as never);
+      allProperties = result.data;
+    }
   }
 
   // Client-side amenity filtering

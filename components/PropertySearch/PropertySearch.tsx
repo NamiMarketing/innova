@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useCallback, useMemo } from 'react';
+import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import {
   Property,
@@ -183,44 +184,66 @@ export function PropertySearch({
     setFilters({ ...filters, maxArea: parseArea(formatted) });
   };
 
-  const fetchProperties = useCallback(async (newFilters: PropertyFilters) => {
-    setLoading(true);
-    try {
-      const params = new URLSearchParams();
-      if (newFilters.type) params.set('type', newFilters.type);
-      if (newFilters.chrTypes) params.set('chrTypes', newFilters.chrTypes);
-      if (newFilters.city) params.set('city', newFilters.city);
-      if (newFilters.neighborhood)
-        params.set('neighborhood', newFilters.neighborhood);
-      if (newFilters.minPrice)
-        params.set('minPrice', newFilters.minPrice.toString());
-      if (newFilters.maxPrice)
-        params.set('maxPrice', newFilters.maxPrice.toString());
-      if (newFilters.minBedrooms)
-        params.set('minBedrooms', newFilters.minBedrooms.toString());
-      if (newFilters.minBathrooms)
-        params.set('minBathrooms', newFilters.minBathrooms.toString());
-      if (newFilters.minSuites)
-        params.set('minSuites', newFilters.minSuites.toString());
-      if (newFilters.minParkingSpaces)
-        params.set('minParkingSpaces', newFilters.minParkingSpaces.toString());
-      if (newFilters.code) params.set('code', newFilters.code);
-      if (newFilters.amenities && newFilters.amenities.length > 0) {
-        params.set('amenities', newFilters.amenities.join(','));
+  const router = useRouter();
+
+  const fetchProperties = useCallback(
+    async (newFilters: PropertyFilters) => {
+      setLoading(true);
+      try {
+        const params = new URLSearchParams();
+        if (newFilters.type) params.set('type', newFilters.type);
+        if (newFilters.chrTypes) params.set('chrTypes', newFilters.chrTypes);
+        if (newFilters.city) params.set('city', newFilters.city);
+        if (newFilters.neighborhood)
+          params.set('neighborhood', newFilters.neighborhood);
+        if (newFilters.minPrice)
+          params.set('minPrice', newFilters.minPrice.toString());
+        if (newFilters.maxPrice)
+          params.set('maxPrice', newFilters.maxPrice.toString());
+        if (newFilters.minBedrooms)
+          params.set('minBedrooms', newFilters.minBedrooms.toString());
+        if (newFilters.minBathrooms)
+          params.set('minBathrooms', newFilters.minBathrooms.toString());
+        if (newFilters.minSuites)
+          params.set('minSuites', newFilters.minSuites.toString());
+        if (newFilters.minParkingSpaces)
+          params.set(
+            'minParkingSpaces',
+            newFilters.minParkingSpaces.toString()
+          );
+        if (newFilters.code) params.set('code', newFilters.code);
+        if (newFilters.amenities && newFilters.amenities.length > 0) {
+          params.set('amenities', newFilters.amenities.join(','));
+        }
+        if (newFilters.page) params.set('page', newFilters.page.toString());
+
+        const response = await fetch(`/api/properties?${params.toString()}`);
+        const data: PropertyResponse = await response.json();
+
+        // If searching by code and found a property, check if we need to redirect
+        if (newFilters.code && data.data && data.data.length > 0) {
+          const foundProperty = data.data[0];
+          const currentType = newFilters.type; // 'sale' or 'rent'
+          const propertyType = foundProperty.type; // 'sale' or 'rent'
+
+          // If the property type doesn't match the current page, redirect
+          if (currentType && propertyType && currentType !== propertyType) {
+            const targetPage = propertyType === 'sale' ? '/venda' : '/aluguel';
+            router.push(`${targetPage}?code=${newFilters.code}`);
+            return; // Don't update state, we're redirecting
+          }
+        }
+
+        setProperties(data.data || []);
+        setTotal(data.total ?? 0);
+      } catch (error) {
+        console.error('Error fetching properties:', error);
+      } finally {
+        setLoading(false);
       }
-      if (newFilters.page) params.set('page', newFilters.page.toString());
-
-      const response = await fetch(`/api/properties?${params.toString()}`);
-      const data: PropertyResponse = await response.json();
-
-      setProperties(data.data || []);
-      setTotal(data.total ?? 0);
-    } catch (error) {
-      console.error('Error fetching properties:', error);
-    } finally {
-      setLoading(false);
-    }
-  }, []);
+    },
+    [router]
+  );
 
   const handleCityChange = (newCity: string) => {
     const newFilters = { ...filters, city: newCity || undefined };

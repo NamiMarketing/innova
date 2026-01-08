@@ -28,6 +28,8 @@ interface ProperfyProperty {
   dcmRentNetValue: number;
   dcmCondoValue: number;
   dcmPropertyTax: number;
+  dcmPcf: number;
+  dcmFireInsurance: number;
   chrAddressStreet: string;
   chrAddressNumber: string;
   chrAddressComplement: string | null;
@@ -190,6 +192,8 @@ export function mapProperfyProperty(properfy: ProperfyProperty): Property {
     price,
     condoFee: properfy.dcmCondoValue || undefined,
     iptu: properfy.dcmPropertyTax || undefined,
+    fci: properfy.dcmPcf || undefined,
+    fireInsurance: properfy.dcmFireInsurance || undefined,
     code: properfy.chrReference,
     createdAt: properfy.dttRegister,
     updatedAt: properfy.dttUpdated,

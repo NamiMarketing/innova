@@ -56,7 +56,9 @@ export async function generateMetadata({
   };
 }
 
-export default async function PropertyPage({ searchParams }: PropertyPageProps) {
+export default async function PropertyPage({
+  searchParams,
+}: PropertyPageProps) {
   const { id } = await searchParams;
 
   if (!id) {
@@ -247,7 +249,9 @@ export default async function PropertyPage({ searchParams }: PropertyPageProps) 
                     </div>
                   </div>
                 )}
-                {(property.features.bathrooms || 0) + (property.features.suites || 0) > 0 && (
+                {(property.features.bathrooms || 0) +
+                  (property.features.suites || 0) >
+                  0 && (
                   <div className={styles.featureItem}>
                     <p>Banheiros</p>
                     <div>
@@ -265,7 +269,8 @@ export default async function PropertyPage({ searchParams }: PropertyPageProps) 
                         />
                       </svg>
                       <p className={styles.featureValue}>
-                        {(property.features.bathrooms || 0) + (property.features.suites || 0)}
+                        {(property.features.bathrooms || 0) +
+                          (property.features.suites || 0)}
                       </p>
                     </div>
                   </div>

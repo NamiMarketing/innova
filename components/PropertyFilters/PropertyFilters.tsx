@@ -3,7 +3,10 @@
 import { useState, useMemo } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { PropertyFilters as PropertyFiltersType, PropertyType } from '@/types/property';
+import {
+  PropertyFilters as PropertyFiltersType,
+  PropertyType,
+} from '@/types/property';
 import { Selector, SelectorOption, ButtonSelector } from '@/components/ui';
 import styles from './PropertyFilters.module.css';
 import houseIcon from '@/img/icons/casa-icon.svg';

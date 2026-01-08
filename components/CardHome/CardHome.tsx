@@ -185,7 +185,10 @@ export function CardHome({ property }: PropertyCardProps) {
           <div className={styles.priceContainer}>
             <div className={styles.price}>{formatPrice(property.price)}</div>
             {property.type === 'rent' &&
-              (property.condoFee || property.iptu) && (
+              (property.condoFee ||
+                property.iptu ||
+                property.fci ||
+                property.fireInsurance) && (
                 <div className={styles.extraCosts}>
                   {property.condoFee && (
                     <div className={styles.extraCost}>
@@ -197,6 +200,18 @@ export function CardHome({ property }: PropertyCardProps) {
                     <div className={styles.extraCost}>
                       <span className={styles.extraCostPlus}>+</span>
                       <span>IPTU: {formatPrice(property.iptu)}</span>
+                    </div>
+                  )}
+                  {property.fci && (
+                    <div className={styles.extraCost}>
+                      <span className={styles.extraCostPlus}>+</span>
+                      <span>FCI: {formatPrice(property.fci)}</span>
+                    </div>
+                  )}
+                  {property.fireInsurance && (
+                    <div className={styles.extraCost}>
+                      <span className={styles.extraCostPlus}>+</span>
+                      <span>Seguro: {formatPrice(property.fireInsurance)}</span>
                     </div>
                   )}
                 </div>
@@ -211,7 +226,9 @@ export function CardHome({ property }: PropertyCardProps) {
 
           {/* Caracteristicas */}
           <div className={styles.features}>
-            {(property.features.bedrooms || 0) + (property.features.suites || 0) > 0 && (
+            {(property.features.bedrooms || 0) +
+              (property.features.suites || 0) >
+              0 && (
               <div className={styles.feature}>
                 <Image
                   src={bedroom}
@@ -220,11 +237,14 @@ export function CardHome({ property }: PropertyCardProps) {
                   height={12}
                 />
                 <span className={styles.featureValue}>
-                  {(property.features.bedrooms || 0) + (property.features.suites || 0)}
+                  {(property.features.bedrooms || 0) +
+                    (property.features.suites || 0)}
                 </span>
               </div>
             )}
-            {(property.features.bathrooms || 0) + (property.features.suites || 0) > 0 && (
+            {(property.features.bathrooms || 0) +
+              (property.features.suites || 0) >
+              0 && (
               <div className={styles.feature}>
                 <Image
                   src={bathroom}
@@ -233,7 +253,8 @@ export function CardHome({ property }: PropertyCardProps) {
                   height={15}
                 />
                 <span className={styles.featureValue}>
-                  {(property.features.bathrooms || 0) + (property.features.suites || 0)}
+                  {(property.features.bathrooms || 0) +
+                    (property.features.suites || 0)}
                 </span>
               </div>
             )}

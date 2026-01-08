@@ -230,18 +230,18 @@
 }
 
 .price {
-  font-size: 20px;
+  font-size: 19px;
   font-weight: 700;
   color: var(--black);
 }
 
 .extraCosts {
-  font-size: 16px;
-  line-height: 16px;
+  font-size: 14px;
+  line-height: 14px;
   color: var(--gray-medium);
   display: flex;
   flex-direction: column;
-  gap: 5px;
+  gap: 3px;
 }
 
 .extraCost {

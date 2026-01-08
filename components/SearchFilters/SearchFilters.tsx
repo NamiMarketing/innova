@@ -54,7 +54,7 @@ export function SearchFilters({
         params.set('quartos', filters.minBedrooms.toString());
 
       const queryString = params.toString();
-      
+
       // Determine base path based on type filter
       let basePath = '/venda';
       if (filters.type === 'rent') {
@@ -66,7 +66,9 @@ export function SearchFilters({
       }
 
       const finalQueryString = params.toString();
-      router.push(`${basePath}${finalQueryString ? `?${finalQueryString}` : ''}`);
+      router.push(
+        `${basePath}${finalQueryString ? `?${finalQueryString}` : ''}`
+      );
     }
   };
 

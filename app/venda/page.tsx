@@ -1,5 +1,6 @@
 import { Metadata } from 'next';
 import { Suspense } from 'react';
+import { redirect } from 'next/navigation';
 import { PropertyCategory } from '@/types/property';
 import { ImoveisContent } from './ImoveisContent';
 import { LoadingState } from './LoadingState';
@@ -20,13 +21,15 @@ async function PropertiesLoader({
 }: {
   searchParams: { [key: string]: string | string[] | undefined };
 }) {
+  const code = searchParams.code as string | undefined;
+
   const filters = {
     type: 'sale' as const, // Always sale for /venda
     category: (searchParams.category as PropertyCategory) || undefined,
     chrTypes: (searchParams.chrTypes as string) || undefined,
     city: (searchParams.city as string) || undefined,
     neighborhood: (searchParams.neighborhood as string) || undefined,
-    code: (searchParams.code as string) || undefined,
+    code: code,
     minPrice: searchParams.minPrice ? Number(searchParams.minPrice) : undefined,
     maxPrice: searchParams.maxPrice ? Number(searchParams.maxPrice) : undefined,
     minBedrooms: searchParams.minBedrooms
@@ -68,6 +71,19 @@ export default async function VendaPage({
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }) {
   const resolvedSearchParams = await searchParams;
+  const code = resolvedSearchParams.code as string | undefined;
+
+  // If searching by code, check if we need to redirect BEFORE rendering anything
+  if (code) {
+    const codeCheckResult = await getProperties({ code });
+    if (codeCheckResult.data && codeCheckResult.data.length > 0) {
+      const foundProperty = codeCheckResult.data[0];
+      // If the property is for rent, redirect to /locacao
+      if (foundProperty.type === 'rent') {
+        redirect(`/locacao?code=${code}`);
+      }
+    }
+  }
 
   const filters = {
     type: 'sale' as const,
@@ -75,7 +91,7 @@ export default async function VendaPage({
     chrTypes: (resolvedSearchParams.chrTypes as string) || undefined,
     city: (resolvedSearchParams.city as string) || undefined,
     neighborhood: (resolvedSearchParams.neighborhood as string) || undefined,
-    code: (resolvedSearchParams.code as string) || undefined,
+    code: code,
     minPrice: resolvedSearchParams.minPrice
       ? Number(resolvedSearchParams.minPrice)
       : undefined,

@@ -77,6 +77,8 @@ export interface Property {
   price: number;
   condoFee?: number;
   iptu?: number;
+  fci?: number;
+  fireInsurance?: number;
   address: PropertyAddress;
   features: PropertyFeatures;
   amenities: PropertyAmenities;

@@ -2,7 +2,12 @@
 
 import { useState, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
-import { Property, PropertyFilters, PropertyResponse, PropertyType } from '@/types/property';
+import {
+  Property,
+  PropertyFilters,
+  PropertyResponse,
+  PropertyType,
+} from '@/types/property';
 import { PropertyFilters as PropertyFiltersComponent } from '@/components/PropertyFilters';
 import { PropertyResults } from '@/components/PropertyResults';
 
@@ -107,16 +112,19 @@ export function ImoveisContent({
     const filtersWithLockedType = lockedType
       ? { ...newFilters, type: lockedType }
       : newFilters;
-    
+
     // Update applied filters immediately for UI responsiveness
     setAppliedFilters(filtersWithLockedType);
 
     // Update URL with new filters (excluding locked type from URL since it's implicit)
     const params = new URLSearchParams();
     // Don't include type in URL if it's locked (the path already defines it)
-    if (!lockedType && filtersWithLockedType.type) params.set('type', filtersWithLockedType.type);
-    if (filtersWithLockedType.chrTypes) params.set('chrTypes', filtersWithLockedType.chrTypes);
-    if (filtersWithLockedType.city) params.set('city', filtersWithLockedType.city);
+    if (!lockedType && filtersWithLockedType.type)
+      params.set('type', filtersWithLockedType.type);
+    if (filtersWithLockedType.chrTypes)
+      params.set('chrTypes', filtersWithLockedType.chrTypes);
+    if (filtersWithLockedType.city)
+      params.set('city', filtersWithLockedType.city);
     if (filtersWithLockedType.neighborhood)
       params.set('neighborhood', filtersWithLockedType.neighborhood);
     if (filtersWithLockedType.minPrice)
@@ -130,9 +138,16 @@ export function ImoveisContent({
     if (filtersWithLockedType.minSuites)
       params.set('minSuites', filtersWithLockedType.minSuites.toString());
     if (filtersWithLockedType.minParkingSpaces)
-      params.set('minParkingSpaces', filtersWithLockedType.minParkingSpaces.toString());
-    if (filtersWithLockedType.code) params.set('code', filtersWithLockedType.code);
-    if (filtersWithLockedType.amenities && filtersWithLockedType.amenities.length > 0) {
+      params.set(
+        'minParkingSpaces',
+        filtersWithLockedType.minParkingSpaces.toString()
+      );
+    if (filtersWithLockedType.code)
+      params.set('code', filtersWithLockedType.code);
+    if (
+      filtersWithLockedType.amenities &&
+      filtersWithLockedType.amenities.length > 0
+    ) {
       params.set('amenities', filtersWithLockedType.amenities.join(','));
     }
     if (filtersWithLockedType.minArea)
@@ -150,7 +165,9 @@ export function ImoveisContent({
 
   const handleReset = () => {
     // Keep locked type when resetting
-    const resetFilters: PropertyFilters = lockedType ? { type: lockedType } : {};
+    const resetFilters: PropertyFilters = lockedType
+      ? { type: lockedType }
+      : {};
     setAppliedFilters(resetFilters);
     router.push(basePath, { scroll: false });
     setCurrentPage(1);
