@@ -320,6 +320,9 @@
   font-weight: 400;
   font-size: 17px;
   color: black;
+  span{
+    color: var(--gray-medium);
+  }
 }
 
 .locationIcon {

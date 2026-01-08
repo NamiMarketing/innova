@@ -62,11 +62,11 @@ function buildBaseParams(filters: PropertyFilters): URLSearchParams {
   if (filters.minBedrooms)
     params.append('intMinBedrooms', filters.minBedrooms.toString());
   if (filters.minBathrooms)
-    params.append('intMinBathrooms', filters.minBathrooms.toString());
+    params.append('intBathrooms', filters.minBathrooms.toString());
   if (filters.minSuites)
-    params.append('intMinSuites', filters.minSuites.toString());
+    params.append('intSuites', filters.minSuites.toString());
   if (filters.minParkingSpaces)
-    params.append('intMinGarage', filters.minParkingSpaces.toString());
+    params.append('intGarage', filters.minParkingSpaces.toString());
   if (filters.minArea) params.append('dcmMinArea', filters.minArea.toString());
   if (filters.maxArea) params.append('dcmMaxArea', filters.maxArea.toString());
 
