@@ -51,7 +51,7 @@ export function SearchFilters({
       if (filters.maxPrice)
         params.set('preco_max', filters.maxPrice.toString());
       if (filters.minBedrooms)
-        params.set('quartos', filters.minBedrooms.toString());
+        params.set('minBedrooms', filters.minBedrooms.toString());
 
       const queryString = params.toString();
 
