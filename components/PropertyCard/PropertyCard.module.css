@@ -325,7 +325,7 @@
     border-radius: 10px;
     flex-direction: column;
     position: relative;
-    height: 454px;
+    height: 475px;
   }
 
   .imageContainer {
@@ -441,8 +441,8 @@
   }
 
   .extraCosts {
-    font-size: 14px;
-    line-height: 14px;
+    font-size: 13px;
+    line-height: 13px;
     color: var(--gray-medium);
     display: flex;
     flex-direction: column;

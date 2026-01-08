@@ -68,7 +68,7 @@ export function PropertyResults({
     count: hasMore ? sortedProperties.length + 1 : sortedProperties.length,
     getScrollElement: () =>
       typeof window !== 'undefined' ? document.documentElement : null,
-    estimateSize: () => (isMobile ? 468 : 301), // Mobile: ~454px card + 14px gap, Desktop: 287px card + 14px gap
+    estimateSize: () => (isMobile ? 489 : 301), // Mobile: ~475px card + 14px gap, Desktop: 287px card + 14px gap
     overscan: 2,
   });
 
