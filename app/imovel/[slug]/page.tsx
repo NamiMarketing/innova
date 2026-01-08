@@ -125,8 +125,24 @@ export default async function PropertyPage({
                   <p className={styles.price}>{formatPrice(property.price)}</p>
                   {property.type === 'rent' && property.condoFee && (
                     <p className={styles.priceExtra}>
-                      Condomínio R$ {property.condoFee.toLocaleString('pt-BR')}
+                      + Condomínio R$ {property.condoFee.toLocaleString('pt-BR')}
                       /mês
+                    </p>
+                  )}
+                  {property.type === 'rent' && property.iptu && (
+                    <p className={styles.priceExtra}>
+                      + IPTU R$ {property.iptu.toLocaleString('pt-BR')}/mês
+                    </p>
+                  )}
+                  {property.type === 'rent' && property.fci && (
+                    <p className={styles.priceExtra}>
+                      + FCI R$ {property.fci.toLocaleString('pt-BR')}/mês
+                    </p>
+                  )}
+                  {property.type === 'rent' && property.fireInsurance && (
+                    <p className={styles.priceExtra}>
+                      + Seguro Incêndio R${' '}
+                      {property.fireInsurance.toLocaleString('pt-BR')}/mês
                     </p>
                   )}
                 </div>

@@ -303,9 +303,10 @@
 }
 
 .priceExtra {
-  font-size: 24px;
+  font-size: 18px;
   color: var(--gray-medium);
-  margin-top: 15px;
+  margin-top: 8px;
+  line-height: 18px;
 }
 
 .featureIcon {
@@ -354,7 +355,8 @@
   }
 
   .priceExtra {
-    font-size: 20px;
+    font-size: 15px;
+    line-height: 15px;
   }
 }
 
@@ -365,9 +367,9 @@
   }
 
   .priceExtra {
-    font-size: 15px;
-    line-height: 15px;
-    margin-top: 10px;
+    font-size: 13px;
+    line-height: 13px;
+    margin-top: 6px;
   }
 
   .featureIcon {
