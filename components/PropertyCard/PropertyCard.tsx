@@ -259,7 +259,7 @@ export function PropertyCard({ property }: PropertyCardProps) {
                         <span>Cond: {formatPrice(property.condoFee)}/mês</span>
                       </div>
                     )}
-                    {property.iptu && (
+                    {/* {property.iptu && (
                       <div className={styles.extraCost}>
                         <span className={styles.extraCostPlus}>+</span>
                         <span>IPTU: {formatPrice(property.iptu)}/mês</span>
@@ -278,7 +278,7 @@ export function PropertyCard({ property }: PropertyCardProps) {
                           Seguro: {formatPrice(property.fireInsurance)}/mês
                         </span>
                       </div>
-                    )}
+                    )} */}
                   </div>
                 )}
             </div>
