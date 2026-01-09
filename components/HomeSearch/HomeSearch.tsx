@@ -41,7 +41,9 @@ export function HomeSearch({
     Object.values(neighborhoodsByCity).forEach((neighborhoods) => {
       neighborhoods.forEach((n) => allNeighborhoods.add(n));
     });
-    return Array.from(allNeighborhoods).sort();
+    return Array.from(allNeighborhoods).sort((a, b) =>
+      a.localeCompare(b, 'pt-BR')
+    );
   }, [city, neighborhoodsByCity]);
 
   const handleCityChange = (newCity: string) => {

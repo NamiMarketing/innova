@@ -123,23 +123,24 @@ export default async function PropertyPage({
                 <div className={styles.priceInfo}>
                   <p className={styles.typeLabel}>{typeLabel}</p>
                   <p className={styles.price}>{formatPrice(property.price)}</p>
-                  {property.type === 'rent' && property.condoFee && (
+                  {property.condoFee && (
                     <p className={styles.priceExtra}>
-                      + Condomínio R$ {property.condoFee.toLocaleString('pt-BR')}
+                      + Condomínio R${' '}
+                      {property.condoFee.toLocaleString('pt-BR')}
                       /mês
                     </p>
                   )}
-                  {property.type === 'rent' && property.iptu && (
+                  {property.iptu && (
                     <p className={styles.priceExtra}>
                       + IPTU R$ {property.iptu.toLocaleString('pt-BR')}/mês
                     </p>
                   )}
-                  {property.type === 'rent' && property.fci && (
+                  {property.fci && (
                     <p className={styles.priceExtra}>
                       + FCI R$ {property.fci.toLocaleString('pt-BR')}/mês
                     </p>
                   )}
-                  {property.type === 'rent' && property.fireInsurance && (
+                  {property.fireInsurance && (
                     <p className={styles.priceExtra}>
                       + Seguro Incêndio R${' '}
                       {property.fireInsurance.toLocaleString('pt-BR')}/mês
@@ -202,7 +203,8 @@ export default async function PropertyPage({
                     </div>
                   )}
                 {(property.features.bedrooms || 0) +
-                  (property.features.suites || 0) > 0 && (
+                  (property.features.suites || 0) >
+                  0 && (
                   <div className={styles.featureItem}>
                     <p>Quartos</p>
                     <div>
@@ -233,7 +235,8 @@ export default async function PropertyPage({
                           (property.features.suites || 0)}
                         {property.features.suites > 0 && (
                           <span>
-                            ({property.features.suites} {property.features.suites > 1 ? 'suítes' : 'suíte'})
+                            ({property.features.suites}{' '}
+                            {property.features.suites > 1 ? 'suítes' : 'suíte'})
                           </span>
                         )}
                       </span>
@@ -265,7 +268,11 @@ export default async function PropertyPage({
                           (property.features.restrooms || 0)}
                         {property.features.restrooms > 0 && (
                           <span>
-                            ({property.features.restrooms} {property.features.restrooms > 1 ? 'lavabos' : 'lavabo'})
+                            ({property.features.restrooms}{' '}
+                            {property.features.restrooms > 1
+                              ? 'lavabos'
+                              : 'lavabo'}
+                            )
                           </span>
                         )}
                       </p>

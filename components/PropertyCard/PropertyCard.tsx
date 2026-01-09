@@ -247,19 +247,18 @@ export function PropertyCard({ property }: PropertyCardProps) {
           <div className={styles.priceContainer}>
             <div className={styles.leftPrice}>
               <div className={styles.price}>{formatPrice(property.price)}</div>
-              {property.type === 'rent' &&
-                (property.condoFee ||
-                  property.iptu ||
-                  property.fci ||
-                  property.fireInsurance) && (
-                  <div className={styles.extraCosts}>
-                    {property.condoFee && (
-                      <div className={styles.extraCost}>
-                        <span className={styles.extraCostPlus}>+</span>
-                        <span>Cond: {formatPrice(property.condoFee)}/mês</span>
-                      </div>
-                    )}
-                    {/* {property.iptu && (
+              {(property.condoFee ||
+                property.iptu ||
+                property.fci ||
+                property.fireInsurance) && (
+                <div className={styles.extraCosts}>
+                  {property.condoFee && (
+                    <div className={styles.extraCost}>
+                      <span className={styles.extraCostPlus}>+</span>
+                      <span>Cond: {formatPrice(property.condoFee)}/mês</span>
+                    </div>
+                  )}
+                  {/* {property.iptu && (
                       <div className={styles.extraCost}>
                         <span className={styles.extraCostPlus}>+</span>
                         <span>IPTU: {formatPrice(property.iptu)}/mês</span>
@@ -279,8 +278,8 @@ export function PropertyCard({ property }: PropertyCardProps) {
                         </span>
                       </div>
                     )} */}
-                  </div>
-                )}
+                </div>
+              )}
             </div>
             <button className={styles.rightPrice}>Contatar</button>
           </div>

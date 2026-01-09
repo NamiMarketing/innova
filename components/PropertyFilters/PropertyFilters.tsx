@@ -268,7 +268,7 @@ export function PropertyFilters({
         neighborhoods.forEach((n) => all.add(n));
       }
     );
-    return Array.from(all).sort();
+    return Array.from(all).sort((a, b) => a.localeCompare(b, 'pt-BR'));
   }, [filters.city, filterOptions.neighborhoodsByCity]);
 
   const neighborhoodOptions = useMemo(
@@ -491,6 +491,12 @@ export function PropertyFilters({
                   code: e.target.value || undefined,
                 }))
               }
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') {
+                  e.preventDefault();
+                  handleApply();
+                }
+              }}
               placeholder="Busque por código"
               className={styles.codeInput}
               id="code"
