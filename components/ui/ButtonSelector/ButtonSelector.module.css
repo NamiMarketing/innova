@@ -40,9 +40,9 @@
 }
 
 .buttonActive {
-  background-color: var(--white);
-  border-color: var(--orange);
-  color: var(--orange);
+  background-color: var(--orange);
+  border-color: var(--white);
+  color: var(--white);
 }
 
 .buttonActive:hover {
