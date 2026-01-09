@@ -17,7 +17,7 @@ function parseFilters(searchParams: URLSearchParams): PropertyFilters {
     neighborhood: getString('neighborhood'),
     minPrice: getNumber('minPrice'),
     maxPrice: getNumber('maxPrice'),
-    minBedrooms: getNumber('minBedrooms'),
+    minTotalBedrooms: getNumber('minTotalBedrooms'),
     minBathrooms: getNumber('minBathrooms'),
     minSuites: getNumber('minSuites'),
     minParkingSpaces: getNumber('minParkingSpaces'),

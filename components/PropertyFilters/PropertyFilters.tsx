@@ -290,7 +290,7 @@ export function PropertyFilters({
     if (filters.city) count++;
     if (filters.minPrice || filters.maxPrice) count++;
     if (filters.minArea || filters.maxArea) count++;
-    if (filters.minBedrooms) count++;
+    if (filters.minTotalBedrooms) count++;
     if (filters.minBathrooms) count++;
     if (filters.minSuites) count++;
     if (filters.minParkingSpaces) count++;
@@ -533,11 +533,11 @@ export function PropertyFilters({
           <div className={styles.filterSection}>
             <ButtonSelector
               options={quantityOptions}
-              value={filters.minBedrooms?.toString() || ''}
+              value={filters.minTotalBedrooms?.toString() || ''}
               onChange={(v: string) =>
                 setFilters((prev) => ({
                   ...prev,
-                  minBedrooms: v ? Number(v) : undefined,
+                  minTotalBedrooms: v ? Number(v) : undefined,
                 }))
               }
               label="Quartos"

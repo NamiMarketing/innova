@@ -64,8 +64,11 @@ export function ImoveisContent({
           params.set('minPrice', newFilters.minPrice.toString());
         if (newFilters.maxPrice)
           params.set('maxPrice', newFilters.maxPrice.toString());
-        if (newFilters.minBedrooms)
-          params.set('minBedrooms', newFilters.minBedrooms.toString());
+        if (newFilters.minTotalBedrooms)
+          params.set(
+            'minTotalBedrooms',
+            newFilters.minTotalBedrooms.toString()
+          );
         if (newFilters.minBathrooms)
           params.set('minBathrooms', newFilters.minBathrooms.toString());
         if (newFilters.minSuites)
@@ -131,8 +134,11 @@ export function ImoveisContent({
       params.set('minPrice', filtersWithLockedType.minPrice.toString());
     if (filtersWithLockedType.maxPrice)
       params.set('maxPrice', filtersWithLockedType.maxPrice.toString());
-    if (filtersWithLockedType.minBedrooms)
-      params.set('minBedrooms', filtersWithLockedType.minBedrooms.toString());
+    if (filtersWithLockedType.minTotalBedrooms)
+      params.set(
+        'minTotalBedrooms',
+        filtersWithLockedType.minTotalBedrooms.toString()
+      );
     if (filtersWithLockedType.minBathrooms)
       params.set('minBathrooms', filtersWithLockedType.minBathrooms.toString());
     if (filtersWithLockedType.minSuites)

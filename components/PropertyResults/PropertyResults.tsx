@@ -128,7 +128,7 @@ export function PropertyResults({
     if (appliedFilters.city) count++;
     if (appliedFilters.minPrice || appliedFilters.maxPrice) count++;
     if (appliedFilters.minArea || appliedFilters.maxArea) count++;
-    if (appliedFilters.minBedrooms) count++;
+    if (appliedFilters.minTotalBedrooms) count++;
     if (appliedFilters.minBathrooms) count++;
     if (appliedFilters.minSuites) count++;
     if (appliedFilters.minParkingSpaces) count++;

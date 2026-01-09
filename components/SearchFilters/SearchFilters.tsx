@@ -50,10 +50,8 @@ export function SearchFilters({
         params.set('preco_min', filters.minPrice.toString());
       if (filters.maxPrice)
         params.set('preco_max', filters.maxPrice.toString());
-      if (filters.minBedrooms)
-        params.set('minBedrooms', filters.minBedrooms.toString());
-
-      const queryString = params.toString();
+      if (filters.minTotalBedrooms)
+        params.set('minTotalBedrooms', filters.minTotalBedrooms.toString());
 
       // Determine base path based on type filter
       let basePath = '/venda';
@@ -200,10 +198,10 @@ export function SearchFilters({
               <div className={styles.field}>
                 <label className={styles.label}>Quartos (min)</label>
                 <select
-                  value={filters.minBedrooms || ''}
+                  value={filters.minTotalBedrooms || ''}
                   onChange={(e) =>
                     handleChange(
-                      'minBedrooms',
+                      'minTotalBedrooms',
                       e.target.value ? Number(e.target.value) : undefined
                     )
                   }

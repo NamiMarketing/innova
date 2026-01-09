@@ -32,8 +32,8 @@ async function PropertiesLoader({
     code: code,
     minPrice: searchParams.minPrice ? Number(searchParams.minPrice) : undefined,
     maxPrice: searchParams.maxPrice ? Number(searchParams.maxPrice) : undefined,
-    minBedrooms: searchParams.minBedrooms
-      ? Number(searchParams.minBedrooms)
+    minTotalBedrooms: searchParams.minTotalBedrooms
+      ? Number(searchParams.minTotalBedrooms)
       : undefined,
     minBathrooms: searchParams.minBathrooms
       ? Number(searchParams.minBathrooms)
@@ -98,8 +98,8 @@ export default async function VendaPage({
     maxPrice: resolvedSearchParams.maxPrice
       ? Number(resolvedSearchParams.maxPrice)
       : undefined,
-    minBedrooms: resolvedSearchParams.minBedrooms
-      ? Number(resolvedSearchParams.minBedrooms)
+    minTotalBedrooms: resolvedSearchParams.minTotalBedrooms
+      ? Number(resolvedSearchParams.minTotalBedrooms)
       : undefined,
     minBathrooms: resolvedSearchParams.minBathrooms
       ? Number(resolvedSearchParams.minBathrooms)

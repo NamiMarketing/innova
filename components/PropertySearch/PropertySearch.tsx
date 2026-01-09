@@ -200,8 +200,8 @@ export function PropertySearch({
           params.set('minPrice', newFilters.minPrice.toString());
         if (newFilters.maxPrice)
           params.set('maxPrice', newFilters.maxPrice.toString());
-        if (newFilters.minBedrooms)
-          params.set('minBedrooms', newFilters.minBedrooms.toString());
+        if (newFilters.minTotalBedrooms)
+          params.set('minTotalBedrooms', newFilters.minTotalBedrooms.toString());
         if (newFilters.minBathrooms)
           params.set('minBathrooms', newFilters.minBathrooms.toString());
         if (newFilters.minSuites)
@@ -372,7 +372,7 @@ export function PropertySearch({
     if (filters.city) count++;
     if (filters.minPrice || filters.maxPrice) count++;
     if (filters.minArea || filters.maxArea) count++;
-    if (filters.minBedrooms) count++;
+    if (filters.minTotalBedrooms) count++;
     if (filters.minBathrooms) count++;
     if (filters.minSuites) count++;
     if (filters.minParkingSpaces) count++;
@@ -666,11 +666,11 @@ export function PropertySearch({
           <div className={styles.filterSection}>
             <ButtonSelector
               options={quantityOptions}
-              value={filters.minBedrooms?.toString() || ''}
+              value={filters.minTotalBedrooms?.toString() || ''}
               onChange={(v: string) =>
                 setFilters({
                   ...filters,
-                  minBedrooms: v ? Number(v) : undefined,
+                  minTotalBedrooms: v ? Number(v) : undefined,
                 })
               }
               label="Quartos"

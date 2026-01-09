@@ -58,9 +58,8 @@ function buildBaseParams(filters: PropertyFilters): URLSearchParams {
     });
   }
 
-  // Feature filters
-  if (filters.minBedrooms)
-    params.append('intMinBedrooms', filters.minBedrooms.toString());
+  // Feature filters - Note: minTotalBedrooms is filtered client-side because API doesn't support it
+  // if (filters.minTotalBedrooms) - filtered client-side
   if (filters.minBathrooms)
     params.append('intBathrooms', filters.minBathrooms.toString());
   if (filters.minSuites)
@@ -153,6 +152,13 @@ export async function getProperties(
       const result = mapProperfyResponse(response as never);
       allProperties = result.data;
     }
+  }
+
+  // Client-side totalBedrooms filtering (API doesn't support this filter)
+  if (filters.minTotalBedrooms) {
+    allProperties = allProperties.filter((property) => {
+      return property.features.totalBedrooms >= filters.minTotalBedrooms!;
+    });
   }
 
   // Client-side amenity filtering

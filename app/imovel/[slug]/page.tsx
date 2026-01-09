@@ -234,10 +234,13 @@ export default async function PropertyPage({
                         {(property.features.bedrooms || 0) +
                           (property.features.suites || 0)}
                         {property.features.suites > 0 && (
-                          <span>
-                            ({property.features.suites}{' '}
-                            {property.features.suites > 1 ? 'suítes' : 'suíte'})
-                          </span>
+                          <>
+                            {' '}
+                            <span>
+                              ({property.features.suites}{' '}
+                              {property.features.suites > 1 ? 'suítes' : 'suíte'})
+                            </span>
+                          </>
                         )}
                       </span>
                     </div>
@@ -267,13 +270,16 @@ export default async function PropertyPage({
                           (property.features.suites || 0) +
                           (property.features.restrooms || 0)}
                         {property.features.restrooms > 0 && (
-                          <span>
-                            ({property.features.restrooms}{' '}
-                            {property.features.restrooms > 1
-                              ? 'lavabos'
-                              : 'lavabo'}
-                            )
-                          </span>
+                          <>
+                            {' '}
+                            <span>
+                              ({property.features.restrooms}{' '}
+                              {property.features.restrooms > 1
+                                ? 'lavabos'
+                                : 'lavabo'}
+                              )
+                            </span>
+                          </>
                         )}
                       </p>
                     </div>

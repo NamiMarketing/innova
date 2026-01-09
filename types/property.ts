@@ -29,6 +29,7 @@ export interface PropertyImage {
 
 export interface PropertyFeatures {
   bedrooms: number;
+  totalBedrooms: number;
   bathrooms: number;
   restrooms: number;
   totalBaths: number;
@@ -101,8 +102,8 @@ export interface PropertyFilters {
   neighborhood?: string;
   minPrice?: number;
   maxPrice?: number;
-  minBedrooms?: number;
-  maxBedrooms?: number;
+  minTotalBedrooms?: number;
+  maxTotalBedrooms?: number;
   minBathrooms?: number;
   minSuites?: number;
   minParkingSpaces?: number;
